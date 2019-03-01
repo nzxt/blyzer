@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout align-center>
     <v-flex text-xs-center>
       <img
         src="/v.png"

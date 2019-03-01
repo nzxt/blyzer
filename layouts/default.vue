@@ -15,7 +15,7 @@ v-app(light)
     //- v-btn(icon, @click.stop='inset = !inset')
     //-   v-icon mdi-blur
     v-toolbar-title(class='display-1 hidden-sm-and-down', v-html='title')
-    v-icon.mdi-36px.mdi-rotate-45.ml-1(color='grey lighten-2', class='hidden-sm-and-down') mdi-xbox
+    v-icon.mdi-36px.mdi-rotate-45.ml-1(color='grey lighten-2', class='hidden-sm-and-down', @click='$router.push("/")') mdi-xbox
     v-spacer
     v-layout(wrap, justify-end)
       v-flex(xs3, sm2, lg1 class='text-xs-center')
@@ -46,7 +46,7 @@ v-app(light)
             v-icon.mdi-36px.mdi-rotate-45(color='grey') mdi-xbox
 
   v-footer.px-3(:inset='inset', app)
-    span BocciaLyzer © 2019
+    span.caption boccialyzer © 2019. All right reserver.
 </template>
 
 <script>
