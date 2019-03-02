@@ -20,13 +20,13 @@ v-app(light)
     v-layout(wrap, justify-end)
       v-flex(xs3, sm2, lg1 class='text-xs-center')
         v-btn(large, icon, flat, :ripple='false', @click.stop='() => {}', class='toolbar--btn-large')
-          v-icon.mdi-48px(color='pink') mdi-chart-bar-stacked
+          v-icon.mdi-48px(color='accent') mdi-chart-bar-stacked
       v-flex(xs3, sm2, lg1 class='text-xs-center')
         v-btn(large, icon, flat, :ripple='false', @click.stop='() => {}', class='toolbar--btn-large')
-          v-icon.mdi-48px(color='pink') mdi-plus-outline
+          v-icon.mdi-48px(color='accent') mdi-plus-outline
       v-flex(xs3, sm2, lg1 class='text-xs-center')
         v-btn(large, icon, flat, :ripple='false', @click.stop='() => {}', class='toolbar--btn-large')
-          v-icon.mdi-48px(color='pink') mdi-account-circle-outline
+          v-icon.mdi-48px(color='accent') mdi-account-circle-outline
 
     //- v-toolbar-side-icon(@click='drawer = !drawer')
     v-btn(large, icon, @click.stop='rightDrawer = !rightDrawer', class='toolbar--btn-large')
@@ -34,47 +34,61 @@ v-app(light)
   v-content
     v-container(fluid fill-height)
       nuxt
-  v-navigation-drawer(v-model='rightDrawer', right, :clipped='clippedRight', temporary, fixed, app)
+  v-navigation-drawer(v-model='rightDrawer', right, :clipped='clippedRight', width='350', class="purpy", dark, temporary, fixed, app)
     v-list
       v-list-tile
         //- v-list-tile-action(class='justify-start')
         //-   v-icon(@click.native='clippedRight = !clippedRight') mdi-menu-swap-outline
-        v-list-tile-title(style='height:28px', class='headline grey--text', v-text='"NAVIGATION"')
+        v-list-tile-title(style='height:28px')
         v-list-tile-action.pr-1(class='justify-end')
           v-btn(large, icon, flat, :ripple='false', @click.stop='rightDrawer = !rightDrawer')
             //- v-icon.mdi-36px mdi-close
-            v-icon.mdi-36px.mdi-rotate-45(color='grey') mdi-xbox
-
+            v-icon.mdi-36px.mdi-rotate-45 mdi-xbox
+    v-list(two-line)
+      v-list-tile(v-for='(item, i) in items', :key='i', :to='item.to', router, exact)
+        v-list-tile-action(class='justify-center')
+        v-list-tile-content
+          v-list-tile-title.title(v-text='item.title.toUpperCase()')
+        v-list-tile-action(class='justify-center')
+          v-icon {{ item.icon }}
   v-footer.px-3(:inset='inset', app)
     span.caption boccialyzer © 2019. All right reserver.
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      // drawer: false,
-      // mini: false,
-      // clipped: true,
-      clippedRight: true,
-      rightDrawer: false,
-      inset: false,
-      items: [
-        {
-          icon: 'apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      title: '<span class="secondary--text">BOCCIA</span><span class="error--text">LYZER</span>',
-      btns_group: 2
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component
+export default class defaultLayout extends Vue {
+  // drawer: false,
+  // mini: false,
+  // clipped: true,
+  clippedRight: Boolean = true
+  rightDrawer: Boolean = false
+  inset: Boolean = false
+  items: Array<any> = [
+    {
+      icon: 'mdi-chevron-right',
+      title: 'Dashboard',
+      to: '/'
+    },
+    {
+      icon: 'mdi-chevron-right',
+      title: 'Matches',
+      to: '/inspire'
+    },
+    {
+      icon: 'mdi-chevron-right',
+      title: 'Trainings',
+      to: '/inspire'
+    },
+    {
+      icon: 'mdi-chevron-right',
+      title: 'Reports',
+      to: '/hello'
     }
-  }
+  ]
+  title: String = '<span class="secondary--text">BOCCIA</span><span class="error--text">LYZER</span>'
 }
 </script>
 

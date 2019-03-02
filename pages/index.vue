@@ -23,7 +23,7 @@
             <em><small>&mdash; John Leider</small></em>
           </div>
           <hr class="my-3">
-         </v-card-text>
+        </v-card-text>
         <v-card-actions>
           <div>
             <a
