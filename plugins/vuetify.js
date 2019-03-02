@@ -18,6 +18,6 @@ Vue.use(Vuetify, {
     warning: colors.deepOrange.base,
     info: colors.cyan.base,
     success: colors.green.base,
-    purpy: '#4700DA'
+    backpurple: '#0022dd'
   }
 })

@@ -2,8 +2,8 @@
   "extends": "@nuxt/typescript",
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "es2015"],
-    "module": "es2015",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "noImplicitAny": false,
