@@ -28,7 +28,8 @@
     "types": [
       "@types/node",
       "@nuxt/vue-app-edge"
-    ]
+    ],
+    "declaration": true,
     // "noImplicitThis": false,
     // "strictNullChecks": true,
     // "suppressImplicitAnyIndexErrors": true,
