@@ -13,6 +13,7 @@
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
+    "tslint": "tslint --project .",
     "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
@@ -24,7 +25,7 @@
     "@nuxtjs/moment": "^1.2.0",
     "@nuxtjs/pwa": "^2.6.0",
     "cross-env": "^5.2.0",
-    "nuxt-ts": "latest",
+    "nuxt-ts-edge": "latest",
     "vue-property-decorator": "^7.3.0",
     "vuex-class": "^0.3.1",
     "vuetify": "^1.5.0",
@@ -34,8 +35,10 @@
     "gsap": "^2.1.1"
   },
   "devDependencies": {
+    "@types/node": "^10.12.18",
     "@nuxtjs/eslint-config": "^0.0.1",
     "@typescript-eslint/parser": "^1.4.2",
+    "tslint-config-standard": "^8.0.1",
     "babel-eslint": "^8.2.1",
     "eslint": "^5.15.0",
     "eslint-config-standard": "^12.0.0",

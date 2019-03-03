@@ -9,7 +9,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
 export default class NewPage extends Vue {
-  get isMatch(): Boolean {
+  get isMatch (): Boolean {
     return this.$route.query.type === 'match'
   }
 }

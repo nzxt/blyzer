@@ -1,26 +1,54 @@
 {
-  "extends": "@nuxt/typescript",
+  "extends": "@nuxt/typescript-edge",
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "esnext"],
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "esnext",
+      "esnext.asynciterable"
+    ],
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "noImplicitAny": false,
-    "noImplicitThis": false,
-    "strictNullChecks": true,
-    "removeComments": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true,
     "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
     "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"]
+    },
     "types": [
       "@types/node",
-      "@nuxt/vue-app"
-    ],
-    "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
-    }
+      "@nuxt/vue-app-edge"
+    ]
+    // "target": "es5",
+    // "lib": ["dom", "esnext"],
+    // "module": "esnext",
+    // "moduleResolution": "node",
+    // "experimentalDecorators": true,
+    // "noImplicitAny": false,
+    // "noImplicitThis": false,
+    // "strictNullChecks": true,
+    // "removeComments": true,
+    // "allowSyntheticDefaultImports": true,
+    // "suppressImplicitAnyIndexErrors": true,
+    // "allowJs": true,
+    // "baseUrl": ".",
+    // "types": [
+    //   "@types/node",
+    //   "@nuxt/vue-app"
+    // ],
+    // "paths": {
+    //   "~/*": ["./*"],
+    //   "@/*": ["./*"]
+    // }
   }
 }
