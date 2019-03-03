@@ -1,8 +1,10 @@
 {
   "extends": "@nuxt/typescript",
   "compilerOptions": {
+    "strict": true,
+    "sourceMap": true,
     "target": "es5",
-    "lib": ["dom", "esnext"],
+    "lib": ["dom", "es2015", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "experimentalDecorators": true,
@@ -12,6 +14,7 @@
     "removeComments": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
     "allowJs": true,
     "baseUrl": ".",
     "types": [

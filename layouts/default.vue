@@ -1,6 +1,5 @@
 <template lang="pug">
 v-app(light)
-
   v-toolbar.main(:extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight', fixed, app)
     v-list(slot='extension', v-if="btnGroup === 1", class='backpurple', dark, @click.native='btnGroup = undefined')
       v-list-tile.px-5(@click.native='$router.push("/new?type=match")')
@@ -11,7 +10,7 @@ v-app(light)
         v-list-tile-title.title Add New Training!
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
-    v-toolbar-title(class='display-1 hidden-md-and-up', v-html='titleSmall')
+    v-toolbar-title(class='headline hidden-md-and-up', v-html='titleSmall')
     v-toolbar-title(class='display-1 hidden-sm-and-down', v-html='title')
     v-icon.mdi-36px.mdi-rotate-45.ml-1(color='grey lighten-2', @click='$router.push("/")') mdi-xbox
     v-spacer
@@ -99,10 +98,12 @@ export default class DefaultLayout extends Vue {
 </script>
 
 <style lang="stylus">
-// .v-toolbar.main
-//   .v-toolbar__extension
-//     position sticky
 .v-toolbar.main
+  .v-toolbar__content
+    padding-right 0
+.v-toolbar.main
+  .v-btn-toggle .v-btn
+    opacity 1
   .v-btn--icon.v-btn--large.toolbar--btn-large
     width 69px
     height 69px
