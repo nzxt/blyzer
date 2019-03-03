@@ -12,7 +12,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 @Component({})
 export default class NoResults extends Vue {
   @Prop({ default: 'Results' })
-  eventType: String
+  eventType!: String
 }
 </script>
 

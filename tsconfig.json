@@ -15,7 +15,6 @@
     "sourceMap": true,
     "strict": true,
     "allowSyntheticDefaultImports": true,
-    "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "noEmit": true,
     "noUnusedLocals": true,
@@ -28,10 +27,11 @@
     "types": [
       "@types/node",
       "@nuxt/vue-app-edge"
-    ],
-    "declaration": true,
+    ]
+    // "declaration": true,
     // "noImplicitThis": false,
     // "strictNullChecks": true,
+    // "strictPropertyInitialization": false,
     // "suppressImplicitAnyIndexErrors": true,
   }
 }
