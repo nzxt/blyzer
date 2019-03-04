@@ -1,13 +1,12 @@
 {
-  "extends": "@nuxt/typescript-edge",
+  "extends": "@nuxt/typescript",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
     "lib": [
       "dom",
-      "esnext",
-      "esnext.asynciterable"
+      "esnext"
     ],
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -26,12 +25,7 @@
     },
     "types": [
       "@types/node",
-      "@nuxt/vue-app-edge"
+      "@nuxt/vue-app"
     ]
-    // "declaration": true,
-    // "noImplicitThis": false,
-    // "strictNullChecks": true,
-    // "strictPropertyInitialization": false,
-    // "suppressImplicitAnyIndexErrors": true,
   }
 }
