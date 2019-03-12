@@ -1,28 +1,29 @@
 <template lang="pug">
 v-app(light)
-  v-toolbar.main(:extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight', fixed, app)
+  v-toolbar.main(color='white', :extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight', fixed, app)
     v-list(slot='extension', v-if="btnGroup === 1", class='backpurple', dark, @click.native='btnGroup = undefined')
       v-list-tile.px-5(@click.native='$router.push("/new?type=match")')
-        v-list-tile-title.title Add New Match!
+        v-list-tile-title.title Add New Match
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
       v-list-tile.px-5(@click.native='$router.push("/new?type=training")')
-        v-list-tile-title.title Add New Training!
+        v-list-tile-title.title Add New Training
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
-    v-toolbar-title(class='headline hidden-md-and-up', v-html='titleSmall')
-    v-toolbar-title(class='display-1 hidden-sm-and-down', v-html='title')
-    v-icon.mdi-36px.mdi-rotate-45.ml-1(color='grey lighten-2', @click='$router.push("/")') mdi-xbox
-    v-spacer
+    v-toolbar-title(class='headline hidden-md-and-up', v-html='titleSmall', @click='$router.push("/")')
+    v-toolbar-title(class='display-1 hidden-sm-and-down', v-html='title', @click='$router.push("/")')
+    //- v-icon.mdi-36px.mdi-rotate-45.ml-1(class='hidden-sm-and-down', color='grey lighten-2', @click='$router.push("/")') mdi-xbox
+    LocaleSwitcher.mx-2
     v-layout(wrap, justify-end)
       v-flex(xs12, class='text-xs-right')
         v-btn-toggle(v-model='btnGroup')
-          v-btn(large, icon, flat, nuxt, to='/' :ripple='false', :value='0', class='toolbar--btn-large')
+          v-btn(large, icon, flat, nuxt, to='/reports' :ripple='false', :value='0', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-chart-bar-stacked
           v-btn(large, icon, flat, :ripple='false', :value='1', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-plus
-          v-btn(large, icon, flat, nuxt, to='/reports' :ripple='false', :value='2', class='toolbar--btn-large')
+          v-btn(large, icon, flat, nuxt, to='/profile' :ripple='false', :value='2', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-account-circle-outline
+    //- tasty-burger-button(@toggle='rightDrawer = !rightDrawer', :active='rightDrawer', type='elastic', size='s', color='orange', active-color='red')
     v-btn(large, icon, @click.stop='rightDrawer = !rightDrawer', class='toolbar--btn-large')
       v-icon.mdi-36px(color='secondary') mdi-menu-open
 
@@ -50,13 +51,17 @@ v-app(light)
           v-icon {{ item.icon }}
 
   v-footer.px-3(:inset='inset', app)
-    span.caption boccialyzer © 2019. All right reserver.
+    span.caption.blue-grey--text.font-weight-bold boccialyzer © 2019. All rights reserved.
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-@Component({})
+@Component({
+  components: {
+    LocaleSwitcher: () => import('~/components/LocaleSwitcher.vue')
+  }
+})
 export default class DefaultLayout extends Vue {
   // drawer: false,
   // mini: false,
@@ -88,6 +93,12 @@ export default class DefaultLayout extends Vue {
       title: 'Reports',
       descr: 'Reports of your achievements',
       to: '/reports'
+    },
+    {
+      icon: 'mdi-chevron-right',
+      title: 'Account',
+      descr: 'Users profile page',
+      to: '/profile'
     }
   ]
   title: String = '<span class="secondary--text">BOCCIA</span><span class="error--text">LYZER</span>'

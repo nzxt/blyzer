@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
-import colors from 'vuetify/es5/util/colors'
-import uk from 'vuetify/es5/locale/uk'
 import '@mdi/font/css/materialdesignicons.css'
+import uk from 'vuetify/es5/locale/uk'
+import ru from 'vuetify/es5/locale/ru'
+import colors from 'vuetify/es5/util/colors'
 
 Vue.use(Vuetify, {
   iconfont: 'mdi',
   lang: {
-    locales: { uk },
-    current: 'uk'
+    locales: { uk, ru },
+    current: 'en'
   },
   theme: {
     primary: colors.lightBlue.base,
