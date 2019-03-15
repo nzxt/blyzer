@@ -4,18 +4,13 @@ import { Component, Vue } from 'vue-property-decorator'
 export default class AuthMixin extends Vue {
   $noty: any
   $auth: any
+  username!: string
+  password!: string
   /**
    * This define if login got an error
    * @type {boolean}
    */
   loginHasError: Boolean = false
-
-  /**
-   * This define Auth strategy
-   * 'local', 'google' or 'facebook'
-   * @type {string}
-   */
-  authStrategy: String = 'local'
 
   /**
    * Login method using auth-module with custom post-request

@@ -1,5 +1,5 @@
 <template lang="pug">
-v-app(light)
+v-app(light, v-hotkey='keymap')
   v-toolbar.main(color='white', :extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight', fixed, app)
     v-list(slot='extension', v-if="btnGroup === 1", class='backpurple', dark, @click.native='btnGroup = undefined')
       v-list-tile.px-5(@click.native='$router.push("/new?type=match")')
@@ -18,13 +18,13 @@ v-app(light)
       v-flex(xs12, class='text-xs-right')
         v-btn-toggle(v-model='btnGroup')
           v-btn(large, icon, flat, nuxt, to='/reports' :ripple='false', :value='0', class='toolbar--btn-large')
-            v-icon.mdi-48px(color='error') mdi-chart-bar-stacked
+            v-icon.mdi-48px(color='error') mdi-chart-arc
           v-btn(large, icon, flat, :ripple='false', :value='1', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-plus
           v-btn(large, icon, flat, nuxt, to='/profile' :ripple='false', :value='2', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-account-circle-outline
-    //- tasty-burger-button(@toggle='rightDrawer = !rightDrawer', :active='rightDrawer', type='elastic', size='s', color='orange', active-color='red')
-    v-btn(large, icon, @click.stop='rightDrawer = !rightDrawer', class='toolbar--btn-large')
+    //- tasty-burger-button(@toggle='toggleRightDrawer', :active='rightDrawer', type='elastic', size='s', color='orange', active-color='red')
+    v-btn(large, icon, @click.stop='toggleRightDrawer', class='toolbar--btn-large')
       v-icon.mdi-36px(color='secondary') mdi-menu-open
 
   v-content
@@ -38,7 +38,7 @@ v-app(light)
         //-   v-icon(@click.native='clippedRight = !clippedRight') mdi-menu-swap-outline
         v-list-tile-title
         v-list-tile-action.pr-1(class='justify-end')
-          v-btn(large, icon, flat, :ripple='false', @click.stop='rightDrawer = !rightDrawer')
+          v-btn(large, icon, flat, :ripple='false', @click.stop='toggleRightDrawer')
             //- v-icon.mdi-36px mdi-close
             v-icon.mdi-48px.mdi-rotate-45 mdi-xbox
     v-list(two-line)
@@ -101,10 +101,20 @@ export default class DefaultLayout extends Vue {
       to: '/profile'
     }
   ]
-  title: String = '<span class="secondary--text">BOCCIA</span><span class="error--text">LYZER</span>'
-  titleSmall: String = '<span class="secondary--text">B</span><span class="error--text">LYZER</span>'
-  // titleSmall: String = '<i class="mdi mdi-bing mdi-36px secondary--text"></i><span class="error--text">LYZER</span>'
+  title: string = '<span class="secondary--text">BOCCIA</span><span class="error--text">LYZER</span>'
+  titleSmall: string = '<span class="secondary--text">B</span><span class="error--text">LYZER</span>'
+  // titleSmall: string = '<i class="mdi mdi-bing mdi-36px secondary--text"></i><span class="error--text">LYZER</span>'
   btnGroup: Number | undefined = 0
+
+  toggleRightDrawer (): void {
+    this.rightDrawer = !this.rightDrawer
+  }
+
+  get keymap () {
+    return {
+      'ctrl+right': this.toggleRightDrawer
+    }
+  }
 }
 </script>
 

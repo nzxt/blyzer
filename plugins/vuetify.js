@@ -12,13 +12,13 @@ Vue.use(Vuetify, {
     current: 'en'
   },
   theme: {
-    primary: colors.lightBlue.base,
-    secondary: colors.blueGrey.base,
-    accent: colors.pink.base,
-    error: colors.red.base,
-    warning: colors.deepOrange.base,
-    info: colors.cyan.base,
-    success: colors.green.base,
+    primary: colors.blue.darken1,
+    secondary: colors.blueGrey.darken1,
+    accent: colors.pink.darken1,
+    error: colors.red.darken1,
+    warning: colors.deepOrange.darken1,
+    info: colors.cyan.darken1,
+    success: colors.green.darken1,
     backpurple: '#0022dd'
   }
 })

@@ -37,6 +37,13 @@ module.exports = {
         href:
           'https://fonts.googleapis.com/css?family=Exo+2:100,300,400,500,700,900&amp;subset=cyrillic|Material+Icons'
       }
+    ],
+    scripts:[
+      {
+        rel: 'text/javasccript',
+        href:
+          'https://unpkg.com/babel-polyfill/dist/polyfill.min.js'
+      }
     ]
   },
 
@@ -65,6 +72,8 @@ module.exports = {
     // { src: '~/plugins/vuex-persist', ssr: false },
     '~/plugins/vuetify',
     '~/plugins/noty',
+    '~/plugins/hotkey',
+    '~/plugins/eventbus',
     '~/plugins/spinners',
     '~/plugins/flag-icon',
     '~/plugins/tasty-burger-button'

@@ -30,6 +30,10 @@
     "signin_tip": "Hi, User! SignIn, first.."
   },
   "forms": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "next": "Next",
+    "previous": "Previous",
     "errors": {
       "required": "Please fill this out.",
       "standard": "A server error occurred."
