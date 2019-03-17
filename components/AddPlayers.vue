@@ -1,72 +1,91 @@
 <template lang="pug">
-v-card
-  v-form(v-model='valid', @submit.prevent='onSubmit')
-    v-card-title
-      CircleLoader(
-        :loading='true',
-        color='grey',
-        :size='36',
-        sizeUnit='px'
-      )
-      v-spacer
-      v-flex(layout, column, wrap)
-        div.display-1(v-if='competition')
-          | {{ competition }}
-          span.display-2.primary--text.text--lighten-1
-            |   {{ division }}
-        div.title(v-if='stage')
-          | {{ stage }}
-          span.subheading.error--text.text--lighten-1
-            |   {{ stageIndex }}
-        div.title.grey--text(v-else)
-          | Please add Players..
-      v-spacer
-    v-card-text.pa-1
-      v-container(pa-1, grid-list-md)
-        v-layout(align-start, justify-center)
-          v-flex.elevation-1.ma-1(xs6)
-            v-list.error.pb-0(dark, two-line)
-              v-subheader.headline RED TEAM
-              v-divider
-              draggable(v-model='redTeam', :options='{group:"players"}', style='min-height: 10px')
-                template(v-for='player in redTeam')
-                  v-list-tile.px-0.elevation-2(:key="player.id", avatar)
-                    v-list-tile-avatar
-                      img(v-if='player.avatar', :src="player.avatar")
-                      img(v-else-if='$auth.user.picture', :src="$auth.user.picture")
-                      flag(v-else, :iso="player.country", style="font-size:36px;border-radius:50%")
-                    v-list-tile-content
-                      v-list-tile-title(v-html="player.title")
-                      v-list-tile-sub-title(v-html="player.subtitle")
-                    v-list-tile-action
-                      v-btn(icon, @click='removePlayer(player.id, "red")')
-                        v-icon.mdi-24px mdi-delete-forever
-                v-btn(block, small, flat, slot="footer", @click="addPlayer('red')") Add Player
-          v-flex.elevation-1.ma-1(xs6)
-            v-list.primary.pb-0(dark, two-line)
-              v-subheader.headline BLUE TEAM
-              v-divider
-              draggable(v-model='blueTeam', :options='{group:"players"}', style='min-height: 10px')
-                template(v-for='player in blueTeam')
-                  v-list-tile.px-0.elevation-2(:key="player.id" avatar)
-                    v-list-tile-avatar
-                      flag(v-if='player.country', :iso="player.country", style="font-size:36px;border-radius:50%")
-                      img(v-else, :src="player.avatar")
-                    v-list-tile-content
-                      v-list-tile-title(v-html="player.title")
-                      v-list-tile-sub-title(v-html="player.subtitle")
-                    v-list-tile-action
-                      v-btn(icon, @click='removePlayer(player.id, "blue")')
-                        v-icon.mdi-24px mdi-delete-forever
-                v-btn(block, small, flat, slot="footer" @click="addPlayer('blue')") Add Player
-    v-card-actions
-      v-btn.secondary(block, flat, @click='onCancel')
-        v-icon.mdi-18px(left) mdi-reply
-        | {{ $t('forms.previous') }}
-      v-spacer
-      v-btn.warning(block, flat, type='submit', :loading='isLoading', :disabled='!valid')
-        | {{ $t('forms.next') }}
-        v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
+div
+  v-card
+    v-card-text
+      v-layout(wrap, text-xs-right)
+        //- v-flex(xs11, offset-xs1, layout, justify-space-around)
+          //- v-chip.ml-2(dark, small, color='grey', v-for='i in 12' :key='i') {{ i }}
+          div(d-flex, text-xs-right, justify-end, v-for='i in 12' :key='i') {{ i }}
+        v-flex(xs12, layout, justify-space-between)
+          v-icon.mdi-36px mdi-numeric-2-box-outline
+          v-icon.mdi-24px(color='error', v-for='i in 12' :key='i') mdi-volleyball
+        v-flex(xs12, layout, justify-space-between)
+          v-icon.mdi-36px mdi-numeric-4-box
+          v-icon.mdi-24px(color='primary', v-for='i in 12' :key='i') mdi-volleyball
+        v-flex(xs12, layout, justify-space-between)
+          v-icon.mdi-36px mdi-numeric-3-box-outline
+          v-icon.mdi-24px(color='grey', v-for='i in 12' :key='i') mdi-volleyball
+        v-flex(xs12, layout, justify-space-between)
+          v-icon.mdi-36px mdi-numeric-5-box-outline
+          v-icon.mdi-24px(color='primary', v-for='i in 12' :key='i') mdi-volleyball
+  v-card
+    v-form(v-model='valid', @submit.prevent='onSubmit')
+      v-card-title
+        CircleLoader(
+          :loading='true',
+          color='grey',
+          :size='36',
+          sizeUnit='px'
+        )
+        v-spacer
+        v-flex(layout, column, wrap)
+          div.display-1(v-if='competition')
+            | {{ competition }}
+            span.display-2.primary--text.text--lighten-1
+              |   {{ division }}
+          div.title(v-if='stage')
+            | {{ stage }}
+            span.subheading.error--text.text--lighten-1
+              |   {{ stageIndex }}
+          div.title.grey--text(v-else)
+            | Please add Players..
+        v-spacer
+      v-card-text.pa-1
+        v-container(pa-1, grid-list-md)
+          v-layout(align-start, justify-center)
+            v-flex.elevation-1.ma-1(xs6)
+              v-list.error.pb-0(dark, two-line)
+                v-subheader.headline RED TEAM
+                v-divider
+                draggable(v-model='redTeam', :options='{group:"players"}', style='min-height: 10px')
+                  template(v-for='player in redTeam')
+                    v-list-tile.px-0.elevation-2(:key="player.id", avatar)
+                      v-list-tile-avatar
+                        img(v-if='player.avatar', :src="player.avatar")
+                        img(v-else-if='$auth.user.picture', :src="$auth.user.picture")
+                        flag(v-else, :iso="player.country", style="font-size:36px;border-radius:50%")
+                      v-list-tile-content
+                        v-list-tile-title(v-html="player.title")
+                        v-list-tile-sub-title(v-html="player.subtitle")
+                      v-list-tile-action
+                        v-btn(icon, @click.native='removePlayer(player.id, "red")')
+                          v-icon.mdi-24px mdi-delete-forever
+                  v-btn(block, small, flat, slot="footer", @click.native="addPlayer('red')") Add Player
+            v-flex.elevation-1.ma-1(xs6)
+              v-list.primary.pb-0(dark, two-line)
+                v-subheader.headline BLUE TEAM
+                v-divider
+                draggable(v-model='blueTeam', :options='{group:"players"}', style='min-height: 10px')
+                  template(v-for='player in blueTeam')
+                    v-list-tile.px-0.elevation-2(:key="player.id" avatar)
+                      v-list-tile-avatar
+                        flag(v-if='player.country', :iso="player.country", style="font-size:36px;border-radius:50%")
+                        img(v-else, :src="player.avatar")
+                      v-list-tile-content
+                        v-list-tile-title(v-html="player.title")
+                        v-list-tile-sub-title(v-html="player.subtitle")
+                      v-list-tile-action
+                        v-btn(icon, @click.native='removePlayer(player.id, "blue")')
+                          v-icon.mdi-24px mdi-delete-forever
+                  v-btn(block, small, flat, slot="footer" @click.native="addPlayer('blue')") Add Player
+      v-card-actions
+        v-btn.secondary(block, flat, @click='onCancel')
+          v-icon.mdi-18px(left) mdi-reply
+          | {{ $t('forms.previous') }}
+        v-spacer
+        v-btn.warning(block, flat, type='submit', :loading='isLoading', :disabled='!valid')
+          | {{ $t('forms.next') }}
+          v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
 
 <script lang="ts">

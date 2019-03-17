@@ -32,10 +32,11 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {  rel: 'stylesheet',  href: 'https://fonts.googleapis.com/css?family=Material+Icons' },
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css?family=Exo+2:100,300,400,500,700,900&amp;subset=cyrillic|Material+Icons'
+          'https://fonts.googleapis.com/css?family=Exo+2:100,300,400,500,700,900&amp;subset=cyrillic'
       }
     ],
     scripts:[
@@ -128,8 +129,6 @@ module.exports = {
         client_id: '147906604243-uj9457qvor9uv4tf4fcuevm0088gprjr.apps.googleusercontent.com'
       }
     },
-    // Client ID: 147906604243-uj9457qvor9uv4tf4fcuevm0088gprjr.apps.googleusercontent.com
-    // Secret: TBSjzsYY0NJv4On8YuzsjnII
     redirect: {
       login: '/login',
       logout: '/',
