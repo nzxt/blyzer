@@ -202,9 +202,10 @@ export default class AddMatch extends Vue {
       stageIndex: this.stageIndex
     })
 
-    this.$bus.$emit('setPlayers')
-
-    setTimeout(() => { this.isLoading = false }, 1680)
+    setTimeout(() => {
+      this.isLoading = false
+      this.$bus.$emit('setPlayers')
+    }, 1680)
   }
 
   get tournamentTypeName (): string {

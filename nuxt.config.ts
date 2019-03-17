@@ -4,11 +4,17 @@ const pkg = require('./package')
 const i18n = require('./config/i18n')
 
 const isDev = process.env.NODE_ENV !== 'production'
-const BASE_URL = process.env.API_URL || 'http://localhost:3333'
+
+const API_URL = process.env.API_URL || 'http://localhost:2450'
+const AUTH_URL = process.env.AUTH_URL || 'http://localhost:3333'
 
 module.exports = {
   mode: 'spa',
-  modern: !isDev,
+  modern: false, // !isDev,
+
+  env: {
+    API_URL
+  },
 
   /*
   ** Manifest
@@ -38,14 +44,14 @@ module.exports = {
         href:
           'https://fonts.googleapis.com/css?family=Exo+2:100,300,400,500,700,900&amp;subset=cyrillic'
       }
-    ],
-    scripts:[
-      {
-        rel: 'text/javasccript',
-        href:
-          'https://unpkg.com/babel-polyfill/dist/polyfill.min.js'
-      }
     ]
+    // scripts:[
+    //   {
+    //     rel: 'text/javasccript',
+    //     href:
+    //       'https://unpkg.com/babel-polyfill/dist/polyfill.min.js'
+    //   }
+    // ]
   },
 
   /*
@@ -63,6 +69,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '@mdi/font/css/materialdesignicons.css',
     '~/assets/style/app'
   ],
 
@@ -71,6 +78,7 @@ module.exports = {
   */
   plugins: [
     // { src: '~/plugins/vuex-persist', ssr: false },
+    '~/plugins/api',
     '~/plugins/vuetify',
     '~/plugins/noty',
     '~/plugins/hotkey',
@@ -99,7 +107,7 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: isDev,
-    baseURL: BASE_URL,
+    baseURL: API_URL,
     // redirectError: {
     //   401: '/login',
     //   404: '/notfound'
@@ -113,9 +121,9 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/login', method: 'post', propertyName: 'access_token' },
+          login: { url: `${AUTH_URL}/login`, method: 'post', propertyName: 'access_token' },
           logout: false,
-          user: { url: '/users/1', method: 'get', propertyName: 'user' }
+          user: { url: `${AUTH_URL}/users/1`, method: 'get', propertyName: 'user' }
         },
         tokenRequired: true,
         tokenType: 'Bearer'
@@ -140,6 +148,15 @@ module.exports = {
 
   router: {
     middleware: 'auth'
+  },
+
+  Vue: {
+    config: {
+      silent: !isDev,
+      devtools: true,
+      performance: isDev,
+      productionTip: false
+    }
   },
 
   /*

@@ -50,8 +50,8 @@ v-app(light, v-hotkey='keymap')
         v-list-tile-action(class='justify-center')
           v-icon {{ item.icon }}
 
-  v-footer.px-3(:inset='inset', app)
-    span.caption.blue-grey--text.font-weight-bold boccialyzer © 2019. All rights reserved.
+  v-footer.px-3.justify-center(:inset='inset', height='24', style='min-height:24px;', app)
+    span.caption.blue-grey--text.text--lighten-3.font-weight-bold boccialyzer © 2019. All rights reserved.
 </template>
 
 <script lang="ts">

@@ -10,10 +10,14 @@
   ],
   "scripts": {
     "dev": "nuxt-ts",
+    "deva": "npm run dev --analyze",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
     "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "swag": "npm run generator-copy && npm run api-generate",
+    "api-generate": "node ./node_modules/swagger-vue-generator/bin/generate-api.js -s ./swagger/swagger.json -d ./services/api.js -m api",
+    "generator-copy": "cpx ./swagger/js-template/generator.js ./node_modules/swagger-vue-generator/src/2.0/generator-api/ -u",
     "precommit": "npm run lint"
   },
   "dependencies": {
@@ -25,6 +29,7 @@
     "@nuxtjs/pwa": "^2.6.0",
     "@saeris/vue-spinners": "^1.0.8",
     "cross-env": "^5.2.0",
+    "vue-async-computed": "^3.6.1",
     "gsap": "^2.1.2",
     "moment": "^2.24.0",
     "nuxt-i18n": "^5.8.5",
@@ -41,6 +46,9 @@
     "vuex-persist": "^2.0.0"
   },
   "devDependencies": {
+    "cpx": "^1.5.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "swagger-vue-generator": "^1.0.6",
     "@kazupon/vue-i18n-loader": "^0.3.0",
     "@nuxtjs/eslint-config": "^0.0.1",
     "@typescript-eslint/parser": "^1.4.2",

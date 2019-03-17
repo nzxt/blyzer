@@ -98,7 +98,7 @@ export default class AddTraining extends Vue {
       trainingDateTime: this.trainingDateTime
     })
 
-    setTimeout(() => { this.isLoading = false }, 1680)
+    setTimeout(() => { this.isLoading = false }, 680)
   }
 
   get newTrainingDateTime (): Date {

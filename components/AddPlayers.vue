@@ -1,23 +1,4 @@
 <template lang="pug">
-div
-  v-card
-    v-card-text
-      v-layout(wrap, text-xs-right)
-        //- v-flex(xs11, offset-xs1, layout, justify-space-around)
-          //- v-chip.ml-2(dark, small, color='grey', v-for='i in 12' :key='i') {{ i }}
-          div(d-flex, text-xs-right, justify-end, v-for='i in 12' :key='i') {{ i }}
-        v-flex(xs12, layout, justify-space-between)
-          v-icon.mdi-36px mdi-numeric-2-box-outline
-          v-icon.mdi-24px(color='error', v-for='i in 12' :key='i') mdi-volleyball
-        v-flex(xs12, layout, justify-space-between)
-          v-icon.mdi-36px mdi-numeric-4-box
-          v-icon.mdi-24px(color='primary', v-for='i in 12' :key='i') mdi-volleyball
-        v-flex(xs12, layout, justify-space-between)
-          v-icon.mdi-36px mdi-numeric-3-box-outline
-          v-icon.mdi-24px(color='grey', v-for='i in 12' :key='i') mdi-volleyball
-        v-flex(xs12, layout, justify-space-between)
-          v-icon.mdi-36px mdi-numeric-5-box-outline
-          v-icon.mdi-24px(color='primary', v-for='i in 12' :key='i') mdi-volleyball
   v-card
     v-form(v-model='valid', @submit.prevent='onSubmit')
       v-card-title
@@ -199,7 +180,10 @@ export default class AddPlayers extends Vue {
       blueTeam: [...this.blueTeam]
     })
 
-    setTimeout(() => { this.isLoading = false }, 1680)
+    setTimeout(() => {
+      this.isLoading = false
+      this.$bus.$emit('setValues')
+    }, 680)
   }
 
   onCancel () {

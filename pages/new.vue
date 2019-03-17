@@ -13,7 +13,8 @@ import { Component, Watch, Vue } from 'vue-property-decorator'
   components: {
     AddMatch: () => import('~/components/AddMatch.vue'),
     AddTraining: () => import('~/components/AddTraining.vue'),
-    AddPlayers: () => import('~/components/AddPlayers.vue')
+    AddPlayers: () => import('~/components/AddPlayers.vue'),
+    AddValues: () => import('~/components/AddValues.vue')
   }
 })
 export default class NewPage extends Vue {
@@ -34,12 +35,14 @@ export default class NewPage extends Vue {
     this.$bus.$on('setMatch', this.onSetMatch)
     this.$bus.$on('setTraining', this.onSetTraining)
     this.$bus.$on('setPlayers', this.onSetPlayers)
+    this.$bus.$on('setValues', this.onSetValues)
   }
 
   beforeDestroy () {
     this.$bus.$off('AddMatch')
     this.$bus.$off('AddTraining')
     this.$bus.$off('setPlayers')
+    this.$bus.$off('setValues')
   }
 
   onSetMatch () : void {
@@ -52,6 +55,10 @@ export default class NewPage extends Vue {
 
   onSetPlayers () : void {
     this.component = 'AddPlayers'
+  }
+
+  onSetValues () : void {
+    this.component = 'AddValues'
   }
 
   @Watch('isMatch')
