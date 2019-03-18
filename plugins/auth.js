@@ -1,13 +1,15 @@
-export default ({ app, redirect }) => {
+export default ({ app }, redirect) => {
   const { $auth } = app
+
+  if (!$auth.loggedIn) return
 
   $auth.onError((error, name, endpoint) => {
     console.error(endpoint, name, error)
   })
 
-  // Only _actual_ login/outs (including resets) will be watched here.
+  /* Only _actual_ login/outs (including resets) will be watched here. */
   $auth.$storage.watchState('loggedIn', (isLoggedIn) => {
-    // Follow @nuxtjs/auth workflow.
+    /* Follow @nuxtjs/auth workflow */
     !isLoggedIn && $auth.redirect('home')
 
     // const indexLocalePath = app.localePath('index')

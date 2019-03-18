@@ -13,9 +13,10 @@
           v-layout(wrap, justify-space-between, align-start)
             v-flex.mt-3.ml-2(xs3, layout, align-center)
               v-layout(column)
-                v-flex
-                  v-avatar(size='80', color='grey lighten-4')
-                    img(v-if='avatar', :src='avatar', :alt='fullName')
+                v-flex.pb-2
+                  a(:href='socialProfile')
+                    v-avatar(size='80', color='grey lighten-4')
+                      img(v-if='avatar', :src='avatar', :alt='fullName')
                 v-flex
                   span.subheading
                     |{{ country }}
@@ -78,6 +79,11 @@ export default class UserProfile extends Vue {
   get userEmail (): string | null {
     const { email } = this.$auth.user
     return email
+  }
+
+  get socialProfile (): string {
+    const { profile } = this.$auth.user
+    return profile || '/profile'
   }
 
   get emailVerified (): Boolean {

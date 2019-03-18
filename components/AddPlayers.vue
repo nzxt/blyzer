@@ -28,7 +28,7 @@
               v-list.error.pb-0(dark, two-line)
                 v-subheader.headline RED TEAM
                 v-divider
-                draggable(v-model='redTeam', :options='{group:"players"}', style='min-height: 10px')
+                draggable(v-model='redTeam', group='players', style='min-height: 10px')
                   template(v-for='player in redTeam')
                     v-list-tile.px-0.elevation-2(:key="player.id", avatar)
                       v-list-tile-avatar
@@ -46,7 +46,7 @@
               v-list.primary.pb-0(dark, two-line)
                 v-subheader.headline BLUE TEAM
                 v-divider
-                draggable(v-model='blueTeam', :options='{group:"players"}', style='min-height: 10px')
+                draggable(v-model='blueTeam', group='players', style='min-height: 10px')
                   template(v-for='player in blueTeam')
                     v-list-tile.px-0.elevation-2(:key="player.id" avatar)
                       v-list-tile-avatar
@@ -89,8 +89,8 @@ const eliminationIndexes: Array<string> = ['1/8 Final', '1/4 Final', '1/2 Final'
 
 @Component({
   components: {
-    draggable: () => import('vuedraggable'),
-    Team: () => import('~/components/Team.vue')
+    draggable: () => import('vuedraggable')
+    // Team: () => import('~/components/Team.vue')
   }
 })
 export default class AddPlayers extends Vue {

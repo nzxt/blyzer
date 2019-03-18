@@ -3,7 +3,7 @@
     //- v-flex.display-1.grey--text
       p(transition='slide-x-transition') Adding new {{ isMatch ? 'Match' : 'Training'}}...
     v-flex(xs12)
-      component(:is='component')
+      component(transition='fade-transition', :is='component')
 </template>
 
 <script lang="ts">
@@ -14,7 +14,7 @@ import { Component, Watch, Vue } from 'vue-property-decorator'
     AddMatch: () => import('~/components/AddMatch.vue'),
     AddTraining: () => import('~/components/AddTraining.vue'),
     AddPlayers: () => import('~/components/AddPlayers.vue'),
-    AddValues: () => import('~/components/AddValues.vue')
+    AddBalls: () => import('~/components/AddBalls.vue')
   }
 })
 export default class NewPage extends Vue {
@@ -58,7 +58,7 @@ export default class NewPage extends Vue {
   }
 
   onSetValues () : void {
-    this.component = 'AddValues'
+    this.component = 'AddBalls'
   }
 
   @Watch('isMatch')

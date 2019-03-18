@@ -7,6 +7,7 @@ v-card
         color='grey',
         :size='36',
         sizeUnit='px'
+        @click='fullfillForm'
       )
       v-spacer
       div.title(v-if='tournamentName')
@@ -205,7 +206,7 @@ export default class AddMatch extends Vue {
     setTimeout(() => {
       this.isLoading = false
       this.$bus.$emit('setPlayers')
-    }, 1680)
+    }, 680)
   }
 
   get tournamentTypeName (): string {
@@ -242,6 +243,19 @@ export default class AddMatch extends Vue {
     case 'Elimination': return eliminationIndexes
     default: return []
     }
+  }
+
+  fullfillForm () {
+    const match = {
+      tournamentName: 'BISFed 2019 Zagreb',
+      tournamentType: 'WO',
+      competition: 'Team',
+      division: 'BC1/BC2',
+      stage: 'Elimination',
+      stageIndex: '1/2 Final'
+    }
+
+    Object.assign(this, { ...match })
   }
 }
 </script>

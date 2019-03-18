@@ -7,6 +7,7 @@ v-container
   v-layout(wrap, justify-center)
     v-flex(xs11, sm8, md6, lg4)
       v-card(color='blue-grey lighten-5')
+        BusyOverlay
         //- v-img(contain, src='/images/white-boccia-ball.jpg', alt='Boccia Ball')
         v-form(v-model='valid', @submit.prevent='localSignIn')
           v-card-title.justify-center.display-1.blue-grey.lighten-5.font-weight-thin.warning--text {{ $t('signin') }}
@@ -52,7 +53,10 @@ import ValidateRules from '~/mixins/validate'
 
 @Component({
   // auth: false,
-  mixins: [AuthMixin, ValidateRules]
+  mixins: [AuthMixin, ValidateRules],
+  components: {
+    BusyOverlay: () => import('~/components/BusyOverlay.vue')
+  }
 })
 export default class LoginPage extends Vue {
   valid: Boolean = false
