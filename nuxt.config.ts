@@ -9,17 +9,12 @@ const API_URL = process.env.API_URL || 'http://localhost:2450'
 const AUTH_URL = process.env.AUTH_URL || 'http://localhost:3333'
 
 module.exports = {
-  server: {
-    port: 80, // default: 3000
-    host: '0.0.0.0', // default: localhost
-  },
-
   mode: 'spa',
-  modern: false, // !isDev,
+  modern: !isDev,
 
-  env: {
-    API_URL
-  },
+  // env: {
+  //   API_URL
+  // },
 
   /*
   ** Manifest

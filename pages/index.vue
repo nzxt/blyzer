@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { TimelineLite } from 'gsap/all'
+import { TimelineLite } from 'gsap'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
