@@ -1,7 +1,5 @@
 <template lang="pug">
   v-layout.animation(justify-center, align-center, wrap)
-    v-flex.pt-4(xs12, sm8, md4, @click='restart')
-      v-img(contain, height="40vh", src='/images/white-boccia-ball.jpg', alt='Boccia Ball')
     v-flex(xs9, sm8, md6)
       div.text
         span.text__first
@@ -13,6 +11,8 @@
           span.text__word
             | {{ $t('splash.ukraine') }}
           span.text__second-bg
+    v-flex(xs12, sm8, md4, @click='restart')
+      v-img(contain, height="40vh", src='/images/white-boccia-ball.jpg', alt='Boccia Ball')
 </template>
 
 <script lang="ts">

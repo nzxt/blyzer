@@ -3,7 +3,7 @@ import qs from 'qs'
 export default class ApiService {
   constructor(ctx) {
     this.$axios = ctx.$axios
-    this.$domain = ctx.baseURL
+    this.$domain = ctx.$axios.defaults.baseURL
   }
   request(method, url, body, queryParameters, form, config) {
     method = method.toLowerCase()

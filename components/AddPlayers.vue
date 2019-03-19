@@ -24,47 +24,60 @@
       v-card-text.pa-1
         v-container(pa-1, grid-list-md)
           v-layout(align-start, justify-center)
-            v-flex.elevation-1.ma-1(xs6)
+            v-flex.ma-0(xs6)
               v-list.error.pb-0(dark, two-line)
-                v-subheader.headline RED TEAM
+                v-subheader RED TEAM
                 v-divider
                 draggable(v-model='redTeam', group='players', style='min-height: 10px')
                   template(v-for='player in redTeam')
                     v-list-tile.px-0.elevation-2(:key="player.id", avatar)
-                      v-list-tile-avatar
+                      //- v-list-tile-avatar
                         img(v-if='player.avatar', :src="player.avatar")
                         img(v-else-if='$auth.user.picture', :src="$auth.user.picture")
                         flag(v-else, :iso="player.country", style="font-size:36px;border-radius:50%")
                       v-list-tile-content
                         v-list-tile-title(v-html="player.title")
                         v-list-tile-sub-title(v-html="player.subtitle")
-                      v-list-tile-action
+                      //- v-list-tile-action
                         v-btn(icon, @click.native='removePlayer(player.id, "red")')
                           v-icon.mdi-24px mdi-delete-forever
+                      v-hover
+                        template(slot-scope="{ hover }")
+                          v-list-tile-action(v-if='!hover')
+                            flag(v-if='player.country', :iso="player.country", style="font-size:24px;border-radius:50%")
+                            img(v-else, :src="player.avatar")
+                          v-list-tile-action(v-else)
+                            //- v-btn(icon, @click.native='removePlayer(player.id, "red")')
+                            v-icon.mdi-24px(@click.native='removePlayer(player.id, "red")') mdi-account-minus-outline
                   v-btn(block, small, flat, slot="footer", @click.native="addPlayer('red')") Add Player
-            v-flex.elevation-1.ma-1(xs6)
+            v-flex.ma-0(xs6)
               v-list.primary.pb-0(dark, two-line)
-                v-subheader.headline BLUE TEAM
+                v-subheader BLUE TEAM
                 v-divider
                 draggable(v-model='blueTeam', group='players', style='min-height: 10px')
                   template(v-for='player in blueTeam')
                     v-list-tile.px-0.elevation-2(:key="player.id" avatar)
-                      v-list-tile-avatar
+                      //- v-list-tile-avatar
                         flag(v-if='player.country', :iso="player.country", style="font-size:36px;border-radius:50%")
                         img(v-else, :src="player.avatar")
                       v-list-tile-content
                         v-list-tile-title(v-html="player.title")
                         v-list-tile-sub-title(v-html="player.subtitle")
-                      v-list-tile-action
-                        v-btn(icon, @click.native='removePlayer(player.id, "blue")')
-                          v-icon.mdi-24px mdi-delete-forever
+                      v-hover
+                        template(slot-scope="{ hover }")
+                          v-list-tile-action(v-if='!hover')
+                            flag(v-if='player.country', :iso="player.country", style="font-size:24px;border-radius:50%")
+                            img(v-else, :src="player.avatar")
+                          v-list-tile-action(v-else)
+                            //- v-btn(icon, @click.native='removePlayer(player.id, "blue")')
+                            v-icon.mdi-24px(@click.native='removePlayer(player.id, "blue")') mdi-account-minus-outline
                   v-btn(block, small, flat, slot="footer" @click.native="addPlayer('blue')") Add Player
       v-card-actions
-        v-btn.secondary(block, flat, @click='onCancel')
+        v-btn.secondary.secondary--text(round, block, outline, @click='onCancel')
           v-icon.mdi-18px(left) mdi-reply
           | {{ $t('forms.previous') }}
         v-spacer
-        v-btn.warning(block, flat, type='submit', :loading='isLoading', :disabled='!valid')
+        v-btn.warning.warning--text(round, block, outline, type='submit', :loading='isLoading', :disabled='!valid')
           | {{ $t('forms.next') }}
           v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
@@ -115,20 +128,23 @@ export default class AddPlayers extends Vue {
     {
       id: 1,
       avatar: 'https://s3.amazonaws.com/vuetify-docs/images/lists/1.jpg',
-      title: 'Brunch this life?',
-      subtitle: 'Subtitle 1'
+      title: 'Serhiy Gromov',
+      country: 'ua',
+      subtitle: 'Ukraine'
     },
     {
       id: 2,
       avatar: 'https://s3.amazonaws.com/vuetify-docs/images/lists/2.jpg',
-      title: 'Winter Lunch',
-      subtitle: 'Subtitle 2'
+      title: 'Ketie Parry',
+      country: 'ua',
+      subtitle: 'Ukraine'
     },
     {
       id: 3,
       avatar: 'https://s3.amazonaws.com/vuetify-docs/images/lists/3.jpg',
-      title: 'Oui oui',
-      subtitle: 'Subtitle 3'
+      title: 'Oui Spear',
+      country: 'ua',
+      subtitle: 'Ukraine'
     }
   ]
 
@@ -136,14 +152,16 @@ export default class AddPlayers extends Vue {
     {
       id: 4,
       avatar: 'https://s3.amazonaws.com/vuetify-docs/images/lists/4.jpg',
-      title: 'Brunch this weekend?',
-      subtitle: 'Subtitle 4'
+      title: 'Peter Summers',
+      country: 'gb',
+      subtitle: 'Englang'
     },
     {
       id: 5,
       avatar: 'https://s3.amazonaws.com/vuetify-docs/images/lists/5.jpg',
-      title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-      subtitle: 'Subtitle 5'
+      title: 'Garry Fish',
+      country: 'gb',
+      subtitle: 'England'
     }
   ]
 

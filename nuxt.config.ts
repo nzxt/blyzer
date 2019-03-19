@@ -12,10 +12,6 @@ module.exports = {
   mode: 'spa',
   modern: !isDev,
 
-  // env: {
-  //   API_URL
-  // },
-
   /*
   ** Manifest
   */
@@ -84,8 +80,7 @@ module.exports = {
     '~/plugins/hotkey',
     '~/plugins/eventbus',
     '~/plugins/spinners',
-    '~/plugins/flag-icon',
-    '~/plugins/tasty-burger-button'
+    '~/plugins/flag-icon'
   ],
 
   /*

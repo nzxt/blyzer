@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card(color="grey lighten-2")
+  v-card()
     v-card-text.pa-1
       v-layout(wrap, text-xs-right)
         //- v-flex(xs11, offset-xs1, layout, justify-space-around)

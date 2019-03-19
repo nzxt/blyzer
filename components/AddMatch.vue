@@ -9,122 +9,45 @@ v-card
         sizeUnit='px'
         @click='fullfillForm'
       )
-      v-spacer
-      div.title(v-if='tournamentName')
-        | {{ tournamentName }}
-        div.subheading
-          | {{ tournamentTypeName }}
-      div.title.grey--text(v-else)
-        | Please create new Match..
-      v-spacer
-    v-card-text
-      v-container(pa-0, grid-list-md)
-        v-layout(wrap, row, justify-space-between)
-          v-flex(xs8)
-            v-combobox(
-              dense
-              v-model='tournamentName'
-              :items='["BISFed 2019 Zagreb", "BISFed 2019 Guangzhou Boccia", "BISFed 2019 Montreal Boccia"]'
-              :search-input.sync='search'
-              color='backpurple'
-              hide-no-data
-              hide-selected
-              item-text='Description'
-              item-value='API'
-              label='Tournament'
-              placeholder='Choose or enter new tournament'
-              prepend-icon='mdi-trophy-variant-outline'
-              return-object
-              clearable
-            )
-          v-flex(xs4)
-            v-select(
-              dense
-              v-model='tournamentType'
-              :items='tournamentTypes'
-              color='backpurple'
-              hide-no-data
-              hide-selected
-              clearable
-              chips
-              item-text='value'
-              small-chips
-              label='Type'
-              placeholder='Select'
-              append-icon='mdi-google-physical-web'
-            )
-              //- template(slot='selection' slot-scope='data')
-                v-chip.small
-                  | {{ data.item.value }}
-              template(slot='item' slot-scope='data')
-                | {{ data.item.text }}
-
-        v-layout(row, justify-space-between)
-          v-flex(xs8)
-            v-select(
-              dense
-              v-model='competition'
-              :items='competitionTypes'
-              color='backpurple'
-              hide-no-data
-              hide-selected
-              label='Competition'
-              placeholder='Choose competition type'
-              prepend-icon='mdi-google-circles-extended'
-              return-object
-              clearable
-            )
-          v-flex(xs4)
-            v-select(
-              dense
-              chips
-              small-chips
-              v-model='division'
-              :items='divisions'
-              color='backpurple'
-              hide-no-data
-              hide-selected
-              label='Division'
-              placeholder='Select'
-              append-icon='mdi-camera-control'
-              return-object
-            )
-        v-layout(wrap, row, justify-space-between)
-          v-flex(xs7)
-            v-select(
-              dense
-              v-model='stage'
-              :items='stageTypes'
-              color='backpurple'
-              hide-no-data
-              hide-selected
-              label='Stage'
-              placeholder='Choose stage'
-              prepend-icon='mdi-source-fork'
-              return-object
-              clearable
-            )
-          v-flex(xs5)
-            v-select(
-              dense
-              chips
-              small-chips
-              v-model='stageIndex'
-              :items='stageIndexes'
-              color='backpurple'
-              hide-no-data
-              hide-selected
-              label='Index'
-              placeholder='Select'
-              append-icon='mdi-hexagon-multiple'
-              return-object
-            )
+      v-divider.mx-3(vertical, inset)
+      v-combobox(
+        dense
+        v-model='tournamentName'
+        :items='["BISFed 2019 Zagreb", "BISFed 2019 Guangzhou Boccia", "BISFed 2019 Montreal Boccia"]'
+        color='backpurple'
+        hide-no-data
+        hide-selected
+        label='Tournament'
+        hint='Choose or enter tournament name...'
+        :rules='requiredField'
+        persistent-hint
+        return-object
+        clearable
+      )
+    v-card-text.py-0(style='font-size:18px;')
+      scroll-picker(v-model='tournamentType', :options='tournamentTypes')
+    v-card-text.py-0
+      v-btn-toggle(v-model='competition', mandatory)
+        v-btn.dark(large, value='Individual')
+          | Individual
+          v-icon.mdi-36px(right) mdi-account
+        v-btn.dark(large, value='Pair')
+          | Pair
+          v-icon.mdi-36px(right) mdi-account-supervisor
+        v-btn.dark(large, value='Team')
+          | Team
+          v-icon.mdi-36px(right) mdi-account-group
+      v-flex.mt-3(layout, justify-center)
+        v-chip(v-for='division in divisions') {{ division }}
+    v-card-text.py-0
+      scroll-picker-group(class='flex', style="font-size:18px;")
+        scroll-picker(v-model='stage', :options='stageTypes')
+        scroll-picker(v-model='stageIndex', :options='stageIndexes')
     v-card-actions
-      v-btn.secondary(block, flat, @click='$router.push("/")')
+      v-btn.secondary.secondary--text(round, block, outline, @click='$router.push("/")')
         v-icon.mdi-18px(left) mdi-reply
         | {{ $t('forms.cancel') }}
-      v-spacer
-      v-btn.success(block, flat, type='submit', :loading='isLoading', :disabled='!valid')
+      v-btn.warning.warning--text(round, block, outline, type='submit', :loading='isLoading', :disabled='!valid')
         | {{ $t('forms.next') }}
         v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
@@ -132,21 +55,54 @@ v-card
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
+
+import { ScrollPicker, ScrollPickerGroup } from 'vue-scroll-picker'
+import 'vue-scroll-picker/dist/style.css'
+
+import ValidateRules from '~/mixins/validate'
+
 import enums from '~/assets/enums'
 
 const individual: Array<string> = ['BC1', 'BC2', 'BC3', 'BC4']
 const pair: Array<string> = ['BC3', 'BC4']
 const team: Array<string> = ['BC1/BC2']
 
-const poolIndexes: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N']
-const eliminationIndexes: Array<string> = ['1/8 Final', '1/4 Final', '1/2 Final', 'Bronze Final', 'Final']
+const poolIndexes: Array<stageIndex> = [
+  { value: 1, name: '1st match' },
+  { value: 2, name: '2nd match' },
+  { value: 3, name: '3rd match' },
+  { value: 4, name: '4th match' },
+  { value: 5, name: '5th match' },
+  { value: 6, name: '6th match' },
+  { value: 7, name: '7th match' },
+  { value: 8, name: '8th match' },
+  { value: 9, name: '9th match' }
+]
+const eliminationIndexes: Array<stageIndex> = [
+  { value: 1, name: '1/8 Final' },
+  { value: 2, name: '1/4 Final' },
+  { value: 3, name: '1/2 Final' },
+  { value: 4, name: 'Bronze Final' },
+  { value: 5, name: 'Final' }
+]
 
-interface tournamentType {
-  value: string,
-  text: string
+interface stageIndex {
+  value: number,
+  name: string
 }
 
-@Component({})
+interface tournamentType {
+  value: number,
+  name: string
+}
+
+@Component({
+  mixins: [ValidateRules],
+  components: {
+    ScrollPicker,
+    ScrollPickerGroup
+  }
+})
 export default class AddMatch extends Vue {
   $bus
   tournamentTypes: Array<tournamentType> = enums.tournamentTypes
@@ -156,13 +112,14 @@ export default class AddMatch extends Vue {
   valid: Boolean = false
   isLoading: Boolean = false
 
-  tournamentName: string | null = null
-  tournamentType: string | null = null
-  competition: string | null = null
-  division: string | null = null
-  search: string | null = null
-  stage: string | null = null
-  stageIndex: string | null = null
+  search!: string
+
+  tournamentName!: string
+  tournamentType: number = 2
+  competition: string = 'Individual'
+  division: string = 'BC4'
+  stage: string = 'Pool'
+  stageIndex: number = 1
 
   @State('match') stateMatch
   @Mutation('setMatch') mutationSetMatch
@@ -175,7 +132,6 @@ export default class AddMatch extends Vue {
         tournamentType,
         competition,
         division,
-        search,
         stage,
         stageIndex
       } = storedMatch
@@ -184,7 +140,6 @@ export default class AddMatch extends Vue {
       this.tournamentType = tournamentType
       this.competition = competition
       this.division = division
-      this.search = search
       this.stage = stage
       this.stageIndex = stageIndex
     }
@@ -198,7 +153,6 @@ export default class AddMatch extends Vue {
       tournamentType: this.tournamentType,
       competition: this.competition,
       division: this.division,
-      search: this.search,
       stage: this.stage,
       stageIndex: this.stageIndex
     })
@@ -211,8 +165,8 @@ export default class AddMatch extends Vue {
 
   get tournamentTypeName (): string {
     const typeIndex = this.tournamentType
-    const tournamentType = this.tournamentTypes.find(x => x.value === typeIndex) || { value: '', text: '' }
-    return tournamentType.text
+    const tournamentType = this.tournamentTypes.find(x => x.value === typeIndex) || { value: null, name: '' }
+    return tournamentType.name
   }
 
   @Watch('competition')
@@ -220,7 +174,6 @@ export default class AddMatch extends Vue {
     if (val === 'Team') {
       this.division = team[0]
     }
-    // this.division = null
   }
 
   get divisions (): Array<string> {
@@ -232,29 +185,23 @@ export default class AddMatch extends Vue {
     }
   }
 
-  @Watch('stage')
-  onStageChange () {
-    // this.stageIndex = null
-  }
-
-  get stageIndexes (): Array<string> {
+  get stageIndexes (): Array<stageIndex> | Boolean {
     switch (this.stage) {
     case 'Pool': return poolIndexes
     case 'Elimination': return eliminationIndexes
-    default: return []
+    default: return poolIndexes
     }
   }
 
   fullfillForm () {
     const match = {
       tournamentName: 'BISFed 2019 Zagreb',
-      tournamentType: 'WO',
+      tournamentType: 0,
       competition: 'Team',
       division: 'BC1/BC2',
       stage: 'Elimination',
-      stageIndex: '1/2 Final'
+      stageIndex: 2
     }
-
     Object.assign(this, { ...match })
   }
 }

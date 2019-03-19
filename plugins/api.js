@@ -1,7 +1,7 @@
 import ApiService from '~/services/api'
 
-export default ({ $axios, env: { API_URL } }, inject) => {
-  const Api = new ApiService({ $axios, baseURL: API_URL })
+export default ({ $axios }, inject) => {
+  const Api = new ApiService({ $axios })
 
   inject('api', Api)
 }

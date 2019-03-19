@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card(dark, color='grey lighten-2')
+v-card
   v-card-text.pa-0
     v-item-group(v-model='activeBox', mandatory)
       v-container(pa-1, grid-list-md)
