@@ -5,9 +5,6 @@
         v-btn.ma-0(slot='activator', icon, @click='onLocaleSwitch(locale.code)')
           flag(:iso='locale.flag', :title='locale.iso')
         span {{ locale.name }}
-
-    div.hidden-sm-and-up
-      flag(:iso='$i18n.locale')
 </template>
 
 <script>

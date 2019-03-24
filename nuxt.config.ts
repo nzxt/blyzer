@@ -5,8 +5,8 @@ const i18n = require('./config/i18n')
 
 const isDev = process.env.NODE_ENV !== 'production'
 
-const API_URL = process.env.API_URL || 'http://localhost:2450'
-const AUTH_URL = process.env.AUTH_URL || 'http://localhost:3333'
+const API_URL = process.env.API_URL || 'http://localhost:2450/api'
+const AUTH_URL = `${API_URL}/account`
 
 module.exports = {
   mode: 'spa',
@@ -15,12 +15,12 @@ module.exports = {
   /*
   ** Manifest
   */
-  manifest: {
-    name: 'Boccialyzer',
-    short_name: 'Blyzer',
-    description: 'NuxtJS project for Boccia Ukraine',
-    theme_color: '#188269'
-  },
+  // manifest: {
+  //   name: 'Boccialyzer',
+  //   short_name: 'Blyzer',
+  //   description: 'NuxtJS project for Boccia Ukraine',
+  //   theme_color: '#188269'
+  // },
 
   /*
   ** Headers of the page
@@ -34,7 +34,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {  rel: 'stylesheet',  href: 'https://fonts.googleapis.com/css?family=Material+Icons' },
+      // { rel: 'stylesheet',  href: 'https://fonts.googleapis.com/css?family=Material+Icons' },
       {
         rel: 'stylesheet',
         href:
@@ -53,13 +53,13 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  // loading: { color: '#fff' },
-  loading: {
-    name: 'chasing-dots',
-    color: '#ff5638',
-    background: 'white',
-    height: '4px'
-  },
+  loading: { color: '#0022bb' },
+  // loading: {
+  //   name: 'chasing-dots',
+  //   color: '#ff5638',
+  //   background: 'white',
+  //   height: '4px'
+  // },
 
   /*
   ** Global CSS
@@ -74,13 +74,15 @@ module.exports = {
   */
   plugins: [
     // { src: '~/plugins/vuex-persist', ssr: false },
+    '~/plugins/axios',
     '~/plugins/api',
     '~/plugins/vuetify',
     '~/plugins/noty',
     '~/plugins/hotkey',
     '~/plugins/eventbus',
     '~/plugins/spinners',
-    '~/plugins/flag-icon'
+    '~/plugins/flag-icon',
+    '~/plugins/tasty-burger-button'
   ],
 
   /*
@@ -102,11 +104,15 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: isDev,
-    baseURL: API_URL,
+    proxy: true,
+    // baseURL: API_URL,
     // redirectError: {
     //   401: '/login',
     //   404: '/notfound'
     // }
+  },
+  proxy: {
+    "/api": API_URL
   },
 
   /*
@@ -116,20 +122,23 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: `${AUTH_URL}/login`, method: 'post', propertyName: 'access_token' },
-          logout: false,
-          user: { url: `${AUTH_URL}/users/1`, method: 'get', propertyName: 'user' }
+          login: { url: `${AUTH_URL}/Login`, method: 'post' },
+          logout: { url: `${AUTH_URL}/Logout`, method: 'get' },
+          user: false // { url: `${AUTH_URL}/getProfile`, method: 'get', propertyName: '' }
         },
-        tokenRequired: true,
-        tokenType: 'Bearer'
+        tokenRequired: false,
+        // tokenType: 'Bearer'
       },
       facebook: {
-        client_id: 'your facebook app id',
-        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email',
-        scope: ['public_profile', 'email']
+        client_id: '1671464192946675',
+        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email,birthday',
+        scope: ['public_profile', 'email', 'user_birthday']
       },
       google: {
         client_id: '147906604243-uj9457qvor9uv4tf4fcuevm0088gprjr.apps.googleusercontent.com'
+      },
+      twitter: {
+        client_id: 'FAJNuxjMTicff6ciDKLiZ4t0D'
       }
     },
     redirect: {
@@ -137,7 +146,7 @@ module.exports = {
       logout: '/',
       user: '/profile',
       home: '/',
-      callback:'/callback'
+      callback: false //'/callback'
     },
     plugins: ['~/plugins/auth']
   },
@@ -159,6 +168,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    extractCSS: true,
     transpile: ['vuetify/lib'],
     plugins: [new VuetifyLoaderPlugin()],
     loaders: {

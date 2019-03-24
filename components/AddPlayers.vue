@@ -1,15 +1,29 @@
 <template lang="pug">
   v-card
     v-form(v-model='valid', @submit.prevent='onSubmit')
-      v-card-title
+      v-card-title.pt-0
         CircleLoader(
           :loading='true',
           color='grey',
           :size='36',
           sizeUnit='px'
         )
-        v-spacer
-        v-flex(layout, column, wrap)
+        v-divider.mx-3(vertical, inset)
+        v-combobox(
+          dense
+          v-model='competition'
+          :items='enums.competitionTypes'
+          color='backpurple'
+          hide-no-data
+          hide-selected
+          label='Competition'
+          :hint='`Stage: <span class="font-weight-bold">${stage}</span> - <span class="font-weight-bold">${stageIndexName}</span>`'
+          readonly
+          persistent-hint
+        )
+          template(slot='selection')
+            | {{ competition }} {{ divisionName }}
+        //- v-flex(layout, column, wrap)
           div.display-1(v-if='competition')
             | {{ competition }}
             span.display-2.primary--text.text--lighten-1
@@ -26,7 +40,11 @@
           v-layout(align-start, justify-center)
             v-flex.ma-0(xs6)
               v-list.error.pb-0(dark, two-line)
-                v-subheader RED TEAM
+                v-subheader.py-0.pr-0.title
+                  span RED team
+                  v-spacer
+                  v-chip(small)
+                    | {{ redTeam.length < playersMaxCount ? `${playersMaxCount-redTeam.length} left` : 'ready' }}
                 v-divider
                 draggable(v-model='redTeam', group='players', style='min-height: 10px')
                   template(v-for='player in redTeam')
@@ -49,10 +67,18 @@
                           v-list-tile-action(v-else)
                             //- v-btn(icon, @click.native='removePlayer(player.id, "red")')
                             v-icon.mdi-24px(@click.native='removePlayer(player.id, "red")') mdi-account-minus-outline
-                  v-btn(block, small, flat, slot="footer", @click.native="addPlayer('red')") Add Player
+                  v-btn(block, small, flat,
+                    slot="footer",
+                    @click.native="addPlayer('red')",
+                    v-if='redTeam.length < playersMaxCount && redTeam.length+blueTeam.length < playersMaxCount*2'
+                  ) Add Player
             v-flex.ma-0(xs6)
               v-list.primary.pb-0(dark, two-line)
-                v-subheader BLUE TEAM
+                v-subheader.py-0.pr-0.title
+                  span BLUE team
+                  v-spacer
+                  v-chip(small)
+                    | {{ blueTeam.length < playersMaxCount ? `${playersMaxCount-blueTeam.length} left` : 'ready' }}
                 v-divider
                 draggable(v-model='blueTeam', group='players', style='min-height: 10px')
                   template(v-for='player in blueTeam')
@@ -71,7 +97,7 @@
                           v-list-tile-action(v-else)
                             //- v-btn(icon, @click.native='removePlayer(player.id, "blue")')
                             v-icon.mdi-24px(@click.native='removePlayer(player.id, "blue")') mdi-account-minus-outline
-                  v-btn(block, small, flat, slot="footer" @click.native="addPlayer('blue')") Add Player
+                  v-btn(block, small, flat, slot="footer", @click.native="addPlayer('blue')", v-if='blueTeam.length < playersMaxCount') Add Player
       v-card-actions
         v-btn.secondary.secondary--text(round, block, outline, @click='onCancel')
           v-icon.mdi-18px(left) mdi-reply
@@ -83,45 +109,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
-// import draggable from 'vuedraggable'
-// import enums from '~/assets/enums'
-
-const individual: Array<string> = ['BC1', 'BC2', 'BC3', 'BC4']
-const pair: Array<string> = ['BC3', 'BC4']
-const team: Array<string> = ['BC1/BC2']
-
-const poolIndexes: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N']
-const eliminationIndexes: Array<string> = ['1/8 Final', '1/4 Final', '1/2 Final', 'Bronze Final', 'Final']
-
-// interface tournamentType {
-//   value: string,
-//   text: string
-// }
+import enums from '~/assets/enums'
 
 @Component({
   components: {
     draggable: () => import('vuedraggable')
-    // Team: () => import('~/components/Team.vue')
   }
 })
 export default class AddPlayers extends Vue {
   $bus
   $auth
-  // tournamentTypes: Array<tournamentType> = enums.tournamentTypes
-  competitionTypes: Array<string> = ['Individual', 'Pair', 'Team']
-  stageTypes: Array<string> = ['Pool', 'Elimination']
-
+  enums: any = enums
   valid: Boolean = false
   isLoading: Boolean = false
 
-  tournamentName: string | null = null
-  // tournamentType: string | null = null
-  competition: string | null = null
-  division: string | null = null
-  stage: string | null = null
-  stageIndex: string | null = null
+  competition!: string
+  division!: number
+  stage!: string
+  stageIndex!: number
 
   /** Players */
   redTeam: Array<any> = [
@@ -222,13 +229,16 @@ export default class AddPlayers extends Vue {
     }
   }
 
-  removePlayer (id, color): void {
-    const index = this[`${color}Team`].findIndex(x => x.id === id)
-    this[`${color}Team`].splice(index, 1)
+  get divisionName (): string {
+    const items = this.enums.divisions[this.competition.toLowerCase()]
+    const item = items.find(x => x.value === this.division)
+    return item.name
   }
 
-  resetForm () : void {
-
+  get stageIndexName (): string {
+    const items = this.enums.stageIndexes[this.stage.toLowerCase()]
+    const item = items.find(x => x.value === this.stageIndex)
+    return item.name
   }
 
   get playersMaxCount (): Number {
@@ -240,34 +250,9 @@ export default class AddPlayers extends Vue {
     }
   }
 
-  @Watch('competition')
-  onCompetitionChange (val: string) {
-    if (val === 'Team') {
-      this.division = team[0]
-    }
-    // this.division = null
-  }
-
-  get divisions (): Array<string> {
-    switch (this.competition) {
-    case 'Individual': return individual
-    case 'Pair': return pair
-    case 'Team': return team
-    default: return []
-    }
-  }
-
-  // @Watch('stage')
-  // onStageChange () {
-  //   // this.stageIndex = null
-  // }
-
-  get stageIndexes (): Array<string> {
-    switch (this.stage) {
-    case 'Pool': return poolIndexes
-    case 'Elimination': return eliminationIndexes
-    default: return []
-    }
+  removePlayer (id, color): void {
+    const index = this[`${color}Team`].findIndex(x => x.id === id)
+    this[`${color}Team`].splice(index, 1)
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card
+v-card(flat)
   v-card-text.pa-0
     v-item-group(v-model='activeBox', mandatory)
       v-container(pa-1, grid-list-md)
@@ -8,8 +8,8 @@ v-card
             v-item(:value='box.id')
               v-card.d-flex.align-center(
                 slot-scope='{ active, toggle }',
-                :color='`${box.color} lighten-2`',
-                :class='active ? "elevation-15" : ""',
+                :color='`${box.color} lighten-3`',
+                :class='active ? "elevation-7" : ""',
                 height='75',
                 @click='toggle',
                 dark
@@ -17,7 +17,7 @@ v-card
                 v-scroll-y-transition
                   //- span.display-1.text-xs-center(v-if='active') A
                   v-icon.mdi-48px(
-                    :color='active ? "blue-grey darken-4": ""'
+                    :color='active ? "light-blue": ""'
                   ) {{ `mdi-numeric-${box.id}-box-outline` }}
 </template>
 

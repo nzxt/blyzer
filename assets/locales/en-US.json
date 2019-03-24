@@ -30,6 +30,7 @@
     "signin_tip": "Hi, User! SignIn, first.."
   },
   "forms": {
+    "start": "Start",
     "submit": "Submit",
     "cancel": "Cancel",
     "next": "Next",

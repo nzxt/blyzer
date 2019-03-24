@@ -23,8 +23,9 @@ v-app(light, v-hotkey='keymap')
             v-icon.mdi-48px(color='error') mdi-plus
           v-btn(large, icon, flat, nuxt, to='/profile' :ripple='false', :value='2', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-account-circle-outline
-    //- tasty-burger-button(@toggle='toggleRightDrawer', :active='rightDrawer', type='elastic', size='s', color='orange', active-color='red')
-    v-btn(large, icon, @click.stop='toggleRightDrawer', class='toolbar--btn-large')
+    //- v-btn(large, icon, class='toolbar--btn-large')
+      tasty-burger-button(@toggle.stop='toggleRightDrawer', :active='rightDrawer', type='elastic', size='s', color='orange', active-color='red')
+    v-btn(large, icon, class='toolbar--btn-large', @click.stop='toggleRightDrawer')
       v-icon.mdi-36px(color='secondary') mdi-menu-open
 
   v-content
@@ -33,7 +34,7 @@ v-app(light, v-hotkey='keymap')
 
   v-navigation-drawer(v-model='rightDrawer', right, :clipped='clippedRight', width='350', class="backpurple", dark, temporary, fixed, app)
     v-list
-      v-list-tile.mx-3
+      v-list-tile.ml-3
         //- v-list-tile-action(class='justify-start')
         //-   v-icon(@click.native='clippedRight = !clippedRight') mdi-menu-swap-outline
         v-list-tile-title
@@ -119,9 +120,17 @@ export default class DefaultLayout extends Vue {
 </script>
 
 <style lang="stylus">
+.v-messages
+  flex: 1 1 auto
+  font-size: 12px
+  min-height: 16px
 .v-toolbar.main
   .v-toolbar__content
     padding-right 0
+  // .v-toolbar__extention
+  //   position: absolute
+  //   width: 50%
+  //   right: 0
 .v-toolbar.main
   .v-btn-toggle .v-btn
     opacity 1

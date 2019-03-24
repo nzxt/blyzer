@@ -7,6 +7,7 @@
         v-spacer
         //- v-avatar(v-if='picture', size='36', color='grey lighten-4')
         //-   img(:src='avatar', alt='avatar')
+        v-icon.mdi-36px(@click='$auth.fetchUser()') mdi-logout
         v-icon.mdi-36px(@click='$auth.logout()') mdi-account-circle-outline
       v-card-text.pt-0
           //- v-container(pa-0, grid-list-md)

@@ -1,12 +1,12 @@
 {
-  "extends": "@nuxt/typescript",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
     "lib": [
       "dom",
-      "esnext"
+      "esnext",
+      "dom"
     ],
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -21,7 +21,12 @@
     "removeComments": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./*"
+      ]
     },
     "types": [
       "@types/node",

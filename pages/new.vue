@@ -63,7 +63,6 @@ export default class NewPage extends Vue {
 
   @Watch('isMatch')
   onQueryParamChanged (val: Boolean) {
-    debugger
     this.component = val ? 'AddMatch' : 'AddTraining'
   }
 }

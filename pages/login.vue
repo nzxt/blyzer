@@ -9,7 +9,7 @@ v-container
       v-card(color='blue-grey lighten-5')
         BusyOverlay
         //- v-img(contain, src='/images/white-boccia-ball.jpg', alt='Boccia Ball')
-        v-form(v-model='valid', @submit.prevent='localSignIn')
+        v-form(v-model='valid', @submit.prevent='signIn')
           v-card-title.justify-center.display-1.blue-grey.lighten-5.font-weight-thin.warning--text {{ $t('signin') }}
             v-spacer
             v-btn(icon, @click='signOut', v-if='$auth.loggedIn')
@@ -18,14 +18,16 @@ v-container
             v-btn-toggle(v-else)
               //- v-btn(icon, value='local')
                 v-icon.mdi-24px mdi-account-circle
-              v-btn(icon, @click='facebookSignIn')
-                v-icon.mdi-24px mdi-facebook-box
               v-btn(icon, @click='googleSignIn')
                 v-icon.mdi-24px mdi-google
+              v-btn(icon, @click='facebookSignIn')
+                v-icon.mdi-24px mdi-facebook-box
+              v-btn(icon, @click='twitterSignIn')
+                v-icon.mdi-24px mdi-twitter-box
           v-card-text
             v-text-field(
-              v-model='login',
-              :label='$t("login")',
+              v-model='username',
+              :label='$t("username")',
               prepend-icon='mdi-account-box-outline',
               browser-autocomplete='username',
               clearable
@@ -52,7 +54,7 @@ import AuthMixin from '~/mixins/auth'
 import ValidateRules from '~/mixins/validate'
 
 @Component({
-  // auth: false,
+  auth: false,
   mixins: [AuthMixin, ValidateRules],
   components: {
     BusyOverlay: () => import('~/components/BusyOverlay.vue')
@@ -61,12 +63,8 @@ import ValidateRules from '~/mixins/validate'
 export default class LoginPage extends Vue {
   valid: Boolean = false
   visible: Boolean = false
-  login: string | null = 'admin'
+  username: string | null = 'admin'
   password: string | null = 'qwerty'
-
-  get username (): string | null {
-    return `${this.login}@example.com`
-  }
 }
 </script>
 
