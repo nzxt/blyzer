@@ -1,28 +1,30 @@
 <template lang="pug">
-v-card
-  v-card-text.px-0
+v-card(flat)
+  v-card-text.pa-0
     ScoreBoard
   v-card-text.pa-0
     Boxes
   v-card-text.px-0.pb-0
+    | Hey!
+  v-card-text.px-0.pb-0
     v-tabs(v-model='activeTab', color='grey lighten-4',  fixed-tabs, slider-color='deep-orange')
       v-tab.font-weight-bold(v-for='tab in tabs', :key='tab.value', :href="`#tab-${tab.value}`", ripple)
         v-icon.mdi-24px(left) {{ tab.icon }}
-        | {{ tab.name }}
+        | {{ tab.text }}
       v-tab-item(value="tab-1")
         v-card(flat)
           v-card-text.pb-0
             v-item-group(v-model='ballType')
-              v-chip(v-for='scored in enums.scoredBallTypes', :key='scored.value')
-                | {{ scored.name }}
+              v-chip(small v-for='scored in enums.scoredBallTypes', :key='scored.value')
+                | {{ scored.text }}
             v-divider.my-3
-            span.title.grey--text Rate this shot
+            //- span.title.grey--text Rate this shot
             v-rating(large, v-model='rating')
       v-tab-item(value="tab-2")
         v-card(flat)
           v-card-text.pb-0
             v-chip(v-for='dead in enums.deadBallTypes', :key='dead.value')
-              | {{ dead.name }}
+              | {{ dead.text }}
             v-divider.my-3
   v-card-actions
     v-spacer
@@ -49,12 +51,12 @@ export default class AddValues extends Vue {
   ballType: number | null = null
   rating: number | null = null
   tabs: Array<any> = [
-    { value: 1, name: 'Scored Ball', icon: 'mdi-radiobox-marked' },
-    { value: 2, name: 'Dead Ball', icon: 'mdi-radiobox-blank' }
+    { value: 1, text: 'Scored Ball', icon: 'mdi-radiobox-marked' },
+    { value: 2, text: 'Dead Ball', icon: 'mdi-radiobox-blank' }
   ]
 
   onCancel () {
-    this.$bus.$emit('setPlayers')
+    this.$bus.$emit('setMatch')
   }
 }
 </script>

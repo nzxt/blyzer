@@ -5,8 +5,9 @@ const i18n = require('./config/i18n')
 
 const isDev = process.env.NODE_ENV !== 'production'
 
-const API_URL = process.env.API_URL || 'http://localhost:2450/api'
-const AUTH_URL = `${API_URL}/account`
+const BASE_URL = process.env.BASE_URL || 'http://localhost:2450'
+const API_URL = `${BASE_URL}/api`
+const AUTH_URL = `${API_URL}/Account`
 
 module.exports = {
   mode: 'spa',
@@ -77,11 +78,15 @@ module.exports = {
     '~/plugins/axios',
     '~/plugins/api',
     '~/plugins/vuetify',
+    '~/plugins/async-computed',
+    // '~/plugins/mixins',
+    // '~/plugins/filters',
     '~/plugins/noty',
     '~/plugins/hotkey',
     '~/plugins/eventbus',
     '~/plugins/spinners',
     '~/plugins/flag-icon',
+    '~/plugins/nuxt-client-init',
     '~/plugins/tasty-burger-button'
   ],
 
@@ -104,8 +109,10 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: isDev,
-    proxy: true,
-    // baseURL: API_URL,
+    https: false,
+    proxy: false,
+    credentials: true,
+    baseURL: BASE_URL
     // redirectError: {
     //   401: '/login',
     //   404: '/notfound'
@@ -122,9 +129,9 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: `${AUTH_URL}/Login`, method: 'post' },
+          login: { url: `${AUTH_URL}/Login`, method: 'post', propertyName: '' },
           logout: { url: `${AUTH_URL}/Logout`, method: 'get' },
-          user: false // { url: `${AUTH_URL}/getProfile`, method: 'get', propertyName: '' }
+          user: { url: `${AUTH_URL}/GetProfile`, method: 'get', propertyName: '' }
         },
         tokenRequired: false,
         // tokenType: 'Bearer'
@@ -141,13 +148,18 @@ module.exports = {
         client_id: 'FAJNuxjMTicff6ciDKLiZ4t0D'
       }
     },
+    watchLoggedIn: true,
+    rewriteRedirects: true,
+    resetOnError: true,
     redirect: {
       login: '/login',
       logout: '/',
-      user: '/profile',
       home: '/',
-      callback: false //'/callback'
+      callback: '/callback'
     },
+    localStorage: false,
+    cookie: false,
+    scopeKey: 'roles',
     plugins: ['~/plugins/auth']
   },
 
@@ -160,7 +172,7 @@ module.exports = {
       silent: !isDev,
       devtools: true,
       performance: isDev,
-      productionTip: false
+      productionTip: true
     }
   },
 

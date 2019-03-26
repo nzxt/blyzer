@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card
+v-card(style='min-width:413px')
   v-form(v-model='valid' @submit.prevent='onSubmit')
     v-card-text.pa-1
       v-btn-toggle(v-model='competition' mandatory)
@@ -28,73 +28,14 @@ v-card
       Team(teamColor='red' :competitionType='competition')
     v-card-text.pa-1
       Team(teamColor='blue' :competitionType='competition')
-
     v-card-text.pa-1
       MatchInfo
-
-    //- v-card-title.py-0
-      v-combobox(
-        dense
-        v-model='tournamentName'
-        :items='["BISFed 2019 Zagreb", "BISFed 2019 Guangzhou Boccia", "BISFed 2019 Montreal Boccia"]'
-        color='backpurple'
-        hide-no-data
-        hide-selected
-        label='Tournament name'
-        :hint='tournamentName ? `Type: <span class="body-2">${tournamentTypes.find(x => x.value === tournamentType).name}</span>` : "Choose or enter tournament name..."'
-        :rules='requiredField'
-        persistent-hint
-        return-object
-        open-on-clear
-        autofocus
-        clearable
-      )
-    //- v-card-text.py-0(style='font-size:18px;')
-      scroll-picker(
-        v-model='tournamentType',
-        :options='tournamentTypes',
-        :drag-sensitivity="0.5"
-        :touch-sensitivity="0.5"
-        :scroll-sensitivity="0.5"
-      )
-    //- v-card-text.py-0
-      v-item-group.mt-3(v-model='division', mandatory)
-        v-flex(layout, justify-center)
-          v-item(
-            v-for='divi in divisions',
-            :key='divi.value'
-            :value='divi.value'
-          )
-            v-chip(
-              slot-scope="{ active, toggle }",
-              :selected="active",
-              @click.prevent="toggle"
-              :color='active ? activeDivisionClass : ""'
-            )
-              v-icon.mdi-36px(left, color='grey lighten-3') mdi-dlna
-              span.font-weight-bold {{ divi.name }}
-    //- v-card-text.py-0
-      scroll-picker-group(class='flex', style="font-size:18px;")
-        scroll-picker(
-          v-model='stage',
-          :options='stageTypes'
-          :drag-sensitivity="0.5"
-          :touch-sensitivity="0.5"
-          :scroll-sensitivity="0.5"
-        )
-        scroll-picker(
-          v-model='stageIndex',
-          :options='stageIndexes'
-          :drag-sensitivity="0.5"
-          :touch-sensitivity="0.5"
-          :scroll-sensitivity="0.5"
-        )
     v-card-actions
       v-btn.secondary.secondary--text(round, block, outline, @click='$router.push("/")')
         v-icon.mdi-18px(left) mdi-reply
         | {{ $t('forms.cancel') }}
       v-btn.warning(round, block, :dark='valid' :outline='!valid', type='submit', :loading='isLoading', :disabled='!valid')
-        | {{ $t('start') }}
+        | {{ $t('forms.start') }}
         v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
 
@@ -102,8 +43,7 @@ v-card
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 
-// import { ScrollPicker, ScrollPickerGroup } from 'vue-scroll-picker'
-// import 'vue-scroll-picker/dist/style.css'
+import { vObj } from '~/types/models' // eslint-disable-line
 
 import Team from '~/components/Team.vue'
 import MatchInfo from '~/components/MatchInfo.vue'
@@ -111,37 +51,21 @@ import ValidateRules from '~/mixins/validate'
 
 import enums from '~/assets/enums'
 
-interface obj {
-  value: number;
-  name: string;
-}
-
 @Component({
   mixins: [ValidateRules],
   components: {
     Team,
     MatchInfo
-    // ScrollPicker,
-    // ScrollPickerGroup
   }
 })
 export default class AddMatch extends Vue {
   $bus
-  // tournamentTypes: Array<obj> = enums.tournamentTypes
-  // competitionTypes: Array<string> = enums.competitionTypes
-  // stageTypes: Array<string> = enums.stageTypes
 
   valid: Boolean = false
   isLoading: Boolean = false
 
-  // search!: string
-
-  // tournamentName!: string
-  // tournamentType: number = 2
   competition: string = 'Individual'
   division: number = 4
-  // stage: string = 'Pool'
-  // stageIndex: number = 1
 
   @State('match') stateMatch
   @Mutation('setMatch') mutationSetMatch
@@ -150,20 +74,20 @@ export default class AddMatch extends Vue {
     const storedMatch = this.stateMatch
     if (Object.getOwnPropertyNames(storedMatch).length !== 0) {
       const {
-        tournamentName,
-        tournamentType,
+        // tournamentName,
+        // tournamentType,
         competition,
-        division,
-        stage,
-        stageIndex
+        division
+        // stage,
+        // stageIndex
       } = storedMatch
 
-      this.tournamentName = tournamentName
-      this.tournamentType = tournamentType
+      // this.tournamentName = tournamentName
+      // this.tournamentType = tournamentType
       this.competition = competition
       this.division = division
-      this.stage = stage
-      this.stageIndex = stageIndex
+      // this.stage = stage
+      // this.stageIndex = stageIndex
     }
   }
 
@@ -171,25 +95,15 @@ export default class AddMatch extends Vue {
     this.isLoading = true
 
     this.mutationSetMatch({
-      // tournamentName: this.tournamentName,
-      // tournamentType: this.tournamentType,
       competition: this.competition,
       division: this.division
-      // stage: this.stage,
-      // stageIndex: this.stageIndex
     })
 
     setTimeout(() => {
       this.isLoading = false
-      this.$bus.$emit('setPlayers')
+      this.$bus.$emit('setValues')
     }, 680)
   }
-
-  // get tournamentTypeName (): string {
-  //   const typeIndex = this.tournamentType
-  //   const tournamentType = this.tournamentTypes.find(x => x.value === typeIndex) || { value: null, name: '' }
-  //   return tournamentType.name
-  // }
 
   @Watch('competition')
   onCompetitionChange (val: string) {
@@ -198,7 +112,7 @@ export default class AddMatch extends Vue {
     }
   }
 
-  get divisions (): Array<obj> {
+  get divisions (): Array<vObj> {
     switch (this.competition) {
     case 'Individual': return enums.divisions.individual
     case 'Pair': return enums.divisions.pair
@@ -214,27 +128,6 @@ export default class AddMatch extends Vue {
   get activeDivisionClass (): string {
     return 'light-blue lighten-3 white--text'
   }
-
-  // get boxes (): Array<box> {
-  //   switch (this.competition) {
-  //   case 'Individual': return enums.competitionBoxes.individual
-  //   case 'Pair': return enums.competitionBoxes.pair
-  //   case 'Team': return enums.competitionBoxes.team
-  //   default: return []
-  //   }
-  // }
-
-  // fullfillForm () {
-  //   const match = {
-  //     tournamentName: 'BISFed 2019 Zagreb',
-  //     tournamentType: 2,
-  //     competition: 'Team',
-  //     division: 7,
-  //     stage: 'Elimination',
-  //     stageIndex: 2
-  //   }
-  //   Object.assign(this, { ...match })
-  // }
 }
 </script>
 

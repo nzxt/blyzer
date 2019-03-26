@@ -4,6 +4,8 @@ v-layout(align-center)
     v-btn.ma-5.add-btn(large, fab, color='white')
       v-icon.mdi-48px(color='primary') mdi-plus
     p.headline.grey--text(v-text='`Please add your first ${eventType}`')
+    v-chip
+      div.title.grey--text {{ eventType === 'Match' ? "Alt + M" : "Alt + T" }}
 </template>
 
 <script lang="ts">

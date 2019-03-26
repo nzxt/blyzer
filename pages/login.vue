@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container
-  v-layout(justify-center)
+  //- v-layout(justify-center)
     v-flex(xs12, sm10, md8, lg6)
       v-alert.error(v-model='loginHasError', icon='mdi-alert-decagram')
         | {{ 'Error while logging in..' }}

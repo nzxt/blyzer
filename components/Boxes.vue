@@ -8,7 +8,7 @@ v-card(flat)
             v-item(:value='box.id')
               v-card.d-flex.align-center(
                 slot-scope='{ active, toggle }',
-                :color='`${box.color} lighten-3`',
+                :color='`${box.color} lighten-2`',
                 :class='active ? "elevation-7" : ""',
                 height='75',
                 @click='toggle',
@@ -17,7 +17,7 @@ v-card(flat)
                 v-scroll-y-transition
                   //- span.display-1.text-xs-center(v-if='active') A
                   v-icon.mdi-48px(
-                    :color='active ? "light-blue": ""'
+                    :color='active ? "blue-grey darken-2": ""'
                   ) {{ `mdi-numeric-${box.id}-box-outline` }}
 </template>
 

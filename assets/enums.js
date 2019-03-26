@@ -1,29 +1,36 @@
 module.exports = {
+  playerClassifications: [
+    { id: 0, value: 'bc1', text: 'BC1' },
+    { id: 1, value: 'bc2', text: 'BC2' },
+    { id: 2, value: 'bc3', text: 'BC3' },
+    { id: 3, value: 'bc4', text: 'BC4' }
+  ],
+
   tournamentTypes: [
-    { value: 1, name: 'World Championships' },
-    { value: 2, name: 'Regional Championships' },
-    { value: 3, name: 'World Open' },
-    { value: 4, name: 'Regional Open' },
-    { value: 5, name: 'Paralympic Games' }
+    { value: 1, text: 'World Championships' },
+    { value: 2, text: 'Regional Championships' },
+    { value: 3, text: 'World Open' },
+    { value: 4, text: 'Regional Open' },
+    { value: 5, text: 'Paralympic Games' }
   ],
 
   competitionTypes: ['Individual', 'Pair', 'Team'],
 
   divisions: {
     individual: [
-      { value: 1, name: 'BC1' },
-      { value: 2, name: 'BC2' },
-      { value: 3, name: 'BC3' },
-      { value: 4, name: 'BC4' }
+      { value: 1, text: 'BC1' },
+      { value: 2, text: 'BC2' },
+      { value: 3, text: 'BC3' },
+      { value: 4, text: 'BC4' }
     ],
 
     pair: [
-      { value: 1, name: 'BC3' },
-      { value: 2, name: 'BC4' }
+      { value: 1, text: 'BC3' },
+      { value: 2, text: 'BC4' }
     ],
 
     team: [
-      { value: 1, name: 'BC1/BC2' }
+      { value: 1, text: 'BC1/BC2' }
     ]
   },
 
@@ -31,39 +38,39 @@ module.exports = {
 
   stageIndexes: {
     pool: [
-      { value: 1, name: '1st match' },
-      { value: 2, name: '2nd match' },
-      { value: 3, name: '3rd match' },
-      { value: 4, name: '4th match' },
-      { value: 5, name: '5th match' }
+      { value: 1, text: '1st match' },
+      { value: 2, text: '2nd match' },
+      { value: 3, text: '3rd match' },
+      { value: 4, text: '4th match' },
+      { value: 5, text: '5th match' }
     ],
 
     elimination: [
-      { value: 1, name: '1/8 Final' },
-      { value: 2, name: '1/4 Final' },
-      { value: 3, name: '1/2 Final' },
-      { value: 4, name: 'Bronze Final' },
-      { value: 5, name: 'Final' }
+      { value: 1, text: '1/8 Final' },
+      { value: 2, text: '1/4 Final' },
+      { value: 3, text: '1/2 Final' },
+      { value: 4, text: 'Bronze Final' },
+      { value: 5, text: 'Final' }
     ]
   },
 
   scoredBallTypes: [
-    { value: 1, name: 'First ball' },
-    { value: 2, name: 'Placement' },
-    { value: 3, name: 'Push on' },
-    { value: 4, name: 'Push off' },
-    { value: 5, name: 'Smash' },
-    { value: 6, name: 'Ricochet' },
-    { value: 7, name: 'Bounce over' },
-    { value: 8, name: 'Roll on top' },
-    { value: 9, name: 'Roll up and over' },
-    { value: 10, name: 'Lob shot' }
+    { value: 1, text: 'First ball' },
+    { value: 2, text: 'Placement' },
+    { value: 3, text: 'Push on' },
+    { value: 4, text: 'Push off' },
+    { value: 5, text: 'Smash' },
+    { value: 6, text: 'Ricochet' },
+    { value: 7, text: 'Bounce over' },
+    { value: 8, text: 'Roll on top' },
+    { value: 9, text: 'Roll up and over' },
+    { value: 10, text: 'Lob shot' }
   ],
 
   deadBallTypes: [
-    { value: 1, name: 'Violation' },
-    { value: 2, name: 'Time expiring' },
-    { value: 3, name: 'Balls Not Thrown' }
+    { value: 1, text: 'Violation' },
+    { value: 2, text: 'Time expiring' },
+    { value: 3, text: 'Balls Not Thrown' }
   ],
 
   competitionBoxes: {

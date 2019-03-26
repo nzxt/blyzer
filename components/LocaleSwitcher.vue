@@ -7,16 +7,18 @@
         span {{ locale.name }}
 </template>
 
-<script>
-export default {
-  name: 'LocaleSwitcher',
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 
-  methods: {
-    onLocaleSwitch (code) {
-      this.$moment.locale(code)
-      this.$vuetify.lang.current = code
-      this.$router.replace(this.switchLocalePath(code))
-    }
+@Component({})
+export default class LocaleSwitcher extends Vue {
+  $moment
+  $vuetify
+
+  onLocaleSwitch (code) {
+    this.$moment.locale(code)
+    this.$vuetify.lang.current = code
+    this.$router.replace(this.switchLocalePath(code))
   }
 }
 </script>

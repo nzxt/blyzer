@@ -1,11 +1,11 @@
 <template lang="pug">
-  v-expansion-panel(popup expand)
+  v-expansion-panel(popup expand v-model='panel')
     v-expansion-panel-content
       template(v-slot:header)
         div.subheading Additional Info
       template(v-slot:actions)
-        v-icon(color='grey lighten-5' v-if='tournamentName') mdi-radiobox-marked
-        v-icon(color='deep-orange' v-else) mdi-car-brake-alert
+        v-icon(color='grey lighten-5' v-if='tournamentName') mdi-progress-download
+        v-icon(color='deep-orange lighten-5' v-else) mdi-car-brake-alert
       v-card
         v-card-text.pa-1
           v-combobox.my-2(
@@ -17,7 +17,7 @@
             hide-no-data
             hide-selected
             label='Tournament name'
-            prepend-icon='mdi-trophy-outline'
+            prepend-icon='mdi-trophy-award'
             autofocus
             clearable
           )
@@ -43,36 +43,34 @@
             hide-details
             hide-no-data
             hide-selected
-            label='Stage type'
-            prepend-icon='mdi-tournament'
+            label='Stage index'
+            prepend-icon='mdi-podium-gold'
             clearable
           )
 
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Watch, Vue } from 'vue-property-decorator'
+import { vObj } from '~/types/models' // eslint-disable-line
 
 import ValidateRules from '~/mixins/validate'
 
 import enums from '~/assets/enums'
 
-interface vObj {
-  value: number;
-  name: string;
-}
-
 @Component({
   mixins: [ValidateRules]
 })
 export default class MatchInfo extends Vue {
+  panel: Boolean[] = [true]
   tournamentTypes: Array<vObj> = enums.tournamentTypes
   stageTypes: Array<string> = enums.stageTypes
+  // stageIndexes: Array<string> = enums.stageIndexes
 
   tournamentName: string | null = null
-  tournamentType: number = 2
-  stageType: string = 'Pool'
-  stageIndex: number = 1
+  tournamentType: number | null = null
+  stageType: string | null = null
+  stageIndex: number | null = null
 
   get stageIndexes (): Array<vObj> {
     switch (this.stageType) {
@@ -80,6 +78,11 @@ export default class MatchInfo extends Vue {
     case 'Elimination': return enums.stageIndexes.elimination
     default: return enums.stageIndexes.pool
     }
+  }
+
+  @Watch('stageType')
+  onChangeStageType () {
+    this.stageIndex = null
   }
 }
 </script>
@@ -89,5 +92,5 @@ export default class MatchInfo extends Vue {
   >>> .v-expansion-panel__header
     padding 6px 12px
     color #ffffff
-    background-color var(--v-warning-lighten3)
+    background-color var(--v-warning-lighten2)
 </style>

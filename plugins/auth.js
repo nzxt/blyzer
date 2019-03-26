@@ -9,6 +9,7 @@ export default ({ app }, redirect) => {
 
   /* Only _actual_ login/outs (including resets) will be watched here. */
   $auth.$storage.watchState('loggedIn', (isLoggedIn) => {
+    debugger
     /* Follow @nuxtjs/auth workflow */
     !isLoggedIn && $auth.redirect('home')
 

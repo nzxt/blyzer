@@ -7,8 +7,9 @@
         v-spacer
         //- v-avatar(v-if='picture', size='36', color='grey lighten-4')
         //-   img(:src='avatar', alt='avatar')
-        v-icon.mdi-36px(@click='$auth.fetchUser()') mdi-logout
-        v-icon.mdi-36px(@click='$auth.logout()') mdi-account-circle-outline
+        v-btn(small icon @click='$auth.logout()')
+          v-icon.mdi-24px mdi-logout
+        v-icon.mdi-36px(@click='fetchUserProfile') mdi-account-circle-outline
       v-card-text.pt-0
           //- v-container(pa-0, grid-list-md)
           v-layout(wrap, justify-space-between, align-start)
@@ -90,6 +91,10 @@ export default class UserProfile extends Vue {
   get emailVerified (): Boolean {
     const { email_verified: emailVerified } = this.$auth.user
     return !!emailVerified
+  }
+
+  async fetchUserProfile () {
+    await this.$auth.fetchUser()
   }
 }
 </script>

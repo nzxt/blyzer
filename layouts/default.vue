@@ -29,7 +29,7 @@ v-app(light, v-hotkey='keymap')
       v-icon.mdi-36px(color='secondary') mdi-menu-open
 
   v-content
-    v-container(fluid fill-height, class="white")
+    v-container.pa-1(fluid fill-height, class="white")
       nuxt
 
   v-navigation-drawer(v-model='rightDrawer', right, :clipped='clippedRight', width='350', class="backpurple", dark, temporary, fixed, app)
@@ -46,7 +46,7 @@ v-app(light, v-hotkey='keymap')
       v-list-tile(v-for='(item, i) in items', :key='i', :to='item.to', router, exact)
         v-list-tile-action(class='justify-center')
         v-list-tile-content
-          v-list-tile-title.title(v-text='item.title')
+          v-list-tile-title(v-text='item.title')
           v-list-tile-sub-title.caption(v-text='item.descr')
         v-list-tile-action(class='justify-center')
           v-icon {{ item.icon }}
@@ -111,9 +111,19 @@ export default class DefaultLayout extends Vue {
     this.rightDrawer = !this.rightDrawer
   }
 
+  addNewMatch (): void {
+    this.$router.push('/new?type=match')
+  }
+
+  addNewTraining (): void {
+    this.$router.push('/new?type=training')
+  }
+
   get keymap () {
     return {
-      'ctrl+right': this.toggleRightDrawer
+      'ctrl+right': this.toggleRightDrawer,
+      'alt+m': this.addNewMatch,
+      'alt+t': this.addNewTraining
     }
   }
 }

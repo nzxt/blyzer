@@ -13,10 +13,10 @@ Vue.use(Vuetify, {
     current: 'en'
   },
   theme: {
-    primary: colors.blue.accent3,
-    secondary: colors.grey.darken2,
+    primary: colors.blue.darken3,
+    secondary: colors.grey.darken1,
     accent: colors.pink.darken1,
-    error: colors.red.accent3,
+    error: colors.red.darken3,
     warning: colors.deepOrange.darken1,
     info: colors.cyan.darken1,
     success: colors.green.darken1,
