@@ -2,62 +2,74 @@
 v-card
   v-form(v-model='valid', @submit.prevent='onSubmit')
     v-card-title
-      CircleLoader(
-        :loading='true',
-        color='blue',
-        :size='24',
-        sizeUnit='px'
-      )
-      v-spacer
-      div.title(v-if='trainingName')
-        | {{ trainingName }}
-        div.subheading
-          | {{ $moment(newTrainingDateTime).format('DD.MM.YYYY HH:mm') }}
-      div.title.grey--text(v-else)
-        | Please create new Training..
+      div.title.teal--text
+        | Let's create new Training..
       v-spacer
     v-card-text
       v-container(pa-0, grid-list-md)
-        v-layout(wrap, row, justify-space-between)
-          v-flex(xs12)
-            v-combobox(
-              dense
-              v-model='trainingName'
-              :items='["My 1st training", "My 2nd training", "My home training"]'
-              color='backpurple'
-              hide-no-data
-              hide-selected
-              label='Training name'
-              placeholder='Enter new training name'
-              prepend-icon='mdi-triforce'
-              clearable
-            )
-        v-layout(row, justify-space-between)
+        v-layout(row, justify-space-around)
           v-flex(xs5)
-            v-text-field(
-              dense
-              v-model='trainingDate'
-              color='backpurple'
-              label='Date'
-              prepend-icon='mdi-calendar'
-              readonly
+            v-menu(
+              ref='datePicker'
+              v-model='datePicker'
+              :close-on-content-click='false'
+              lazy
+              transition='scale-transition'
+              offset-y
+              full-width
+              max-width='290px'
+              min-width='290px'
             )
+              template(v-slot:activator='{ on }')
+                v-text-field(
+                  v-model='dateStamp'
+                  label='Date'
+                  prepend-icon='mdi-calendar'
+                  hint='Format: YYYY-MM-DD'
+                  persistent-hint
+                  readonly
+                  v-on='on'
+                )
+                  //- @blur='date = dateStamp'
+              v-date-picker(v-model='dateStamp', no-title, @input='datePicker = false')
+
           v-flex(xs4)
-            v-text-field(
-              dense
-              v-model='trainingTime'
-              color='backpurple'
-              label='Time'
-              prepend-icon='mdi-av-timer'
-              readonly
+            v-menu(
+              ref='timePicker'
+              v-model="timePicker"
+              :close-on-content-click="false"
+              :return-value.sync="timeStamp"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
             )
+              template(v-slot:activator="{ on }")
+                v-text-field(
+                  v-model="timeStamp"
+                  label="Time"
+                  prepend-icon="mdi-av-timer"
+                  hint='Format: HH:MM'
+                  persistent-hint
+                  readonly
+                  v-on="on"
+                )
+              v-time-picker(
+                v-if="timePicker"
+                v-model="timeStamp"
+                format="24hr"
+                full-width
+                @click:minute="$refs.timePicker.save(timeStamp)"
+              )
     v-card-actions
-      v-btn.secondary(small, @click='$router.push("/")')
+      v-btn.secondary.secondary--text(round, block, outline, @click='$router.push("/")')
         v-icon.mdi-18px(left) mdi-reply
         | {{ $t('forms.cancel') }}
       v-spacer
-      v-btn.primary(small, type='submit', :loading='isLoading', :disabled='!valid')
-        | {{ $t('forms.next') }}
+      v-btn.warning(round, block, :dark='valid' :outline='!valid', type='submit', :loading='isLoading', :disabled='!valid')
+        | {{ $t('forms.start') }}
         v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
 
@@ -65,52 +77,52 @@ v-card
 import { Component, Vue } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 
+import { ITraining } from 'types/interfaces' //eslint-disable-line
+import { Training } from '~/types/classes'
+
 @Component({})
 export default class AddTraining extends Vue {
+  $api
+  $auth
   $moment
+
   valid: Boolean = false
   isLoading: Boolean = false
 
-  trainingName: string | null = null
-  trainingDateTime: Date | null = null
+  datePicker: Boolean = false
+  timePicker: Boolean = false
+
+  dateStamp: Date = this.$moment().format('YYYY-MM-DD')
+  timeStamp: Date = this.$moment().format('HH:mm')
 
   @State('training') stateTraining
   @Mutation('setTraining') mutationSetTraining
 
-  created () {
-    const storedTraining = this.stateTraining
-    if (Object.getOwnPropertyNames(storedTraining).length !== 0) {
-      const {
-        trainingName,
-        trainingDateTime
-      } = storedTraining
-
-      this.trainingName = trainingName
-      this.trainingDateTime = trainingDateTime
-    }
-  }
-
-  onSubmit (): void {
+  async onSubmit (): Promise<any> {
     this.isLoading = true
 
-    this.mutationSetTraining({
-      trainingName: this.trainingName,
-      trainingDateTime: this.trainingDateTime
-    })
-
+    await this.createNewTraining()
     setTimeout(() => { this.isLoading = false }, 680)
   }
 
-  get newTrainingDateTime (): Date {
-    return new Date()
+  createNewTraining (): Promise<any> {
+    const item: ITraining = new Training(
+      this.dateTimeStamp,
+      this.$auth.user.appUserId
+    )
+    return this.$api.ApiTrainingPost({ item })
+      .then(({ data }) => {
+        item.id = data
+        this.mutationSetTraining(item)
+      })
+      .catch(err => console.log(err))
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 
-  get trainingDate (): string {
-    return this.$moment(this.newTrainingDateTime).format('DD.MM.YYYY')
-  }
-
-  get trainingTime (): string {
-    return this.$moment(this.newTrainingDateTime).format('HH:mm')
+  get dateTimeStamp (): Date {
+    return this.$moment(`${this.dateStamp} ${this.timeStamp}`).format()
   }
 }
 </script>

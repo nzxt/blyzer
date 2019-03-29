@@ -80,13 +80,13 @@ module.exports = {
     '~/plugins/vuetify',
     '~/plugins/async-computed',
     // '~/plugins/mixins',
-    // '~/plugins/filters',
+    '~/plugins/filters',
     '~/plugins/noty',
     '~/plugins/hotkey',
     '~/plugins/eventbus',
     '~/plugins/spinners',
     '~/plugins/flag-icon',
-    '~/plugins/nuxt-client-init',
+    // '~/plugins/nuxt-client-init',
     '~/plugins/tasty-burger-button'
   ],
 

@@ -1,7 +1,5 @@
-export default ({ app }, redirect) => {
+export default ({ app, store }, redirect) => {
   const { $auth } = app
-
-  if (!$auth.loggedIn) return
 
   $auth.onError((error, name, endpoint) => {
     console.error(endpoint, name, error)
@@ -9,13 +7,19 @@ export default ({ app }, redirect) => {
 
   /* Only _actual_ login/outs (including resets) will be watched here. */
   $auth.$storage.watchState('loggedIn', (isLoggedIn) => {
-    debugger
     /* Follow @nuxtjs/auth workflow */
-    !isLoggedIn && $auth.redirect('home')
+    if (isLoggedIn) {
+      store.dispatch('nuxtClientInit')
+      $auth.redirect('home')
+    } else {
+      $auth.redirect('logout')
+    }
 
     // const indexLocalePath = app.localePath('index')
     // !isLoggedIn && redirect('301', indexLocalePath)
   })
 
-  console.log(`[AUTH] Hi, ${$auth.userName}!`)
+  if (!$auth.loggedIn) return
+  store.dispatch('nuxtClientInit')
+  console.log(`[AUTH] Hi, ${$auth.user.userName}!`)
 }

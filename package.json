@@ -11,7 +11,8 @@
     "pug"
   ],
   "scripts": {
-    "dev": "nuxt -o",
+    "dev": "nuxt",
+    "devo": "nuxt -o",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

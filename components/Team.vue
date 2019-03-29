@@ -1,6 +1,9 @@
 <template lang="pug">
-  v-card(dark :color='teamColor === "red" ? "error" : "primary"' class='lighten-2')
-    v-card-title.py-1.title.font-weight-thin.justify-end {{ teamColor === "red" ? "RED team" : "BLUE team" }}
+  //- :color='teamColor === "red" ? "error lighten-5" : "primary lighten-5"'
+  v-card(class='lighten-2' :class='teamColor === "red" ? "red-team" : "blue-team"')
+    v-card-title.py-1.title.font-weight-thin.justify-end(
+      :class='teamColor === "red" ? "error--text" : "primary--text"'
+    ) {{ teamColor === "red" ? "RED team" : "BLUE team" }}
     v-divider
     v-card-text.pa-1
       v-combobox.mb-2(
@@ -10,7 +13,7 @@
         v-model='mb.player'
         :items='fetchedPlayers'
         :prepend-icon='`mdi-numeric-${mb.id}-box-outline`'
-        :label='`${mb.player ? `Classification: BC${mb.player.playerClassification}` : ""}`'
+        :label='`${mb.player ? `Classification: BC${mb.player.playerClassification+1}` : ""}`'
         :color='teamColor === "red" ? "error darken-3" : "primary darken-3"'
         :hint='`Choose player for ${mb.teamColor} box #${mb.id}`'
         :search-input.sync='search'
@@ -29,47 +32,49 @@
             v-avatar
               flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
             div {{ item.fullName }}
+        template(v-slot:item='{ index, item }')
+          v-list-tile-avatar
+            v-avatar
+              flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
+          v-list-tile-content
+            div {{ item.fullName }}
+          v-list-tile-action
+            div.body-2 BC{{item.playerClassification+1}}
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 import { State, Mutation, namespace } from 'vuex-class'
 import { AsyncComputed } from '~/utils/decorators'
-import { Box, Player } from '~/types/models' // eslint-disable-line
+import { Box, Player, Country } from '~/types/interfaces' // eslint-disable-line
 
-import Mixins from '~/mixins/mixins'
+import GlobalMixins from '~/mixins/global'
 import ValidateRules from '~/mixins/validate'
+import { pick } from '~/utils/helpers'
 
 import enums from '~/assets/enums'
-import * as dicts from '~/store/dicts'
 
+import * as dicts from '~/store/dicts'
 const Dicts = namespace(dicts.name)
 
 @Component({
-  mixins: [Mixins, ValidateRules]
+  mixins: [GlobalMixins, ValidateRules]
 })
 export default class Team extends Vue {
   $api
   search: string = ''
   matchBoxes: Array<Box> = []
-  players: Player[] = [
-    { id: '1', fullName: 'Artem Kolinko', countryId: 'UA', playerClassification: 1 },
-    { id: '2', fullName: 'Sergio Perry', countryId: 'US', playerClassification: 3 },
-    { id: '3', fullName: 'Bogdan Trips', countryId: 'GB', playerClassification: 1 },
-    { id: '9', fullName: 'Hoky Grow', countryId: 'JP', playerClassification: 4 },
-    { id: '7', fullName: 'Player 7', countryId: 'RU', playerClassification: 1 }
-  ]
 
-  @Prop({ default: 'red' }) readonly teamColor!: string
+  @Prop({ default: 'grey' }) readonly teamColor!: string
   @Prop({ default: 'Individual' }) readonly competitionType!: string
-  @Mutation('setMatchBoxes') mutationSetMatchBoxes
-
   @State('matchBoxes') stateMatchBoxes
-
   @Dicts.State('countries') dictsStateCountries
-  @Dicts.Action('fetchCountries') dictsActionFetchCountries
+  // @Dicts.Action('fetchCountries') dictsActionFetchCountries
 
-  get boxes (): Array<Box> {
+  @Mutation('setRedTeam') mutationSetRedTeam
+  @Mutation('setBlueTeam') mutationSetBlueTeam
+
+  get boxes (): Box[] {
     switch (this.competitionType) {
     case 'Individual': return enums.competitionBoxes.individual
     case 'Pair': return enums.competitionBoxes.pair
@@ -79,37 +84,39 @@ export default class Team extends Vue {
   }
 
   @Watch('boxes', { immediate: true, deep: true })
-  onChangeBoxes (val: Array<Box>) {
+  onChangeBoxes (val: Box[]) {
     if (val) {
       this.matchBoxes = val.filter(x => x.teamColor === this.teamColor)
     }
   }
 
   @Watch('matchBoxes', { immediate: true, deep: true })
-  onChangeMatchBoxes (val: Array<any>) {
-    const matchBoxesTeam = val.reduce((matchBoxes, mb) => {
-      !!mb.player && matchBoxes.push(mb.player)
-      return matchBoxes
+  onChangeMatchBoxes (val: Box[]): void {
+    const team = val.reduce((players: Player[], matchBox: Box) => {
+      if (matchBox.player) {
+        const _player = { ...matchBox.player, boxId: matchBox.id }
+        players.push(_player)
+      }
+      return players
     }, [])
 
-    const payload = this.teamColor === 'red' ? { redTeam: matchBoxesTeam } : { blueTeam: matchBoxesTeam }
-
-    this.mutationSetMatchBoxes(payload)
+    this.teamColor === 'red' ? this.mutationSetRedTeam(team) : this.mutationSetBlueTeam(team)
   }
 
-  @AsyncComputed()
-  fetchedPlayers () {
+  @AsyncComputed({ default: [] })
+  fetchedPlayers (): Player[] {
     let filter: string | undefined = ''
     if (this.search) { filter = `fullName.toUpper().Contains("${this.search}".toUpper())` } else return []
     filter = filter || undefined
     return this.$api.ApiPlayerGet({ filter })
       .then(({ data: { items } }) => {
-        return items
+        const _items = items.map(x => pick(x, 'id', 'fullName', 'playerClassification', 'countryId'))
+        return _items
       })
   }
 
-  countryById (id) {
-    if (!this.guidRegex.test(id)) return
+  countryById (id): Country | object {
+    if (!this.guidRegex.test(id)) return {}
     const country = this.dictsStateCountries.find(x => x.id === id)
     return country || {}
   }
@@ -120,9 +127,9 @@ export default class Team extends Vue {
 .flag-icon
   font-size 22px
   border-radius 50%
-// .v-card
-  // .red-team
-  //   border 2px solid var(--v-error-base)
-  // .blue-team
-  //   border 2px solid var(--v-primary-base)
+.v-card
+  .red-team
+    border 2px solid var(--v-warning-base)
+  .blue-team
+    border 2px solid var(--v-info-base)
 </style>

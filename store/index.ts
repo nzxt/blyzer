@@ -1,23 +1,27 @@
 /* eslint-disable */
 import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
-import { RootState } from '../types/models'
+import { RootState, ITournament, Match, ITraining, Player, Box } from '../types/interfaces'
 
 export const types = {
+  SET_TOURNAMENT: 'SET_TOURNAMENT',
   SET_MATCH: 'SET_MATCH',
   SET_TRAINING: 'SET_TRAINING',
-  SET_PLAYERS: 'SET_PLAYERS',
+  SET_REDTEAM: 'SET_REDTEAM',
+  SET_BLUETEAM: 'SET_BLUETEAM',
   SET_MATCHBOXES: 'SET_MATCHBOXES'
 }
 
 export interface State {
-  match: any;
-  training: any;
-  redTeam: Array<any>;
-  blueTeam: Array<any>;
-  matchBoxes: Array<any>;
+  tournament: ITournament | object | null;
+  match: Match | object;
+  training: ITraining | object;
+  redTeam: Player[];
+  blueTeam: Player[];
+  matchBoxes: Box[];
 }
 
 export const state = (): State => ({
+  tournament: null,
   match: {},
   training: {},
   redTeam: [],
@@ -26,16 +30,12 @@ export const state = (): State => ({
 })
 
 export const mutations: MutationTree<State> = {
-  setMatch: (state, value: any) => { state.match = value },
-  setTraining: (state, value: any) => { state.training = value },
-  setPlayers: (state, value: any) => {
-    const { redTeam, blueTeam } = value
-    state.redTeam = redTeam
-    state.blueTeam = blueTeam
-  },
-  setMatchBoxes: (state, value) => {
-    state.matchBoxes = value
-  }
+  setTournament: (state, value: ITournament) => { state.tournament = value },
+  setMatch: (state, value: Match) => { state.match = value },
+  setTraining: (state, value: ITraining) => { state.training = value },
+  setRedTeam: (state, value: Player[]) => { state.redTeam = value },
+  setBlueTeam: (state, value: Player[]) => { state.blueTeam = value },
+  setMatchBoxes: (state, value: Box[]) => { state.matchBoxes = value }
 }
 
 export interface Actions<S, R> extends ActionTree<S, R> {
@@ -44,12 +44,13 @@ export interface Actions<S, R> extends ActionTree<S, R> {
 
 export const actions: Actions<State, RootState> = {
   nuxtClientInit (store) {
-    debugger
     store.dispatch('dicts/fetchCountries')
+    store.dispatch('dicts/fetchTournamentTypes')
   }
 }
 
 export const getters: GetterTree<State, RootState> = {
+  getTournament: state => state.tournament,
   getMatch: state => state.match,
   getTraining: state => state.training
 }

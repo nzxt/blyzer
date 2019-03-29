@@ -29,7 +29,7 @@ v-app(light, v-hotkey='keymap')
       v-icon.mdi-36px(color='secondary') mdi-menu-open
 
   v-content
-    v-container.pa-1(fluid fill-height, class="white")
+    v-container.pa-1(fluid grid-list-md fill-height class='white')
       nuxt
 
   v-navigation-drawer(v-model='rightDrawer', right, :clipped='clippedRight', width='350', class="backpurple", dark, temporary, fixed, app)
@@ -51,7 +51,7 @@ v-app(light, v-hotkey='keymap')
         v-list-tile-action(class='justify-center')
           v-icon {{ item.icon }}
 
-  v-footer.px-3.justify-center(:inset='inset', height='24', style='min-height:24px;', app)
+  v-footer.px-3.justify-end(:inset='inset', height='24', style='min-height:24px;', app)
     span.caption.blue-grey--text.text--lighten-3.font-weight-bold boccialyzer © 2019. All rights reserved.
 </template>
 

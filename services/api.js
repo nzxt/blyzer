@@ -3,7 +3,7 @@ import qs from 'qs'
 export default class ApiService {
   constructor(ctx) {
     this.$axios = ctx.$axios
-    this.$domain = ctx.BASE_URL
+    this.$domain = ctx.$axios.defaults.baseURL
   }
   request(method, url, body, queryParameters, form, config) {
     method = method.toLowerCase()
@@ -892,6 +892,130 @@ export default class ApiService {
   }
   /**
    * Отримати список (пагінація)
+   * request: ApiMatchToPlayerGet
+   * @param pageNumber - Номер сторінки (за замовчуванням 1)
+   * @param pageSize - Кількість записів на сторінку (за замовчуванням 25)
+   * @param filter - Фільтр
+   * @param order - Сортування
+   */
+  ApiMatchToPlayerGet(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/MatchToPlayer'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['pageNumber'] !== undefined) {
+      queryParameters['pageNumber'] = parameters['pageNumber']
+    }
+    if (parameters['pageSize'] !== undefined) {
+      queryParameters['pageSize'] = parameters['pageSize']
+    }
+    if (parameters['filter'] !== undefined) {
+      queryParameters['filter'] = parameters['filter']
+    }
+    if (parameters['order'] !== undefined) {
+      queryParameters['order'] = parameters['order']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('get', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Модифікувати запис
+   * request: ApiMatchToPlayerPut
+   * @param item - Об'єкт
+   */
+  ApiMatchToPlayerPut(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/MatchToPlayer'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['item'] !== undefined) {
+      body = parameters['item']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('put', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Створити новий запис
+   * request: ApiMatchToPlayerPost
+   * @param item - Новий об'єкт
+   */
+  ApiMatchToPlayerPost(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/MatchToPlayer'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['item'] !== undefined) {
+      body = parameters['item']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('post', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Отримати деталі за ідентифікатором
+   * request: ApiMatchToPlayerByIdGet
+   * @param id - Ідентифікатор запису
+   */
+  ApiMatchToPlayerByIdGet(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/MatchToPlayer/{id}'
+    let body
+    let queryParameters = {}
+    let form = {}
+    path = path.replace('{id}', `${parameters['id']}`)
+    if (parameters['id'] === undefined) {
+      return Promise.reject(new Error('Missing required  parameter: id'))
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('get', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Видалити запис
+   * request: ApiMatchToPlayerByIdDelete
+   * @param id - Ідентифікатор
+   */
+  ApiMatchToPlayerByIdDelete(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/MatchToPlayer/{id}'
+    let body
+    let queryParameters = {}
+    let form = {}
+    path = path.replace('{id}', `${parameters['id']}`)
+    if (parameters['id'] === undefined) {
+      return Promise.reject(new Error('Missing required  parameter: id'))
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('delete', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Отримати список (пагінація)
    * request: ApiPlayerGet
    * @param pageNumber - Номер сторінки (за замовчуванням 1)
    * @param pageSize - Кількість записів на сторінку (за замовчуванням 25)
@@ -1140,6 +1264,130 @@ export default class ApiService {
   }
   /**
    * Отримати список (пагінація)
+   * request: ApiStageToPlayerGet
+   * @param pageNumber - Номер сторінки (за замовчуванням 1)
+   * @param pageSize - Кількість записів на сторінку (за замовчуванням 25)
+   * @param filter - Фільтр
+   * @param order - Сортування
+   */
+  ApiStageToPlayerGet(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/StageToPlayer'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['pageNumber'] !== undefined) {
+      queryParameters['pageNumber'] = parameters['pageNumber']
+    }
+    if (parameters['pageSize'] !== undefined) {
+      queryParameters['pageSize'] = parameters['pageSize']
+    }
+    if (parameters['filter'] !== undefined) {
+      queryParameters['filter'] = parameters['filter']
+    }
+    if (parameters['order'] !== undefined) {
+      queryParameters['order'] = parameters['order']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('get', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Модифікувати запис
+   * request: ApiStageToPlayerPut
+   * @param item - Об'єкт
+   */
+  ApiStageToPlayerPut(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/StageToPlayer'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['item'] !== undefined) {
+      body = parameters['item']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('put', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Створити новий запис
+   * request: ApiStageToPlayerPost
+   * @param item - Новий об'єкт
+   */
+  ApiStageToPlayerPost(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/StageToPlayer'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['item'] !== undefined) {
+      body = parameters['item']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('post', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Отримати деталі за ідентифікатором
+   * request: ApiStageToPlayerByIdGet
+   * @param id - Ідентифікатор запису
+   */
+  ApiStageToPlayerByIdGet(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/StageToPlayer/{id}'
+    let body
+    let queryParameters = {}
+    let form = {}
+    path = path.replace('{id}', `${parameters['id']}`)
+    if (parameters['id'] === undefined) {
+      return Promise.reject(new Error('Missing required  parameter: id'))
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('get', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Видалити запис
+   * request: ApiStageToPlayerByIdDelete
+   * @param id - Ідентифікатор
+   */
+  ApiStageToPlayerByIdDelete(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/StageToPlayer/{id}'
+    let body
+    let queryParameters = {}
+    let form = {}
+    path = path.replace('{id}', `${parameters['id']}`)
+    if (parameters['id'] === undefined) {
+      return Promise.reject(new Error('Missing required  parameter: id'))
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('delete', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Отримати список (пагінація)
    * request: ApiTournamentGet
    * @param pageNumber - Номер сторінки (за замовчуванням 1)
    * @param pageSize - Кількість записів на сторінку (за замовчуванням 25)
@@ -1372,6 +1620,130 @@ export default class ApiService {
     const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/TournamentType/{id}'
+    let body
+    let queryParameters = {}
+    let form = {}
+    path = path.replace('{id}', `${parameters['id']}`)
+    if (parameters['id'] === undefined) {
+      return Promise.reject(new Error('Missing required  parameter: id'))
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('delete', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Отримати список (пагінація)
+   * request: ApiTrainingGet
+   * @param pageNumber - Номер сторінки (за замовчуванням 1)
+   * @param pageSize - Кількість записів на сторінку (за замовчуванням 25)
+   * @param filter - Фільтр
+   * @param order - Сортування
+   */
+  ApiTrainingGet(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/Training'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['pageNumber'] !== undefined) {
+      queryParameters['pageNumber'] = parameters['pageNumber']
+    }
+    if (parameters['pageSize'] !== undefined) {
+      queryParameters['pageSize'] = parameters['pageSize']
+    }
+    if (parameters['filter'] !== undefined) {
+      queryParameters['filter'] = parameters['filter']
+    }
+    if (parameters['order'] !== undefined) {
+      queryParameters['order'] = parameters['order']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('get', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Модифікувати запис
+   * request: ApiTrainingPut
+   * @param item - Об'єкт
+   */
+  ApiTrainingPut(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/Training'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['item'] !== undefined) {
+      body = parameters['item']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('put', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Створити новий запис
+   * request: ApiTrainingPost
+   * @param item - Новий об'єкт
+   */
+  ApiTrainingPost(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/Training'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['item'] !== undefined) {
+      body = parameters['item']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('post', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Отримати деталі за ідентифікатором
+   * request: ApiTrainingByIdGet
+   * @param id - Ідентифікатор запису
+   */
+  ApiTrainingByIdGet(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/Training/{id}'
+    let body
+    let queryParameters = {}
+    let form = {}
+    path = path.replace('{id}', `${parameters['id']}`)
+    if (parameters['id'] === undefined) {
+      return Promise.reject(new Error('Missing required  parameter: id'))
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('get', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Видалити запис
+   * request: ApiTrainingByIdDelete
+   * @param id - Ідентифікатор
+   */
+  ApiTrainingByIdDelete(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/Training/{id}'
     let body
     let queryParameters = {}
     let form = {}

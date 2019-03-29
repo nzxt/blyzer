@@ -24,8 +24,8 @@ export default ({ store, app }) => {
       if (!date) return '--.--.---- --:--:--'
       const utcDate = moment(date)
       return utcDate.isValid()
-        ? utcDate.format('DD.MM.YYYY / HH:mm:ss')
-        : '--.--.---- --:--:--'
+        ? utcDate.format('DD.MM.YYYY / HH:mm')
+        : '--.--.---- --:--'
     },
 
     dateUTCToShort: (date) => {
@@ -39,15 +39,12 @@ export default ({ store, app }) => {
       if (date.isValid()) return date.format('DD.MM.YYYY')
     },
 
-    dateUTCToSmall: (date) => {
-      if (!date) return
-      const shortDate = moment(date, 'MM.YY', true)
-      if (shortDate.isValid()) {
-        date = shortDate
-      } else {
-        date = moment(date)
-      }
-      if (date.isValid()) return date.format('MM.YY')
+    dateUTCToDate: (date) => {
+      return (date && moment(date).isValid()) ? moment(date).format('DD.MM.YYYY') : date
+    },
+
+    dateUTCToTime: (date) => {
+      return (date && moment(date).isValid()) ? moment(date).format('HH:mm') : date
     },
 
     duration: (seconds) => {

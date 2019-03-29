@@ -10,12 +10,16 @@
         v-card-text.pa-1
           v-combobox.my-2(
             dense
-            v-model='tournamentName'
-            :items='["BISFed 2019 Zagreb", "BISFed 2019 Guangzhou Boccia", "BISFed 2019 Montreal Boccia"]'
+            v-model='tournament'
+            :items='[].concat(fetchedTournaments, ["BISFed 2019 Zagreb", "BISFed 2019 Guangzhou Boccia", "BISFed 2019 Montreal Boccia"])'
+            :search-input.sync='searchTournament'
+            item-text='name'
+            item-value='id'
             color='backpurple'
             hide-details
             hide-no-data
             hide-selected
+            return-object
             label='Tournament name'
             prepend-icon='mdi-trophy-award'
             autofocus
@@ -24,6 +28,21 @@
             //- persistent-hint
             //- :hint='tournamentName ? `Type: <span class="font-weight-bold">${tournamentTypes.find(x => x.value === tournamentType).name}</span>` : "Choose or enter tournament name..."'
             //- :rules='requiredField'
+          v-combobox.my-2(
+            dense
+            v-model='tournamentType'
+            :items='stateTournamentTypes'
+            item-text='name'
+            item-value='id'
+            return-object
+            hide-details
+            hide-no-data
+            hide-selected
+            label='Tournament type'
+            prepend-icon='mdi-shape-outline'
+            clearable
+          )
+
           v-combobox.my-2(
             dense
             v-model='stageType'
@@ -52,25 +71,42 @@
 
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
-import { vObj } from '~/types/models' // eslint-disable-line
+import { State, Mutation, namespace } from 'vuex-class'
+import { AsyncComputed } from '~/utils/decorators'
 
+import { vObj, ITournament, ITournamentType } from '~/types/interfaces' // eslint-disable-line
+import { Tournament } from '~/types/classes'
+
+import GlobalMixin from '~/mixins/global'
 import ValidateRules from '~/mixins/validate'
+import { isPlainObject, isEmptyObject } from '~/utils/helpers'
 
 import enums from '~/assets/enums'
 
+import * as dicts from '~/store/dicts'
+const Dicts = namespace(dicts.name)
+
 @Component({
-  mixins: [ValidateRules]
+  mixins: [GlobalMixin, ValidateRules]
 })
 export default class MatchInfo extends Vue {
+  $api
+
   panel: Boolean[] = [true]
-  tournamentTypes: Array<vObj> = enums.tournamentTypes
+  // tournamentTypes: Array<vObj> = enums.tournamentTypes
   stageTypes: Array<string> = enums.stageTypes
   // stageIndexes: Array<string> = enums.stageIndexes
 
   tournamentName: string | null = null
-  tournamentType: number | null = null
+  tournamentType: ITournamentType | null = null
   stageType: string | null = null
   stageIndex: number | null = null
+
+  searchTournament: string = ''
+
+  @State('tournament') stateTournament
+  @Dicts.State('tournamentTypes') stateTournamentTypes
+  @Mutation('setTournament') mutationSetTournament
 
   get stageIndexes (): Array<vObj> {
     switch (this.stageType) {
@@ -84,6 +120,45 @@ export default class MatchInfo extends Vue {
   onChangeStageType () {
     this.stageIndex = null
   }
+
+  get tournament (): ITournament {
+    const { stateTournament } = this
+    return isEmptyObject(stateTournament) ? null : stateTournament
+  }
+  set tournament (value: ITournament) {
+    if (isPlainObject(value)) {
+      this.mutationSetTournament(value)
+    } else if (typeof value === 'string') {
+      let tournamentTypeId: string
+      if (this.tournamentType && this.guidRegex.test(this.tournamentType.id)) {
+        tournamentTypeId = this.tournamentType.id
+        const item: ITournament = new Tournament(
+          value,
+          tournamentTypeId
+        )
+        this.$api.ApiTournamentPost({ item })
+          .then(({ data }) => {
+            item.id = data
+            this.mutationSetTournament(item)
+          })
+          .catch(err => console.log(err))
+      }
+    }
+  }
+
+  @AsyncComputed({ default: [] })
+  fetchedTournaments (): ITournament[] {
+    const { searchTournament } = this
+    let filter: string | undefined
+
+    if (searchTournament) filter = `Name.ToUpper().Contains("${searchTournament}".ToUpper())`
+
+    filter = filter || undefined
+
+    return this.$api.ApiTournamentGet(filter)
+      .then(({ data: { items } }) => items)
+  }
+  // createNewTournament() { }
 }
 </script>
 

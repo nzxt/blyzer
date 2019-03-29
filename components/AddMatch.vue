@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card(style='min-width:413px')
+v-card(style='min-width:360px')
   v-form(v-model='valid' @submit.prevent='onSubmit')
     v-card-text.pa-1
       v-btn-toggle(v-model='competition' mandatory)
@@ -25,6 +25,9 @@ v-card(style='min-width:413px')
           | Team
           v-icon.mdi-24px.ml-1 mdi-account-group
     v-card-text.pa-1
+      v-chip(small label dark flat color='cyan darken-1' v-for='d in divisions' :key='d.value')
+        div.font-weight-thin {{ d.text }}
+    v-card-text.pa-1
       Team(teamColor='red' :competitionType='competition')
     v-card-text.pa-1
       Team(teamColor='blue' :competitionType='competition')
@@ -43,10 +46,11 @@ v-card(style='min-width:413px')
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 
-import { vObj } from '~/types/models' // eslint-disable-line
+import { vObj } from '~/types/interfaces' // eslint-disable-line
 
 import Team from '~/components/Team.vue'
 import MatchInfo from '~/components/MatchInfo.vue'
+
 import ValidateRules from '~/mixins/validate'
 
 import enums from '~/assets/enums'
