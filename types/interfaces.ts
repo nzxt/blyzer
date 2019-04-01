@@ -1,6 +1,6 @@
-export interface RootState {}
+export interface IRootState {}
 
-export interface vObj {
+export interface IObj {
   id?: number;
   value: string | number;
   text: string;
@@ -15,25 +15,25 @@ export interface ITournament {
 }
 
 export interface ITournamentType {
-  id: string;
+  id?: string;
   name: string;
   abbr: string;
   isBisFed: boolean;
   icon?: string;
 }
 
-export interface Match {
-  id: string;
-  dateTimeStamp: string;
-  matchType: string;
-  competitionEvent: string;
-  poolStage: string;
-  eliminationStage: string;
-  scoreRed: number;
-  scoreBlue: number;
+export interface IMatch {
+  id?: string;
+  dateTimeStamp: Date;
+  matchType?: number;
+  competitionEvent?: number;
+  poolStage?: number;
+  eliminationStage?: number;
+  scoreRed?: number;
+  scoreBlue?: number;
   appUserId: string;
-  trainingId: string;
-  tournamentId: string;
+  trainingId?: string;
+  tournamentId?: string;
 }
 
 export interface ITraining {
@@ -42,14 +42,14 @@ export interface ITraining {
   appUserId: string;
 }
 
-export interface Player {
+export interface IPlayer {
   id: string;
   fullName: string;
   playerClassification: number;
   countryId: string;
 }
 
-export interface Country {
+export interface ICountry {
   id: string
   name: string
   code: number
@@ -57,8 +57,8 @@ export interface Country {
   alpha3: string
 }
 
-export interface Box {
+export interface IBox {
   id: number;
   teamColor: string;
-  player?: Player;
+  player?: IPlayer;
 }

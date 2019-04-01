@@ -1,38 +1,51 @@
 <template lang="pug">
-v-card(style='min-width:360px')
+v-card(flat style='min-width:360px')
   v-form(v-model='valid' @submit.prevent='onSubmit')
     v-card-text.pa-1
-      v-btn-toggle(v-model='competition' mandatory)
+      v-btn-toggle(v-model='competitionType' mandatory)
         v-btn.font-weight-bold(
           flat
-          value='Individual'
-          :class='competition==="Individual" ? activeCompetitionClass : ""'
-        )
-          | Individual
+          value='individual'
+          :class='competitionType==="individual" ? activeCompetitionClass : ""'
+        ) Individual
           v-icon.mdi-24px.ml-1 mdi-account
         v-btn.font-weight-bold.mx-1(
           flat
-          value='Pair'
-          :class='competition==="Pair" ? activeCompetitionClass : ""'
-        )
-          | Pair
+          value='pair'
+          :class='competitionType==="pair" ? activeCompetitionClass : ""'
+        ) Pair
           v-icon.mdi-24px.ml-1 mdi-account-supervisor
         v-btn.font-weight-bold(
           flat
-          value='Team'
-          :class='competition==="Team" ? activeCompetitionClass : ""'
-        )
-          | Team
+          value='team'
+          :class='competitionType==="team" ? activeCompetitionClass : ""'
+        ) Team
           v-icon.mdi-24px.ml-1 mdi-account-group
+
     v-card-text.pa-1
-      v-chip(small label dark flat color='cyan darken-1' v-for='d in divisions' :key='d.value')
-        div.font-weight-thin {{ d.text }}
+      v-item-group(v-model='competitionEvent' mandatory)
+        v-item(
+          v-for='d in competitionEvents'
+          :key='d.value'
+          :value='d.id'
+        )
+          v-chip(
+            slot-scope="{ active, toggle }"
+            @click="toggle"
+            :selected="active"
+            :color='active ? activeDivisionClass : "blue-grey darken-1"'
+            small label dark flat
+          )
+            div.font-weight-thin {{ d.text }}
+
     v-card-text.pa-1
-      Team(teamColor='red' :competitionType='competition')
+      Team(ref='redTeam' teamColor='red' :competitionType='competitionType')
     v-card-text.pa-1
-      Team(teamColor='blue' :competitionType='competition')
+      Team(ref='blueTeam' teamColor='blue' :competitionType='competitionType')
+
     v-card-text.pa-1
-      MatchInfo
+      MatchInfo(ref='matchInfo')
+
     v-card-actions
       v-btn.secondary.secondary--text(round, block, outline, @click='$router.push("/")')
         v-icon.mdi-18px(left) mdi-reply
@@ -46,12 +59,14 @@ v-card(style='min-width:360px')
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 
-import { vObj } from '~/types/interfaces' // eslint-disable-line
+import { IObj, IMatch } from '~/types/interfaces' // eslint-disable-line
+import { Match } from '~/types/classes'
 
 import Team from '~/components/Team.vue'
 import MatchInfo from '~/components/MatchInfo.vue'
 
 import ValidateRules from '~/mixins/validate'
+// import { isNumeric } from '~/utils/helpers'
 
 import enums from '~/assets/enums'
 
@@ -63,74 +78,67 @@ import enums from '~/assets/enums'
   }
 })
 export default class AddMatch extends Vue {
+  $api
   $bus
+  $auth
+  $moment
 
   valid: Boolean = false
   isLoading: Boolean = false
 
-  competition: string = 'Individual'
-  division: number = 4
+  competitionType: string = 'individual'
+  competitionEvent: number = 4
+
+  match: IMatch | null = null
 
   @State('match') stateMatch
   @Mutation('setMatch') mutationSetMatch
 
-  created () {
-    const storedMatch = this.stateMatch
-    if (Object.getOwnPropertyNames(storedMatch).length !== 0) {
-      const {
-        // tournamentName,
-        // tournamentType,
-        competition,
-        division
-        // stage,
-        // stageIndex
-      } = storedMatch
-
-      // this.tournamentName = tournamentName
-      // this.tournamentType = tournamentType
-      this.competition = competition
-      this.division = division
-      // this.stage = stage
-      // this.stageIndex = stageIndex
-    }
-  }
+  // created () {}
 
   onSubmit (): void {
     this.isLoading = true
 
-    this.mutationSetMatch({
-      competition: this.competition,
-      division: this.division
-    })
+    this.createMatch(this.$moment.format())
 
     setTimeout(() => {
       this.isLoading = false
-      this.$bus.$emit('setValues')
+      this.$bus.$emit('setBalls')
     }, 680)
   }
 
-  @Watch('competition')
-  onCompetitionChange (val: string) {
-    if (val === 'Team') {
-      this.division = enums.divisions.team[0].value
-    }
+  async createMatch (dateTimeStamp: Date) {
+    const item: IMatch = new Match(dateTimeStamp, this.$auth.user.appUserId)
+    debugger
+    await this.$api.ApiMatchPost({ item })
+      .then(({ data }) => {
+        debugger
+        item.id = data
+        this.mutationSetMatch(item)
+      })
+      .catch(err => console.log(err))
   }
 
-  get divisions (): Array<vObj> {
-    switch (this.competition) {
-    case 'Individual': return enums.divisions.individual
-    case 'Pair': return enums.divisions.pair
-    case 'Team': return enums.divisions.team
-    default: return []
+  @Watch('competitionType')
+  onCompetitionChange (val: string) {
+    this.competitionEvent = enums.competitionEvents[val][0].id
+  }
+
+  get competitionEvents (): Array<IObj> {
+    switch (this.competitionType) {
+    case 'individual': return enums.competitionEvents.individual
+    case 'pair': return enums.competitionEvents.pair
+    case 'team': return enums.competitionEvents.team
+    default: return enums.competitionEvents.default
     }
   }
 
   get activeCompetitionClass (): string {
-    return 'blue-grey lighten-1 white--text'
+    return 'blue lighten-1 white--text'
   }
 
   get activeDivisionClass (): string {
-    return 'light-blue lighten-3 white--text'
+    return 'orange white--text'
   }
 }
 </script>

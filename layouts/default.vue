@@ -51,6 +51,12 @@ v-app(light, v-hotkey='keymap')
         v-list-tile-action(class='justify-center')
           v-icon {{ item.icon }}
 
+  //- v-progress-linear(
+  //-   indeterminate
+  //-   color="white"
+  //-   class="mb-0"
+  //- )
+
   v-footer.px-3.justify-end(:inset='inset', height='24', style='min-height:24px;', app)
     span.caption.blue-grey--text.text--lighten-3.font-weight-bold boccialyzer © 2019. All rights reserved.
 </template>

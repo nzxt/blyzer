@@ -14,18 +14,19 @@
         :items='fetchedPlayers'
         :prepend-icon='`mdi-numeric-${mb.id}-box-outline`'
         :label='`${mb.player ? `Classification: BC${mb.player.playerClassification+1}` : ""}`'
-        :color='teamColor === "red" ? "error darken-3" : "primary darken-3"'
-        :hint='`Choose player for ${mb.teamColor} box #${mb.id}`'
-        :search-input.sync='search'
+        :color='teamColor === "red" ? "warning darken-1" : "info darken-1"'
+        :search-input.sync='search[`${mb.id}`]'
         item-text='fullName'
         item-value='id'
+        hide-details
         hide-no-data
-        :hide-details='!!mb.player'
         hide-selected
-        :persistent-hint='!mb.player'
         :rules='requiredField'
         clearable
       )
+        //- :hide-details='!!mb.player'
+        //- :persistent-hint='!mb.player'
+        //- :hint='`Choose player for ${mb.teamColor} box #${mb.id}`'
         //- :hint='tournamentName ? `Type: <span class="body-2">${tournamentTypes.find(x => x.value === tournamentType).name}</span>` : "Choose or enter tournament name..."'
         template(v-slot:selection='{ item, index }')
           v-chip(small)
@@ -44,9 +45,9 @@
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
-import { State, Mutation, namespace } from 'vuex-class'
+import { State, Mutation, Getter, namespace } from 'vuex-class'
 import { AsyncComputed } from '~/utils/decorators'
-import { Box, Player, Country } from '~/types/interfaces' // eslint-disable-line
+import { IBox, IPlayer, ICountry } from '~/types/interfaces' // eslint-disable-line
 
 import GlobalMixins from '~/mixins/global'
 import ValidateRules from '~/mixins/validate'
@@ -62,37 +63,39 @@ const Dicts = namespace(dicts.name)
 })
 export default class Team extends Vue {
   $api
-  search: string = ''
-  matchBoxes: Array<Box> = []
+  search: string[] = []
+  matchBoxes: Array<IBox> = []
 
   @Prop({ default: 'grey' }) readonly teamColor!: string
-  @Prop({ default: 'Individual' }) readonly competitionType!: string
+  @Prop({ default: 'individual' }) readonly competitionType!: string
+
   @State('matchBoxes') stateMatchBoxes
+  @Getter('getPlayers') getterGetPlayers
   @Dicts.State('countries') dictsStateCountries
   // @Dicts.Action('fetchCountries') dictsActionFetchCountries
 
   @Mutation('setRedTeam') mutationSetRedTeam
   @Mutation('setBlueTeam') mutationSetBlueTeam
 
-  get boxes (): Box[] {
+  get boxes (): IBox[] {
     switch (this.competitionType) {
-    case 'Individual': return enums.competitionBoxes.individual
-    case 'Pair': return enums.competitionBoxes.pair
-    case 'Team': return enums.competitionBoxes.team
+    case 'individual': return enums.competitionBoxes.individual
+    case 'pair': return enums.competitionBoxes.pair
+    case 'team': return enums.competitionBoxes.team
     default: return enums.competitionBoxes.individual
     }
   }
 
   @Watch('boxes', { immediate: true, deep: true })
-  onChangeBoxes (val: Box[]) {
-    if (val) {
+  onChangeBoxes (val: IBox[]) {
+    if (val.length) {
       this.matchBoxes = val.filter(x => x.teamColor === this.teamColor)
     }
   }
 
   @Watch('matchBoxes', { immediate: true, deep: true })
-  onChangeMatchBoxes (val: Box[]): void {
-    const team = val.reduce((players: Player[], matchBox: Box) => {
+  onChangeMatchBoxes (val: IBox[]): void {
+    const team = val.reduce((players: IPlayer[], matchBox: IBox) => {
       if (matchBox.player) {
         const _player = { ...matchBox.player, boxId: matchBox.id }
         players.push(_player)
@@ -104,18 +107,42 @@ export default class Team extends Vue {
   }
 
   @AsyncComputed({ default: [] })
-  fetchedPlayers (): Player[] {
+  fetchedPlayers (): IPlayer[] {
     let filter: string | undefined = ''
-    if (this.search) { filter = `fullName.toUpper().Contains("${this.search}".toUpper())` } else return []
+    let order: string | undefined = ''
+
+    const search = this.search.find(x => !!x)
+    if (search) { filter = `fullName.toUpper().Contains("${search}".toUpper())` } else return []
+
+    const { selectedPlayersIds } = this
+    if (selectedPlayersIds) {
+      let filteredPlayersIds: string = ''
+      for (let i = 0; i < selectedPlayersIds.length; i++) {
+        filteredPlayersIds += `${filteredPlayersIds ? '&' : ''}` + `id!="${selectedPlayersIds[i]}"`
+      }
+      if (filteredPlayersIds) filter += `${filter ? '&' : ''}(${filteredPlayersIds})`
+    }
+
+    order = 'countryId ASC'
+
     filter = filter || undefined
-    return this.$api.ApiPlayerGet({ filter })
+    order = order || undefined
+
+    return this.$api.ApiPlayerGet({ filter, order })
       .then(({ data: { items } }) => {
         const _items = items.map(x => pick(x, 'id', 'fullName', 'playerClassification', 'countryId'))
         return _items
       })
   }
 
-  countryById (id): Country | object {
+  get selectedPlayersIds (): string[] {
+    return this.getterGetPlayers.reduce((selectedPlayersIds: string[], player: IPlayer) => {
+      selectedPlayersIds.push(player.id)
+      return selectedPlayersIds
+    }, [])
+  }
+
+  countryById (id): ICountry | object {
     if (!this.guidRegex.test(id)) return {}
     const country = this.dictsStateCountries.find(x => x.id === id)
     return country || {}
@@ -128,8 +155,10 @@ export default class Team extends Vue {
   font-size 22px
   border-radius 50%
 .v-card
+  border-radius: 7px;
+  border 3px solid var(--v-secondary-base)
   .red-team
-    border 2px solid var(--v-warning-base)
+    border-color var(--v-warning-base)
   .blue-team
-    border 2px solid var(--v-info-base)
+    border-color var(--v-info-base)
 </style>

@@ -8,7 +8,7 @@ v-card
     v-card-text
       v-container(pa-0, grid-list-md)
         v-layout(row, justify-space-around)
-          v-flex(xs5)
+          v-flex(xs6)
             v-menu(
               ref='datePicker'
               v-model='datePicker'
@@ -33,7 +33,7 @@ v-card
                   //- @blur='date = dateStamp'
               v-date-picker(v-model='dateStamp', no-title, @input='datePicker = false')
 
-          v-flex(xs4)
+          v-flex(xs5)
             v-menu(
               ref='timePicker'
               v-model="timePicker"

@@ -1,4 +1,10 @@
 module.exports = {
+  matchTypes: [
+    { id: 0, value: 'none', text: 'None' },
+    { id: 1, value: 'tournament', text: 'Tournament' },
+    { id: 2, value: 'training', text: 'Training' }
+  ],
+
   playerClassifications: [
     { id: 0, value: 'bc1', text: 'BC1' },
     { id: 1, value: 'bc2', text: 'BC2' },
@@ -6,76 +12,89 @@ module.exports = {
     { id: 3, value: 'bc4', text: 'BC4' }
   ],
 
-  tournamentTypes: [
-    { value: 1, text: 'World Championships' },
-    { value: 2, text: 'Regional Championships' },
-    { value: 3, text: 'World Open' },
-    { value: 4, text: 'Regional Open' },
-    { value: 5, text: 'Paralympic Games' }
-  ],
+  competitionTypes: ['individual', 'pair', 'team'],
 
-  competitionTypes: ['Individual', 'Pair', 'Team'],
-
-  divisions: {
+  competitionEvents: {
+    default: [
+      { id: 0, value: 'none', text: 'None' }
+    ],
     individual: [
-      { value: 1, text: 'BC1' },
-      { value: 2, text: 'BC2' },
-      { value: 3, text: 'BC3' },
-      { value: 4, text: 'BC4' }
+      { id: 1, value: 'bc1', text: 'BC1' },
+      { id: 2, value: 'bc2', text: 'BC2' },
+      { id: 3, value: 'bc3', text: 'BC3' },
+      { id: 4, value: 'bc4', text: 'BC4' }
     ],
-
     pair: [
-      { value: 1, text: 'BC3' },
-      { value: 2, text: 'BC4' }
+      { id: 5, value: 'pairBc3', text: 'BC3' },
+      { id: 6, value: 'pairBc4', text: 'BC4' }
     ],
-
     team: [
-      { value: 1, text: 'BC1/BC2' }
+      { id: 7, value: 'teamBc1Bc2', text: 'BC1/BC2' }
     ]
   },
 
-  stageTypes: ['Pool', 'Elimination'],
+  stageTypes: ['pool', 'elimination'],
 
   stageIndexes: {
     pool: [
-      { value: 1, text: '1st match' },
-      { value: 2, text: '2nd match' },
-      { value: 3, text: '3rd match' },
-      { value: 4, text: '4th match' },
-      { value: 5, text: '5th match' }
+      { id: 0, value: 'none', text: 'None' },
+      { id: 1, value: 'poolA', text: '1st match' },
+      { id: 2, value: 'poolB', text: '2nd match' },
+      { id: 3, value: 'poolC', text: '3rd match' },
+      { id: 4, value: 'poolD', text: '4th match' },
+      { id: 5, value: 'poolE', text: '5th match' },
+      { id: 6, value: 'poolF', text: '6th match' },
+      { id: 7, value: 'poolG', text: '7th match' }
     ],
 
     elimination: [
-      { value: 1, text: '1/8 Final' },
-      { value: 2, text: '1/4 Final' },
-      { value: 3, text: '1/2 Final' },
-      { value: 4, text: 'Bronze Final' },
-      { value: 5, text: 'Final' }
+      { id: 0, value: 'none', text: 'None' },
+      { id: 1, value: 'final8', text: '1/8 Final' },
+      { id: 2, value: 'final4', text: '1/4 Final' },
+      { id: 3, value: 'final2', text: '1/2 Final' },
+      { id: 4, value: 'bronzeFinal', text: 'Bronze Final' },
+      { id: 5, value: 'final', text: 'Final' }
     ]
   },
 
   scoredBallTypes: [
-    { value: 1, text: 'First ball' },
-    { value: 2, text: 'Placement' },
-    { value: 3, text: 'Push on' },
-    { value: 4, text: 'Push off' },
-    { value: 5, text: 'Smash' },
-    { value: 6, text: 'Ricochet' },
-    { value: 7, text: 'Bounce over' },
-    { value: 8, text: 'Roll on top' },
-    { value: 9, text: 'Roll up and over' },
-    { value: 10, text: 'Lob shot' }
+    { id: 1, value: 'firstBall', text: 'First ball' },
+    { id: 2, value: 'placement', text: 'Placement' },
+    { id: 3, value: 'pushOn', text: 'Push on' },
+    { id: 4, value: 'pushOff', text: 'Push off' },
+    { id: 5, value: 'smash', text: 'Smash' },
+    { id: 6, value: 'ricochet', text: 'Ricochet' },
+    { id: 7, value: 'bounceOver', text: 'Bounce over' },
+    { id: 8, value: 'rollOnTop', text: 'Roll on top' },
+    { id: 9, value: 'rollUpAndOver', text: 'Roll up and over' },
+    { id: 10, value: 'lobbingShot', text: 'Lob shot' }
   ],
 
   deadBallTypes: [
-    { value: 1, text: 'Violation' },
-    { value: 2, text: 'Time expiring' },
-    { value: 3, text: 'Balls Not Thrown' }
+    { id: 0, value: 'none', text: 'None' },
+    { id: 3, value: 'ballsNotThrown', text: 'Balls Not Thrown' },
+    { id: 1, value: 'violation', text: 'Violation' },
+    { id: 2, value: 'timeIsOut', text: 'Time expiring' }
   ],
 
   competitionBoxes: {
-    individual: [{ id: 3, teamColor: 'red' }, { id: 4, teamColor: 'blue' }],
-    pair: [{ id: 2, teamColor: 'red' }, { id: 3, teamColor: 'blue' }, { id: 4, teamColor: 'red' }, { id: 5, teamColor: 'blue' }],
-    team: [{ id: 1, teamColor: 'red' }, { id: 2, teamColor: 'blue' }, { id: 3, teamColor: 'red' }, { id: 4, teamColor: 'blue' }, { id: 5, teamColor: 'red' }, { id: 6, teamColor: 'blue' }]
+    individual: [
+      { id: 3, teamColor: 'red' },
+      { id: 4, teamColor: 'blue' }
+    ],
+    pair: [
+      { id: 2, teamColor: 'red' },
+      { id: 3, teamColor: 'blue' },
+      { id: 4, teamColor: 'red' },
+      { id: 5, teamColor: 'blue' }
+    ],
+    team: [
+      { id: 1, teamColor: 'red' },
+      { id: 2, teamColor: 'blue' },
+      { id: 3, teamColor: 'red' },
+      { id: 4, teamColor: 'blue' },
+      { id: 5, teamColor: 'red' },
+      { id: 6, teamColor: 'blue' }
+    ]
   }
 }

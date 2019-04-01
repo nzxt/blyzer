@@ -13,7 +13,7 @@ import { Component, Watch, Vue } from 'vue-property-decorator'
   components: {
     AddMatch: () => import('~/components/AddMatch.vue'),
     AddTraining: () => import('~/components/AddTraining.vue'),
-    AddPlayers: () => import('~/components/AddPlayers.vue'),
+    // AddPlayers: () => import('~/components/AddPlayers.vue'),
     AddBalls: () => import('~/components/AddBalls.vue')
   }
 })
@@ -34,15 +34,15 @@ export default class NewPage extends Vue {
 
     this.$bus.$on('setMatch', this.onSetMatch)
     this.$bus.$on('setTraining', this.onSetTraining)
-    this.$bus.$on('setPlayers', this.onSetPlayers)
-    this.$bus.$on('setValues', this.onSetValues)
+    // this.$bus.$on('setPlayers', this.onSetPlayers)
+    this.$bus.$on('setBalls', this.onSetBalls)
   }
 
   beforeDestroy () {
     this.$bus.$off('AddMatch')
     this.$bus.$off('AddTraining')
-    this.$bus.$off('setPlayers')
-    this.$bus.$off('setValues')
+    // this.$bus.$off('setPlayers')
+    this.$bus.$off('setBalls')
   }
 
   onSetMatch () : void {
@@ -53,11 +53,11 @@ export default class NewPage extends Vue {
     this.component = 'AddTraining'
   }
 
-  onSetPlayers () : void {
-    this.component = 'AddPlayers'
-  }
+  // onSetPlayers () : void {
+  //   this.component = 'AddPlayers'
+  // }
 
-  onSetValues () : void {
+  onSetBalls () : void {
     this.component = 'AddBalls'
   }
 

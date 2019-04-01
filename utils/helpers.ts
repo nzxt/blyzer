@@ -4,6 +4,10 @@ export function pick<T, K extends keyof T> (obj: T, ...keys: K[]): Pick<T, K> {
   return copy
 }
 
+export function isNumeric (n) {
+  return !isNaN(parseFloat(n)) && isFinite(n)
+}
+
 export function isPlainObject (obj: any): Boolean {
   return obj === Object(obj)
 }

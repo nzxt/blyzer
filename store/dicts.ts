@@ -1,8 +1,7 @@
 /* eslint-disable */
 import { ActionContext, ActionTree, MutationTree } from 'vuex'
-import { RootState, Country, ITournamentType } from '../types/interfaces'
+import { IRootState, ICountry, ITournamentType } from '../types/interfaces'
 import { pick } from '~/utils/helpers';
-
 
 export const types = {
   SET_COUNTRIES: 'SET_COUNTRIES',
@@ -10,7 +9,7 @@ export const types = {
 }
 
 export interface State {
-  countries: Country[],
+  countries: ICountry[],
   tournamentTypes: ITournamentType[],
 }
 
@@ -24,7 +23,7 @@ export const state = (): State => ({
 })
 
 export const mutations: MutationTree<State> = {
-  [types.SET_COUNTRIES]: (state, value: Country[]) => { state.countries = value },
+  [types.SET_COUNTRIES]: (state, value: ICountry[]) => { state.countries = value },
   [types.SET_TOURNAMENT_TYPES]: (state, value: ITournamentType[]) => { state.tournamentTypes = value }
 }
 
@@ -33,7 +32,7 @@ export interface Actions<S, R> extends ActionTree<S, R> {
   fetchTournamentTypes (context: ActionContext<S, R>): void
 }
 
-export const actions: Actions<State, RootState> = {
+export const actions: Actions<State, IRootState> = {
   async fetchCountries ({ commit }) {
     await this.$api.ApiCountryGet({ pageSize: 300 })
       .then(({ data: { items } }) => {

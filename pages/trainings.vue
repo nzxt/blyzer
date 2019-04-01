@@ -1,7 +1,7 @@
 <template lang="pug">
 v-flex(layout wrap xs12)
   NoResults(eventType='Training' v-if='!fetchedTrainings.length')
-  v-container.pa-1(fluid v-else)
+  v-container.pa-1(fluid justify-start align-start v-else)
     v-layout
       v-flex(xs12)
         v-data-iterator(
