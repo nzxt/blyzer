@@ -57,16 +57,16 @@ v-card(flat style='min-width:360px')
 
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
-import { State, Mutation } from 'vuex-class'
+import { State, Mutation, Getter } from 'vuex-class'
 
-import { IObj, IMatch } from '~/types/interfaces' // eslint-disable-line
-import { Match } from '~/types/classes'
+import { IObj, IMatch, IMatchToPlayer } from '~/types/interfaces' // eslint-disable-line
+import { Match, MatchToPlayer } from '~/types/classes'
 
 import Team from '~/components/Team.vue'
 import MatchInfo from '~/components/MatchInfo.vue'
 
 import ValidateRules from '~/mixins/validate'
-// import { isNumeric } from '~/utils/helpers'
+import { isPlainObject } from '~/utils/helpers'
 
 import enums from '~/assets/enums'
 
@@ -81,6 +81,7 @@ export default class AddMatch extends Vue {
   $api
   $bus
   $auth
+  $refs
   $moment
 
   valid: Boolean = false
@@ -93,26 +94,46 @@ export default class AddMatch extends Vue {
 
   @State('match') stateMatch
   @Mutation('setMatch') mutationSetMatch
+  @Getter('getPlayers') getterGetPlayers
 
-  // created () {}
-
-  onSubmit (): void {
+  async onSubmit (): Promise<any> {
     this.isLoading = true
-
-    this.createMatch(this.$moment.format())
-
+    await this.createMatch(this.prepareMatch())
     setTimeout(() => {
       this.isLoading = false
       this.$bus.$emit('setBalls')
     }, 680)
   }
 
-  async createMatch (dateTimeStamp: Date) {
-    const item: IMatch = new Match(dateTimeStamp, this.$auth.user.appUserId)
-    debugger
+  prepareMatch (): IMatch {
+    const tournament = this.$refs.matchInfo.tournament
+    // const tournamentType = this.$refs.matchInfo.tournamentType
+    const stageType = this.$refs.matchInfo.stageType
+    const stageIndex = this.$refs.matchInfo.stageIndex
+    const players = this.getterGetPlayers
+
+    const item: IMatch = new Match(this.$moment().format(), this.$auth.user.appUserId)
+
+    item.matchType = 1
+    item.competitionEvent = this.competitionEvent
+
+    if (tournament) item.tournamentId = tournament.id
+    if (isPlainObject(stageIndex)) {
+      if (stageType === 'pool') item.poolStage = stageIndex.id
+      if (stageType === 'elimination') item.eliminationStage = stageIndex.id
+    }
+
+    const matchToPlayers: IMatchToPlayer[] = players.map((x) => {
+      return new MatchToPlayer(x.boxId, x.id)
+    })
+
+    item.matchToPlayers = matchToPlayers
+    return item
+  }
+
+  async createMatch (item: IMatch): Promise<any> {
     await this.$api.ApiMatchPost({ item })
       .then(({ data }) => {
-        debugger
         item.id = data
         this.mutationSetMatch(item)
       })
@@ -120,8 +141,8 @@ export default class AddMatch extends Vue {
   }
 
   @Watch('competitionType')
-  onCompetitionChange (val: string) {
-    this.competitionEvent = enums.competitionEvents[val][0].id
+  onCompetitionChange (value: string) {
+    this.competitionEvent = enums.competitionEvents[value][0].id
   }
 
   get competitionEvents (): Array<IObj> {

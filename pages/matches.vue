@@ -1,15 +1,133 @@
 <template lang="pug">
 v-layout
-  NoResults(eventType='Match')
+  NoResults(eventType='Match' v-if='!fetchedMatches.length')
+  v-container.pa-1(fluid justify-start align-start v-else-if='!currentMatch')
+    v-layout
+      v-flex(xs12)
+        v-data-iterator(
+          :items='fetchedMatches'
+          :rows-per-page-items='rowsPerPageItems'
+          :pagination.sync='pagination'
+          :total-items='pagination.totalItems'
+          content-class='match'
+          hide-actions
+        )
+          template(v-slot:header)
+            v-toolbar(
+              class='mb-2'
+              color='indigo darken-5'
+              dark
+              flat
+            )
+              v-toolbar-title
+                div.title Your Matches
+                div.subheading Total matches: {{ pagination.totalItems }}
+              v-spacer
+              v-toolbar-items
+                //- v-flex.mt-1
+                  div.caption Row per page:
+                v-select.mt-1(
+                  dark
+                  v-model='pagination.rowsPerPage'
+                  :items='rowsPerPageItems'
+                  label='Rows per page'
+                )
+
+          template(v-slot:item='props')
+            v-flex(xs12 sm6 md4 lg3)
+              v-card
+                v-card-text.pa-1
+                  v-layout
+                    v-flex(xs2)
+                      v-icon.mdi-24px(color='yellow') mdi-seal
+                    v-flex(xs8)
+                      div.subheading Date: {{ props.item.dateTimeStamp | dateUTCToDate }}
+                      div.body-2 Time: {{ props.item.dateTimeStamp | dateUTCToTime }}
+                    v-flex(xs2)
+                      v-icon.mdi-48px mdi-chevron-right
+
+    v-bottom-nav(
+      :value='true'
+      color='transparent'
+      fixed
+    )
+      //- height='38' 
+      //- :active.sync='bottomNav'
+      v-layout.justify-center
+        //- div.text-xs-center
+        v-pagination(
+          light
+          circle
+          color='deep-orange'
+          v-model='pagination.page'
+          :length='pagination.totalPages'
+        )
+  Match(v-else-if='currentMatch')
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { IMatch, IPagination } from 'types/interfaces' // eslint-disable-line
+import { AsyncComputed } from '~/utils/decorators'
+import { pick } from '~/utils/helpers'
 
 @Component({
   components: {
+    Match: () => import('~/components/Match.vue'),
     NoResults: () => import('~/components/NoResults.vue')
   }
 })
-export default class MatchesPage extends Vue {}
+export default class MatchesPage extends Vue {
+  $api
+
+  currentMatch: string | null = null
+  rowsPerPageItems: Array<number> = [10, 15, 25, 50, 100]
+  pagination: IPagination = {
+    page: 1,
+    rowsPerPage: 50,
+    sortBy: 'dateTimeStamp',
+    descending: true,
+    totalItems: 0,
+    totalPages: 0
+  }
+
+  @AsyncComputed({ default: [] })
+  fetchedMatches (): IMatch[] {
+    const {
+      page: pageNumber,
+      rowsPerPage: pageSize,
+      sortBy,
+      descending
+    } = this.pagination
+
+    const order = `${sortBy} ${descending ? 'DESC' : 'ASC'}`
+
+    return this.$api.ApiMatchGet({ pageNumber, pageSize, order })
+      .then(({ data }) => {
+        const { items, itemCount, pageCount, pageNumber } = data
+        if (pageNumber > pageCount) {
+          this.pagination.page = pageCount || 1
+        }
+        this.pagination.totalItems = itemCount
+        this.pagination.totalPages = pageCount
+
+        const _items = items.map(x => pick(x, 'id', 'dateTimeStamp', 'matchType', 'competitionEvent', 'poolStage', 'eliminationStage', 'scoreRed', 'scoreBlue', 'appUserId', 'trainingId', 'tournamentId', 'matchToPlayers'))
+        return _items
+      })
+  }
+}
 </script>
+
+<style lang="stylus">
+.v-toolbar__items
+  width: 120px
+// .v-toolbar__content
+.match
+  justify-content: center
+// .v-toolbar__title
+  // width: 100%
+.v-data-iterator
+  > div
+    display: flex
+    flex-wrap: wrap
+</style>

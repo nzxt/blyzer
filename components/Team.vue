@@ -87,15 +87,15 @@ export default class Team extends Vue {
   }
 
   @Watch('boxes', { immediate: true, deep: true })
-  onChangeBoxes (val: IBox[]) {
-    if (val.length) {
-      this.matchBoxes = val.filter(x => x.teamColor === this.teamColor)
+  onChangeBoxes (value: IBox[]) {
+    if (value.length) {
+      this.matchBoxes = value.filter(x => x.teamColor === this.teamColor)
     }
   }
 
   @Watch('matchBoxes', { immediate: true, deep: true })
-  onChangeMatchBoxes (val: IBox[]): void {
-    const team = val.reduce((players: IPlayer[], matchBox: IBox) => {
+  onChangeMatchBoxes (value: IBox[]): void {
+    const team = value.reduce((players: IPlayer[], matchBox: IBox) => {
       if (matchBox.player) {
         const _player = { ...matchBox.player, boxId: matchBox.id }
         players.push(_player)

@@ -154,9 +154,9 @@ export default class MatchInfo extends Vue {
 
   /// Tournament
   @Watch('tournament')
-  onChangeTournament (val: ITournament) {
-    if (isPlainObject(val)) {
-      const { tournamentTypeId } = val
+  onChangeTournament (value: ITournament) {
+    if (isPlainObject(value)) {
+      const { tournamentTypeId } = value
       if (tournamentTypeId) {
         const tournamentType = this.stateTournamentTypes.find(x => x.id === tournamentTypeId)
         this.tournamentType = tournamentType || null
@@ -222,7 +222,7 @@ export default class MatchInfo extends Vue {
   @Watch('tournamentType')
   onChangeTournamentType (value: ITournamentType) {
     const { tournament, searchTournament } = this
-    if (value && value.id && searchTournament && !tournament) {
+    if (value && value.id && !tournament && searchTournament) {
       this.createTournament(searchTournament, value.id)
     }
   }

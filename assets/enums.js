@@ -37,7 +37,7 @@ module.exports = {
 
   stageIndexes: {
     pool: [
-      { id: 0, value: 'none', text: 'None' },
+      // { id: 0, value: 'none', text: 'None' },
       { id: 1, value: 'poolA', text: '1st match' },
       { id: 2, value: 'poolB', text: '2nd match' },
       { id: 3, value: 'poolC', text: '3rd match' },
@@ -48,7 +48,7 @@ module.exports = {
     ],
 
     elimination: [
-      { id: 0, value: 'none', text: 'None' },
+      // { id: 0, value: 'none', text: 'None' },
       { id: 1, value: 'final8', text: '1/8 Final' },
       { id: 2, value: 'final4', text: '1/4 Final' },
       { id: 3, value: 'final2', text: '1/2 Final' },
@@ -71,10 +71,10 @@ module.exports = {
   ],
 
   deadBallTypes: [
-    { id: 0, value: 'none', text: 'None' },
-    { id: 3, value: 'ballsNotThrown', text: 'Balls Not Thrown' },
-    { id: 1, value: 'violation', text: 'Violation' },
-    { id: 2, value: 'timeIsOut', text: 'Time expiring' }
+    // { id: 0, value: 'none', text: 'None' },
+    { id: 1, value: 'ballsNotThrown', text: 'Balls Not Thrown' },
+    { id: 2, value: 'violation', text: 'Violation' },
+    { id: 3, value: 'timeIsOut', text: 'Time expiring' }
   ],
 
   competitionBoxes: {

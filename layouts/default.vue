@@ -117,6 +117,14 @@ export default class DefaultLayout extends Vue {
     this.rightDrawer = !this.rightDrawer
   }
 
+  gotoMatches (): void {
+    this.$router.push('/matches')
+  }
+
+  gotoTrainings (): void {
+    this.$router.push('/trainings')
+  }
+
   addNewMatch (): void {
     this.$router.push('/new?type=match')
   }
@@ -128,6 +136,8 @@ export default class DefaultLayout extends Vue {
   get keymap () {
     return {
       'ctrl+right': this.toggleRightDrawer,
+      'ctrl+alt+m': this.gotoMatches,
+      'ctrl+alt+t': this.gotoTrainings,
       'alt+m': this.addNewMatch,
       'alt+t': this.addNewTraining
     }

@@ -34,12 +34,12 @@ v-flex(layout wrap xs12)
                 )
 
           template(v-slot:item='props')
-            v-flex(xs12 sm4 md3 lg2)
+            v-flex(xs12 sm6 md4 lg3)
               v-card
-                v-card-text
+                v-card-text.pa-1
                   v-layout
                     v-flex(xs2)
-                      v-icon.mdi-24px(color='yellow') mdi-seal
+                      v-icon.mdi-24px(color='yellow') mdi-triforce
                     v-flex(xs8)
                       div.subheading Date: {{ props.item.dateTimeStamp | dateUTCToDate }}
                       div.body-2 Time: {{ props.item.dateTimeStamp | dateUTCToTime }}
@@ -85,7 +85,7 @@ v-flex(layout wrap xs12)
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { ITraining } from 'types/interfaces' // eslint-disable-line
+import { ITraining, IPagination } from 'types/interfaces' // eslint-disable-line
 import { AsyncComputed } from '~/utils/decorators'
 import { pick } from '~/utils/helpers'
 
@@ -98,11 +98,11 @@ export default class TrainingsPage extends Vue {
   $api
 
   rowsPerPageItems: Array<number> = [10, 15, 25, 50, 100]
-  pagination: any = {
+  pagination: IPagination = {
     page: 1,
     rowsPerPage: 50,
     sortBy: 'dateTimeStamp',
-    descending: false,
+    descending: true,
     totalItems: 0,
     totalPages: 0
   }
@@ -111,10 +111,13 @@ export default class TrainingsPage extends Vue {
   fetchedTrainings (): ITraining[] {
     const {
       page: pageNumber,
-      rowsPerPage: pageSize
+      rowsPerPage: pageSize,
+      sortBy,
+      descending
     } = this.pagination
 
-    const order = 'dateTimeStamp DESC'
+    const order = `${sortBy} ${descending ? 'DESC' : 'ASC'}`
+
     return this.$api.ApiTrainingGet({ pageNumber, pageSize, order })
       .then(({ data }) => {
         const { items, itemCount, pageCount, pageNumber } = data
