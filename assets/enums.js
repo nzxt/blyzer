@@ -19,16 +19,19 @@ module.exports = {
       { id: 0, value: 'none', text: 'None' }
     ],
     individual: [
+      { id: 0, value: 'none', text: 'None' },
       { id: 1, value: 'bc1', text: 'BC1' },
       { id: 2, value: 'bc2', text: 'BC2' },
       { id: 3, value: 'bc3', text: 'BC3' },
       { id: 4, value: 'bc4', text: 'BC4' }
     ],
     pair: [
+      { id: 0, value: 'none', text: 'None' },
       { id: 5, value: 'pairBc3', text: 'BC3' },
       { id: 6, value: 'pairBc4', text: 'BC4' }
     ],
     team: [
+      { id: 0, value: 'none', text: 'None' },
       { id: 7, value: 'teamBc1Bc2', text: 'BC1/BC2' }
     ]
   },
@@ -36,8 +39,11 @@ module.exports = {
   stageTypes: ['pool', 'elimination'],
 
   stageIndexes: {
+    default: [
+      { id: 0, value: 'none', text: 'None' }
+    ],
     pool: [
-      // { id: 0, value: 'none', text: 'None' },
+      // { id: 0, value: 'none', text: 'None' }
       { id: 1, value: 'poolA', text: '1st match' },
       { id: 2, value: 'poolB', text: '2nd match' },
       { id: 3, value: 'poolC', text: '3rd match' },

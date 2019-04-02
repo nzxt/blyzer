@@ -10,7 +10,7 @@ v-app(light, v-hotkey='keymap')
         v-list-tile-title.title Add New Training
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
-    v-toolbar-title(class='headline hidden-md-and-up', v-html='titleSmall', @click='$router.push("/")')
+    v-toolbar-title(class='headline hidden-md-and-up hidden-xs-only', v-html='titleSmall', @click='$router.push("/")')
     v-toolbar-title(class='display-1 hidden-sm-and-down', v-html='title', @click='$router.push("/")')
     //- v-icon.mdi-36px.mdi-rotate-45.ml-1(class='hidden-sm-and-down', color='grey lighten-2', @click='$router.push("/")') mdi-xbox
     LocaleSwitcher.mx-2

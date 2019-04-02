@@ -30,17 +30,19 @@ v-layout
                   dark
                   v-model='pagination.rowsPerPage'
                   :items='rowsPerPageItems'
-                  label='Rows per page'
+                  label='Elements'
                 )
 
           template(v-slot:item='props')
             v-flex(xs12 sm6 md4 lg3)
-              v-card
+              v-card(@click='onMatchClicked(props.item)')
                 v-card-text.pa-1
                   v-layout
                     v-flex(xs2)
                       v-icon.mdi-24px(color='yellow') mdi-seal
                     v-flex(xs8)
+                      div.caption {{ props.item.matchType | enumTextById('matchTypes') }}
+                      div.caption Competition event: {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
                       div.subheading Date: {{ props.item.dateTimeStamp | dateUTCToDate }}
                       div.body-2 Time: {{ props.item.dateTimeStamp | dateUTCToTime }}
                     v-flex(xs2)
@@ -51,7 +53,7 @@ v-layout
       color='transparent'
       fixed
     )
-      //- height='38' 
+      //- height='38'
       //- :active.sync='bottomNav'
       v-layout.justify-center
         //- div.text-xs-center
@@ -62,7 +64,7 @@ v-layout
           v-model='pagination.page'
           :length='pagination.totalPages'
         )
-  Match(v-else-if='currentMatch')
+  Match(:match='currentMatch' v-else-if='currentMatch')
 </template>
 
 <script lang="ts">
@@ -80,7 +82,7 @@ import { pick } from '~/utils/helpers'
 export default class MatchesPage extends Vue {
   $api
 
-  currentMatch: string | null = null
+  currentMatch: IMatch | null = null
   rowsPerPageItems: Array<number> = [10, 15, 25, 50, 100]
   pagination: IPagination = {
     page: 1,
@@ -115,12 +117,16 @@ export default class MatchesPage extends Vue {
         return _items
       })
   }
+
+  onMatchClicked (match: IMatch): void {
+    this.currentMatch = match
+  }
 }
 </script>
 
 <style lang="stylus">
 .v-toolbar__items
-  width: 120px
+  width: 100px
 // .v-toolbar__content
 .match
   justify-content: center

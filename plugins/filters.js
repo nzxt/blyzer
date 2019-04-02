@@ -1,17 +1,43 @@
 import Vue from 'vue'
 import moment from 'moment'
+import { trimArray } from '~/utils/helpers'
+// import { IObj } from '~/types/interfaces'
 // import _ from 'lodash'
-// const enums = require('~/assets/enums').default
+// import enums from '~/assets/enums'
+const enums = require('~/assets/enums')
 
 export default ({ store, app }) => {
   const filters = {
+    enumTextByValue: (value, name) => {
+      const enumObj = enums[name].find(x => x.value === value)
+      return enumObj ? enumObj.text : value
+    },
+
+    enumTextById: (id, name) => {
+      const enumObj = enums[name].find(x => x.id === id)
+      return enumObj ? enumObj.text : id
+    },
+
+    enumTextByIdFlatten: (id, name) => {
+      const enumsFlatten = []
+      for (const key of Object.keys(enums[name])) {
+        enumsFlatten.push(...enums[name][key])
+      }
+      trimArray(enumsFlatten, 'id')
+      const enumObj = enumsFlatten.find(x => x.id === id)
+      return enumObj ? enumObj.text : id
+    },
+
+    enumTextByIdSub: (id, name, key) => {
+      const enumObj = enums[name][key].find(x => x.id === id)
+      return enumObj ? enumObj.text : id
+    },
+
     tryGetInitials: (fullName) => {
       if (!fullName) return
       const nameParts = fullName.split(' ')
-      if (nameParts && nameParts.length === 3) {
-        return `${nameParts[0]} ${nameParts[1][0]}.${nameParts[2][0]}.`
-      }
-      return fullName
+
+      return (nameParts && nameParts.length === 3) ? `${nameParts[0]} ${nameParts[1][0]}.${nameParts[2][0]}.` : fullName
     },
 
     phoneNumber (number) {

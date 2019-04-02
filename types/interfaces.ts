@@ -12,6 +12,7 @@ export interface IPagination {
   descending: Boolean,
   totalItems: number;
   totalPages?: number;
+  search?: string;
 }
 
 export interface ITournament {
@@ -26,7 +27,7 @@ export interface ITournamentType {
   id?: string;
   name: string;
   abbr: string;
-  isBisFed: boolean;
+  isBisFed?: boolean;
   icon?: string;
 }
 
@@ -49,15 +50,51 @@ export interface ITraining {
   id?: string;
   dateTimeStamp: Date;
   appUserId: string;
+  balls?: IBall[];
+  matches?: IMatch[];
 }
 
 export interface IMatchToPlayer {
-  isSubstitutePlayer?: Boolean;
+  id?: string;
+  box: number;
+  bib?: number;
   matchId?: string;
+  playerId: string;
+  isSubstitutePlayer?: Boolean;
+}
+
+export interface IStage {
+  id?: string;
+  index: number;
+  matchId: string;
+  isDisrupted?: Boolean;
+  isTieBreak?: Boolean;
+  scoreRed?: number;
+  scoreBlue?:	number;
+  balls?: IBall[];
+  stageToPlayers?: IStageToPlayer[];
+}
+
+export interface IStageToPlayer {
   id?: string;
   bib?: number;
-  box: number;
+  box?: number;
+  stageId: string;
   playerId: string;
+}
+
+export interface IBall {
+  id?: string;
+  rating?: number;
+  isPenalty?: Boolean;
+  isDeadBall?: Boolean;
+  deadBallType?: number;
+  shotType?: number;
+  box: number;
+  distance?: number;
+  stageId: string;
+  playerId: string;
+  trainingId?: string;
 }
 
 export interface IPlayer {

@@ -30,7 +30,7 @@ v-flex(layout wrap xs12)
                   dark
                   v-model='pagination.rowsPerPage'
                   :items='rowsPerPageItems'
-                  label='Rows per page'
+                  label='Elements'
                 )
 
           template(v-slot:item='props')
@@ -136,7 +136,7 @@ export default class TrainingsPage extends Vue {
 
 <style lang="stylus">
 .v-toolbar__items
-  width: 120px
+  width: 100px
 // .v-toolbar__content
 .training
   justify-content: center

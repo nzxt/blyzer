@@ -68,6 +68,7 @@ export default class Team extends Vue {
 
   @Prop({ default: 'grey' }) readonly teamColor!: string
   @Prop({ default: 'individual' }) readonly competitionType!: string
+  @Prop({ default: 0 }) readonly competitionEvent!: number
 
   @State('matchBoxes') stateMatchBoxes
   @Getter('getPlayers') getterGetPlayers
@@ -115,7 +116,7 @@ export default class Team extends Vue {
     if (search) { filter = `fullName.toUpper().Contains("${search}".toUpper())` } else return []
 
     const { selectedPlayersIds } = this
-    if (selectedPlayersIds) {
+    if (selectedPlayersIds.length) {
       let filteredPlayersIds: string = ''
       for (let i = 0; i < selectedPlayersIds.length; i++) {
         filteredPlayersIds += `${filteredPlayersIds ? '&' : ''}` + `id!="${selectedPlayersIds[i]}"`
@@ -123,6 +124,15 @@ export default class Team extends Vue {
       if (filteredPlayersIds) filter += `${filter ? '&' : ''}(${filteredPlayersIds})`
     }
 
+    const { playerClassifications } = this
+    if (playerClassifications.length) {
+      let filteredPlayerClassifications: string = ''
+      for (let i = 0; i < playerClassifications.length; i++) {
+        filteredPlayerClassifications += `${filteredPlayerClassifications ? '|' : ''}` + `playerClassification="${playerClassifications[i]}"`
+      }
+      if (filteredPlayerClassifications) filter += `${filter ? '&' : ''}(${filteredPlayerClassifications})`
+    }
+    debugger
     order = 'countryId ASC'
 
     filter = filter || undefined
@@ -146,6 +156,17 @@ export default class Team extends Vue {
     if (!this.guidRegex.test(id)) return {}
     const country = this.dictsStateCountries.find(x => x.id === id)
     return country || {}
+  }
+
+  get playerClassifications (): number[] {
+    debugger
+    const x = this.competitionEvent
+    switch (true) {
+    case (x >= 1 && x <= 4): return [x - 1]
+    case (x >= 5 && x <= 6): return [2, 3]
+    case (x === 7): return [0, 1]
+    default: return []
+    }
   }
 }
 </script>

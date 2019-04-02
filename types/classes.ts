@@ -3,7 +3,10 @@ import {
   ITournament,
   ITraining,
   IMatch,
-  IMatchToPlayer
+  IMatchToPlayer,
+  IStage,
+  IStageToPlayer,
+  IBall,
 } from '~/types/interfaces'
  /* eslint-enable */
 
@@ -70,4 +73,46 @@ export class MatchToPlayer implements IMatchToPlayer {
   bib?: number;
   box: number;
   playerId: string;
+}
+
+export class Stage implements IStage {
+  constructor (
+    index: number,
+    matchId: string
+  ) {
+    this.index = index
+    this.matchId = matchId
+  }
+  id?: string;
+  index: number;
+  matchId: string;
+  isDisrupted?: Boolean;
+  isTieBreak?: Boolean;
+  scoreRed?: number;
+  scoreBlue?: number;
+  balls?: IBall[];
+  stageToPlayers?: IStageToPlayer[];
+}
+
+export class Ball implements IBall {
+  constructor (
+    box: number,
+    stageId: string,
+    playerId: string
+  ) {
+    this.box = box
+    this.stageId = stageId
+    this.playerId = playerId
+  }
+  id?: string;
+  rating?: number;
+  isPenalty?: Boolean;
+  isDeadBall?: Boolean;
+  deadBallType?: number;
+  shotType?: number;
+  box: number;
+  distance?: number;
+  stageId: string;
+  playerId: string;
+  trainingId?: string;
 }

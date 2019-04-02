@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card(flat style='min-width:360px')
+v-card(flat style='min-width:320px')
   v-form(v-model='valid' @submit.prevent='onSubmit')
     v-card-text.pa-1
       v-btn-toggle(v-model='competitionType' mandatory)
@@ -39,9 +39,9 @@ v-card(flat style='min-width:360px')
             div.font-weight-thin {{ d.text }}
 
     v-card-text.pa-1
-      Team(ref='redTeam' teamColor='red' :competitionType='competitionType')
+      Team(ref='redTeam' teamColor='red' :competitionType='competitionType' :competitionEvent='competitionEvent')
     v-card-text.pa-1
-      Team(ref='blueTeam' teamColor='blue' :competitionType='competitionType')
+      Team(ref='blueTeam' teamColor='blue' :competitionType='competitionType' :competitionEvent='competitionEvent' )
 
     v-card-text.pa-1
       MatchInfo(ref='matchInfo')
@@ -88,7 +88,7 @@ export default class AddMatch extends Vue {
   isLoading: Boolean = false
 
   competitionType: string = 'individual'
-  competitionEvent: number = 4
+  competitionEvent: number = 0
 
   match: IMatch | null = null
 

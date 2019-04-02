@@ -38,6 +38,9 @@ v-card(flat)
 import { Component, Vue } from 'vue-property-decorator'
 import enums from '~/assets/enums'
 
+import { IBall } from 'types/interfaces' // eslint-disable-line
+import { Ball } from '~/types/classes'
+
 @Component({
   components: {
     ScoreBoard: () => import('~/components/ScoreBoard.vue'),
@@ -54,6 +57,12 @@ export default class AddValues extends Vue {
     { value: 1, text: 'Scored Ball', icon: 'mdi-radiobox-marked' },
     { value: 2, text: 'Dead Ball', icon: 'mdi-radiobox-blank' }
   ]
+
+  created (): void {
+    debugger
+    const ball: IBall = new Ball(3, '2342938', 'asdjkas')
+    console.log(ball)
+  }
 
   onCancel () {
     this.$bus.$emit('setMatch')
