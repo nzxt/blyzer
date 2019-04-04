@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
-import { State, Mutation, Getter, namespace } from 'vuex-class'
+import { Mutation, Action, Getter, namespace } from 'vuex-class'
 import { AsyncComputed } from '~/utils/decorators'
 import { IBox, IPlayer, ICountry } from '~/types/interfaces' // eslint-disable-line
 
@@ -70,11 +70,12 @@ export default class Team extends Vue {
   @Prop({ default: 'individual' }) readonly competitionType!: string
   @Prop({ default: 0 }) readonly competitionEvent!: number
 
-  @State('matchBoxes') stateMatchBoxes
+  @Getter('getMatchBoxes') getterGetMatchBoxes
   @Getter('getPlayers') getterGetPlayers
   @Dicts.State('countries') dictsStateCountries
   // @Dicts.Action('fetchCountries') dictsActionFetchCountries
 
+  @Action('setMatchBoxes') actionSetMatchBoxes
   @Mutation('setRedTeam') mutationSetRedTeam
   @Mutation('setBlueTeam') mutationSetBlueTeam
 
@@ -89,13 +90,14 @@ export default class Team extends Vue {
 
   @Watch('boxes', { immediate: true, deep: true })
   onChangeBoxes (value: IBox[]) {
-    if (value.length) {
-      this.matchBoxes = value.filter(x => x.teamColor === this.teamColor)
-    }
+    if (!value.length) return
+    this.matchBoxes = value.filter(x => x.teamColor === this.teamColor)
   }
 
   @Watch('matchBoxes', { immediate: true, deep: true })
   onChangeMatchBoxes (value: IBox[]): void {
+    if (!value.length) return
+    this.actionSetMatchBoxes(value)
     const team = value.reduce((players: IPlayer[], matchBox: IBox) => {
       if (matchBox.player) {
         const _player = { ...matchBox.player, boxId: matchBox.id }
@@ -132,7 +134,7 @@ export default class Team extends Vue {
       }
       if (filteredPlayerClassifications) filter += `${filter ? '&' : ''}(${filteredPlayerClassifications})`
     }
-    debugger
+
     order = 'countryId ASC'
 
     filter = filter || undefined
@@ -159,7 +161,6 @@ export default class Team extends Vue {
   }
 
   get playerClassifications (): number[] {
-    debugger
     const x = this.competitionEvent
     switch (true) {
     case (x >= 1 && x <= 4): return [x - 1]

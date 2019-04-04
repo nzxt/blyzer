@@ -59,7 +59,7 @@ v-card(flat style='min-width:320px')
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import { State, Mutation, Getter } from 'vuex-class'
 
-import { IObj, IMatch, IMatchToPlayer } from '~/types/interfaces' // eslint-disable-line
+import { IObj, IMatch, IMatchToPlayer, IBox } from '~/types/interfaces' // eslint-disable-line
 import { Match, MatchToPlayer } from '~/types/classes'
 
 import Team from '~/components/Team.vue'
@@ -152,6 +152,10 @@ export default class AddMatch extends Vue {
     case 'team': return enums.competitionEvents.team
     default: return enums.competitionEvents.default
     }
+  }
+
+  get matchBoxes (): IBox[] {
+    return this.$refs.redTeam
   }
 
   get activeCompetitionClass (): string {

@@ -3,37 +3,59 @@ v-card(flat)
   v-card-text.pa-0
     v-item-group(v-model='activeBox', mandatory)
       v-container(pa-1, grid-list-md)
-        v-layout(wrap)
-          v-flex(xs2, v-for='box in boxes', :key='box.id')
-            v-item(:value='box.id')
+        v-layout(wrap, justify-center)
+          v-flex(xs2 v-for='box in stateMatchBoxes' :key='box.id')
+            v-item(:value='box')
               v-card.d-flex.align-center(
                 slot-scope='{ active, toggle }',
-                :color='`${box.color} lighten-2`',
                 :class='active ? "elevation-7" : ""',
-                height='75',
+                :color='`${box.teamColor} lighten-2`',
                 @click='toggle',
+                height='75',
                 dark
               )
                 v-scroll-y-transition
                   //- span.display-1.text-xs-center(v-if='active') A
                   v-icon.mdi-48px(
-                    :color='active ? "blue-grey darken-2": ""'
+                    :color='active ? "yellow darken-1": ""'
                   ) {{ `mdi-numeric-${box.id}-box-outline` }}
+          v-flex(xs12)
+            v-chip(v-if='activeBox.player')
+              v-avatar
+                flag(:iso='countryById(activeBox.player.countryId).alpha2', :title='countryById(activeBox.player.countryId).name')
+              div.subheading {{ activeBox.player.fullName }}
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { State, namespace } from 'vuex-class'
 
-@Component
+import { IBox, ICountry } from '~/types/interfaces' // eslint-disable-line
+
+import GlobalMixins from '~/mixins/global'
+
+import * as dicts from '~/store/dicts'
+const Dicts = namespace(dicts.name)
+
+@Component({
+  mixins: [GlobalMixins]
+})
 export default class Boxes extends Vue {
-  activeBox: Number = 3
-  boxes: Array<any> = [
-    { id: 1, color: 'error' },
-    { id: 2, color: 'primary' },
-    { id: 3, color: 'error' },
-    { id: 4, color: 'primary' },
-    { id: 5, color: 'error' },
-    { id: 6, color: 'primary' }
-  ]
+  activeBox: IBox | null = null
+
+  @State('matchBoxes') stateMatchBoxes
+  @Dicts.State('countries') dictsStateCountries
+
+  created (): void {
+    if (this.stateMatchBoxes.length) {
+      this.activeBox = this.stateMatchBoxes[0]
+    }
+  }
+
+  countryById (id): ICountry | object {
+    if (!this.guidRegex.test(id)) return {}
+    const country = this.dictsStateCountries.find(x => x.id === id)
+    return country || {}
+  }
 }
 </script>

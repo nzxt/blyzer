@@ -5,8 +5,6 @@ v-card(flat)
   v-card-text.pa-0
     Boxes
   v-card-text.px-0.pb-0
-    | Hey!
-  v-card-text.px-0.pb-0
     v-tabs(v-model='activeTab', color='grey lighten-4',  fixed-tabs, slider-color='deep-orange')
       v-tab.font-weight-bold(v-for='tab in tabs', :key='tab.value', :href="`#tab-${tab.value}`", ripple)
         v-icon.mdi-24px(left) {{ tab.icon }}
@@ -36,10 +34,11 @@ v-card(flat)
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import enums from '~/assets/enums'
 
 import { IBall } from 'types/interfaces' // eslint-disable-line
 import { Ball } from '~/types/classes'
+
+import enums from '~/assets/enums'
 
 @Component({
   components: {
@@ -49,6 +48,7 @@ import { Ball } from '~/types/classes'
 })
 export default class AddValues extends Vue {
   $bus
+
   enums: any = enums
   activeTab: number = 0
   ballType: number | null = null
@@ -59,7 +59,6 @@ export default class AddValues extends Vue {
   ]
 
   created (): void {
-    debugger
     const ball: IBall = new Ball(3, '2342938', 'asdjkas')
     console.log(ball)
   }

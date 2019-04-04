@@ -1,3 +1,4 @@
+export const strict = false
 /* eslint-disable */
 import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
 import { IRootState, ITournament, ITournamentType, IMatch, ITraining, IPlayer, IBox } from '../types/interfaces'
@@ -50,6 +51,20 @@ export const actions: Actions<IState, IRootState> = {
   nuxtClientInit (store) {
     store.dispatch('dicts/fetchCountries')
     store.dispatch('dicts/fetchTournamentTypes')
+  },
+
+  setMatchBoxes ({ state, commit }, value: IBox[]) {
+    if (!value.length) return
+    for(const v of value) {
+      let { matchBoxes } = state
+      const index = matchBoxes.findIndex(x => x.id === v.id)
+      if (index === -1 && v) {
+        commit('setMatchBoxes', [...matchBoxes, v])
+      } else if (v) {
+        matchBoxes[index] = v
+        commit('setMatchBoxes', [...matchBoxes])
+      }
+    }
   }
 }
 
@@ -57,5 +72,6 @@ export const getters: GetterTree<IState, IRootState> = {
   getTournament: state => state.tournament,
   getMatch: state => state.match,
   getTraining: state => state.training,
-  getPlayers: state => [...state.redTeam, ...state.blueTeam]
+  getPlayers: state => [...state.redTeam, ...state.blueTeam],
+  getMatchBoxes: state => state.matchBoxes
 }

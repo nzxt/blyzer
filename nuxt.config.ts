@@ -85,9 +85,9 @@ module.exports = {
     '~/plugins/hotkey',
     '~/plugins/eventbus',
     '~/plugins/spinners',
-    '~/plugins/flag-icon',
-    // '~/plugins/nuxt-client-init',
-    '~/plugins/tasty-burger-button'
+    '~/plugins/flag-icon'
+    // '~/plugins/nuxt-client-init'
+    // '~/plugins/tasty-burger-button'
   ],
 
   /*

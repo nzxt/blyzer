@@ -1,9 +1,9 @@
 /**
  * @author Donii Sergii <doniysa@gmail.com>
  */
-const Handlebars = require('handlebars')
 const fs = require('fs')
 const path = require('path')
+const Handlebars = require('handlebars')
 const beautify = require('js-beautify').js_beautify
 const apiTemplate = fs.readFileSync(path.join(__dirname, '../../../../../swagger/js-template/api.hbs'), 'utf-8')
 const methods = fs.readFileSync(path.join(__dirname, '../../../../../swagger/js-template/methods.hbs'), 'utf-8')
@@ -18,6 +18,6 @@ Handlebars.registerHelper('brackets', function (word) {
 })
 module.exports = function (data) {
   let template = Handlebars.compile(apiTemplate)(data)
-  template = beautify(template, {indent_size: 2, max_preserve_newlines: -1})
+  template = beautify(template, { indent_size: 2, max_preserve_newlines: -1 })
   return template
 }
