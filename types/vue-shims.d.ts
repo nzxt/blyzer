@@ -1,16 +1,17 @@
+/**
+ * Extends interfaces in Vue.js
+ */
+import Vue, { ComponentOptions } from "vue";
+import { IApiService } from "~/types/interfaces";
+
 declare module 'vue/types/vue' {
   interface Vue {
-    $api: any;
+    $api: IApiService;
     guidRegex: RegExp;
     switchLocalePath: Function;
  }
 }
 
-/**
- * Extends interfaces in Vue.js
- */
-
-import Vue, { ComponentOptions } from "vue";
 
 declare module "vue/types/options" {
   interface ComponentOptions<V extends Vue> {

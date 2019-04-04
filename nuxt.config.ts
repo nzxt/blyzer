@@ -180,6 +180,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    // babel: { 'plugins': ['@babel/plugin-proposal-optional-chaining'] },
     extractCSS: true,
     transpile: ['vuetify/lib'],
     plugins: [new VuetifyLoaderPlugin()],

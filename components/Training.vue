@@ -37,7 +37,6 @@ export default class TrainingPage extends Vue {
   match!: IMatch
 
   created () {
-    // debugger
     // const match = new Match(new Date(), this.$auth.user.appUserId)
     // console.log({ match, prop: this.match })
   }

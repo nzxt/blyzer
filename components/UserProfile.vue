@@ -54,7 +54,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
 export default class UserProfile extends Vue {
-  $auth!: any
+  $auth: any
   country: string = 'Ukraine'
   dateOfBirth: any = '1985-01-31'
 
@@ -64,18 +64,20 @@ export default class UserProfile extends Vue {
   }
 
   get fullName (): string | null {
-    const { full_name: fullName, name } = this.$auth.user
-    return fullName || name
+    const { full_name: fullName, name, userName } = this.$auth.user
+    return fullName || name || userName
   }
 
   get firstName (): string | null {
     const { given_name: givenName, first_name: firstName } = this.$auth.user
-    return givenName || firstName
+    const name: string = givenName || firstName
+    return name
   }
 
   get lastName (): string | null {
     const { family_name: familyName, last_name: lastName } = this.$auth.user
-    return familyName || lastName
+    const name: string = familyName || lastName
+    return name
   }
 
   get userEmail (): string | null {

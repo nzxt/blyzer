@@ -8,7 +8,7 @@
     v-card-text.pa-1
       v-combobox.mb-2(
         dense
-        v-for='mb in matchBoxes'
+        v-for='mb in teamMatchBoxes'
         :key='mb.id'
         v-model='mb.player'
         :items='fetchedPlayers'
@@ -64,7 +64,7 @@ const Dicts = namespace(dicts.name)
 export default class Team extends Vue {
   $api
   search: string[] = []
-  matchBoxes: Array<IBox> = []
+  teamMatchBoxes: Array<IBox> = []
 
   @Prop({ default: 'grey' }) readonly teamColor!: string
   @Prop({ default: 'individual' }) readonly competitionType!: string
@@ -76,6 +76,7 @@ export default class Team extends Vue {
   // @Dicts.Action('fetchCountries') dictsActionFetchCountries
 
   @Action('setMatchBoxes') actionSetMatchBoxes
+  @Action('kilTeamMatchBoxes') actionKilTeamMatchBoxes
   @Mutation('setRedTeam') mutationSetRedTeam
   @Mutation('setBlueTeam') mutationSetBlueTeam
 
@@ -91,13 +92,12 @@ export default class Team extends Vue {
   @Watch('boxes', { immediate: true, deep: true })
   onChangeBoxes (value: IBox[]) {
     if (!value.length) return
-    this.matchBoxes = value.filter(x => x.teamColor === this.teamColor)
+    this.teamMatchBoxes = value.filter(x => x.teamColor === this.teamColor)
   }
 
-  @Watch('matchBoxes', { immediate: true, deep: true })
-  onChangeMatchBoxes (value: IBox[]): void {
+  @Watch('teamMatchBoxes', { immediate: true, deep: true })
+  onChangeTeamMatchBoxes (value: IBox[]): void {
     if (!value.length) return
-    this.actionSetMatchBoxes(value)
     const team = value.reduce((players: IPlayer[], matchBox: IBox) => {
       if (matchBox.player) {
         const _player = { ...matchBox.player, boxId: matchBox.id }
@@ -107,6 +107,8 @@ export default class Team extends Vue {
     }, [])
 
     this.teamColor === 'red' ? this.mutationSetRedTeam(team) : this.mutationSetBlueTeam(team)
+    this.actionKilTeamMatchBoxes(this.teamColor)
+    this.actionSetMatchBoxes(value)
   }
 
   @AsyncComputed({ default: [] })

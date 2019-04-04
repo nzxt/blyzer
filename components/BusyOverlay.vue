@@ -1,12 +1,12 @@
 <template lang="pug">
 div.overlay(v-if='$auth.$state.busy')
-  //- img(src='~/assets/loading.svg', alt='Loading...')
-  CircleLoader(
+  img(src='~/assets/loading.svg', alt='Loading...')
+  // CircleLoader(
     :loading='true',
     color='grey',
     :size='72',
     sizeUnit='px'
-)
+  // )
 </template>
 
 <style scoped>

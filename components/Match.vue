@@ -10,9 +10,14 @@ v-card(flat)
       | )
   v-card-text
     div.text-xs-right(v-if='match')
-      | Type:
-      span.mx-1.font-weight-bold {{ match.matchType | enumTextById('matchTypes') }}
-      span.mx-1.font-weight-bold.ml-1 {{ match.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
+      div
+        | Type:
+        span.mx-1.font-weight-bold {{ match.matchType | enumTextById('matchTypes') }}
+      div
+        | Name
+        span.mx-1.font-weight-bold {{ tournament.name }}
+      div
+        span.mx-1.font-weight-bold.ml-1 {{ match.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
       div.ml-1 Date/Time:
         span.mx-1.font-weight-bold {{ match.dateTimeStamp | dateUTCToFull }}
       div.ml-1 Stage:
@@ -23,12 +28,19 @@ v-card(flat)
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { IMatch } from 'types/interfaces' // eslint-disable-line
+import { AsyncComputed } from '~/utils/decorators'
+import { IMatch, ITournament } from '~/types/interfaces' // eslint-disable-line
+
+import GlobalMixins from '~/mixins/global'
+
 // import { Match } from '~/types/classes' // eslint-disable-line
 
 import enums from '~/assets/enums'
+// import { Tournament } from '~/types/classes'
 
-@Component({})
+@Component({
+  mixins: [GlobalMixins]
+})
 export default class MatchPage extends Vue {
   $auth
   $moment
@@ -37,7 +49,6 @@ export default class MatchPage extends Vue {
   match!: IMatch
 
   created () {
-    // debugger
     // const match = new Match(new Date(), this.$auth.user.appUserId)
     // console.log({ match, prop: this.match })
   }
@@ -60,6 +71,17 @@ export default class MatchPage extends Vue {
     const stageIndex = match.poolStage || match.eliminationStage
     const stageIndexes = enums.stageIndexes[this.competitionStage].find(x => x.id === stageIndex)
     return stageIndexes ? stageIndexes.text : ''
+  }
+
+  @AsyncComputed({ default: {} })
+  tournament (): ITournament {
+    const id: string | undefined = this.match.tournamentId
+    if (!id || !this.guidRegex.test(id)) return {} as ITournament
+    return this.$api.ApiTournamentByIdGet({ id })
+      .then(({ data }) => {
+        // const _items = items.map(x => pick(x, 'id', 'fullName', 'playerClassification', 'countryId'))
+        return data // _items
+      })
   }
 }
 </script>

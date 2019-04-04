@@ -9,10 +9,12 @@ module.exports = {
     parser: '@typescript-eslint/parser' // or 'babel-eslint'
   },
   extends: [
-    '@nuxtjs'
+    '@nuxtjs',
+    'plugin:nuxt/recommended'
   ],
   // add your custom rules here
   rules: {
+    'nuxt/no-cjs-in-config': 'off' ,
     'indent': ['error', 2],
     'no-trailing-spaces': ['error'],
     'linebreak-style': ['error', 'unix'],

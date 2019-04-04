@@ -15,11 +15,9 @@
 //       if (!this.guidRegex.test(id)) return
 //       return this.$api.ApiCountryByIdGet({ id })
 //         .then(({ data }) => {
-//           debugger
 //           return data
 //         })
 //         .catch((e) => {
-//           debugger
 //           console.log(e)
 //           return {}
 //         })

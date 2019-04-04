@@ -48,12 +48,12 @@ export interface Actions<S, R> extends ActionTree<S, R> {
 }
 
 export const actions: Actions<IState, IRootState> = {
-  nuxtClientInit (store) {
+  nuxtClientInit (store): void {
     store.dispatch('dicts/fetchCountries')
     store.dispatch('dicts/fetchTournamentTypes')
   },
 
-  setMatchBoxes ({ state, commit }, value: IBox[]) {
+  setMatchBoxes ({ state, commit }, value: IBox[]): void {
     if (!value.length) return
     for(const v of value) {
       let { matchBoxes } = state
@@ -65,6 +65,11 @@ export const actions: Actions<IState, IRootState> = {
         commit('setMatchBoxes', [...matchBoxes])
       }
     }
+  },
+
+  kilTeamMatchBoxes ({state, commit }, teamColor: string): void {
+    const { matchBoxes } = state
+    commit('setMatchBoxes', matchBoxes.filter(x => x.teamColor !== teamColor))
   }
 }
 

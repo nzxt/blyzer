@@ -35,7 +35,7 @@ v-layout
 
           template(v-slot:item='props')
             v-flex(xs12 sm6 md4 lg3)
-              v-card(@click='onMatchClicked(props.item)')
+              v-card(@dblclick='onMatchClicked(props.item)')
                 v-card-text.pa-1
                   v-layout
                     v-flex(xs2)
@@ -43,8 +43,7 @@ v-layout
                     v-flex(xs8)
                       div.caption {{ props.item.matchType | enumTextById('matchTypes') }}
                       div.caption Competition event: {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
-                      div.subheading Date: {{ props.item.dateTimeStamp | dateUTCToDate }}
-                      div.body-2 Time: {{ props.item.dateTimeStamp | dateUTCToTime }}
+                      div.body-2 {{ props.item.dateTimeStamp | dateUTCToDate }} / {{ props.item.dateTimeStamp | dateUTCToTime }}
                     v-flex(xs2)
                       v-icon.mdi-48px mdi-chevron-right
 
@@ -64,7 +63,18 @@ v-layout
           v-model='pagination.page'
           :length='pagination.totalPages'
         )
-  Match(:match='currentMatch' v-else-if='currentMatch')
+  div(v-else-if='currentMatch')
+    Match(:match='currentMatch')
+    v-bottom-nav(
+      :value='true'
+      color='transparent'
+      fixed
+    )
+      //- height='38'
+      //- :active.sync='bottomNav'
+      v-layout.justify-center
+        v-btn(@click='currentMatch = null')
+          v-icon.mdi-36px(color='warning') mdi-reply
 </template>
 
 <script lang="ts">

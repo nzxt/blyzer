@@ -4,7 +4,7 @@ v-card(flat)
     v-item-group(v-model='activeBox', mandatory)
       v-container(pa-1, grid-list-md)
         v-layout(wrap, justify-center)
-          v-flex(xs2 v-for='box in stateMatchBoxes' :key='box.id')
+          v-flex(v-for='box in stateMatchBoxes' :key='box.id')
             v-item(:value='box')
               v-card.d-flex.align-center(
                 slot-scope='{ active, toggle }',
