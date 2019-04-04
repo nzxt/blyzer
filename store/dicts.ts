@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { ActionContext, ActionTree, MutationTree } from 'vuex'
-import { IRootState, ICountry, ITournamentType } from '../types/interfaces'
+// import { IRootState, ICountry, ITournamentType } from '~/types/interfaces'
+import { ICountry, ITournamentType } from '~/types/interfaces'
 import { pick } from '~/utils/helpers';
 
 export const types = {
@@ -32,8 +33,10 @@ export interface Actions<S, R> extends ActionTree<S, R> {
   fetchTournamentTypes (context: ActionContext<S, R>): void
 }
 
-export const actions: Actions<State, IRootState> = {
+// export const actions: Actions<State, IRootState> = {
+export const actions: any = {
   async fetchCountries ({ commit }) {
+    debugger
     await this.$api.ApiCountryGet({ pageSize: 300 })
       .then(({ data: { items } }) => {
         const _items = items.map(x => pick(x, 'id', 'name', 'code', 'alpha2', 'alpha3'))

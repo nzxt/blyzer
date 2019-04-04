@@ -124,7 +124,6 @@ export default class MatchInfo extends Vue {
   snackbar: Boolean = false
   panel: Boolean[] = [false]
   stageTypes: Array<string> = enums.stageTypes
-  // stageIndexes: Array<string> = enums.stageIndexes
 
   stageType: string | null = null
   stageIndex: IObj | null = null
@@ -173,7 +172,7 @@ export default class MatchInfo extends Vue {
       this.mutationSetTournament(value)
     } else if (typeof value === 'string') {
       const tournamentTypeId = this.tournamentType ? this.tournamentType.id : ''
-      if (!this.guidRegex.test(tournamentTypeId)) {
+      if (!this.guidRegex.test(tournamentTypeId as any)) {
         this.snackbar = true
       } else {
         this.createTournament(value, tournamentTypeId || '')

@@ -47,11 +47,3 @@ declare module "vue/types/vue" {
 		$asyncComputed: {[K: string]: IASyncComputedState };
 	}
 }
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $api: any;
-    // auth: Boolean;
-    guidRegex: RegExp;
- }
-}
