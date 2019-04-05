@@ -10,18 +10,21 @@ v-card(flat)
       | )
   v-card-text
     div.text-xs-right(v-if='match')
-      div
+      div(v-if='match.matchType')
         | Type:
         span.mx-1.font-weight-bold {{ match.matchType | enumTextById('matchTypes') }}
-      div
+      div(v-if='tournament.name')
         | Name
         span.mx-1.font-weight-bold {{ tournament.name }}
-      div
+      div(v-if='match.competitionEvent')
+        | Competition:
         span.mx-1.font-weight-bold.ml-1 {{ match.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
       div.ml-1 Date/Time:
         span.mx-1.font-weight-bold {{ match.dateTimeStamp | dateUTCToFull }}
-      div.ml-1 Stage:
-        span.mx-1.font-weight-bold {{ competitionStage.toUpperCase() }} {{ stageIndex }}
+      div.ml-1(v-if='competitionStage')
+        | Stage:
+        span.mx-1.font-weight-bold {{ competitionStage.toUpperCase() }}
+        span.mx-1(v-if='stageIndex') {{ stageIndex }}
     v-divider(inset)
     pre {{ match }}
 </template>
@@ -57,7 +60,7 @@ export default class MatchPage extends Vue {
     const { match } = this
     if (match.poolStage) return 'pool'
     else if (match.eliminationStage) return 'elimination'
-    return 'default'
+    return ''
   }
 
   get matchType (): string {
@@ -70,7 +73,7 @@ export default class MatchPage extends Vue {
     const { match } = this
     const stageIndex = match.poolStage || match.eliminationStage
     const stageIndexes = enums.stageIndexes[this.competitionStage].find(x => x.id === stageIndex)
-    return stageIndexes ? stageIndexes.text : ''
+    return stageIndexes ? stageIndexes.text : 'N/A'
   }
 
   @AsyncComputed({ default: {} })

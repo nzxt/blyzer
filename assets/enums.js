@@ -39,11 +39,11 @@ module.exports = {
   stageTypes: ['pool', 'elimination'],
 
   stageIndexes: {
-    default: [
-      { id: 0, value: 'none', text: 'None' }
-    ],
+    // default: [
+    //   { id: 0, value: 'none', text: 'None' }
+    // ],
     pool: [
-      // { id: 0, value: 'none', text: 'None' }
+      { id: 0, value: 'none', text: 'N/A' },
       { id: 1, value: 'poolA', text: '1st match' },
       { id: 2, value: 'poolB', text: '2nd match' },
       { id: 3, value: 'poolC', text: '3rd match' },
@@ -54,7 +54,7 @@ module.exports = {
     ],
 
     elimination: [
-      // { id: 0, value: 'none', text: 'None' },
+      { id: 0, value: 'none', text: 'N/A' },
       { id: 1, value: 'final8', text: '1/8 Final' },
       { id: 2, value: 'final4', text: '1/4 Final' },
       { id: 3, value: 'final2', text: '1/2 Final' },

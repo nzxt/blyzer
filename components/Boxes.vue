@@ -4,26 +4,26 @@ v-card(flat)
     v-item-group(v-model='activeBox', mandatory)
       v-container(pa-1, grid-list-md)
         v-layout(wrap, justify-center)
-          v-flex(v-for='box in stateMatchBoxes' :key='box.id')
+          v-flex(v-for='box in stateMatchBoxes' :key='box.id' :class='`xs${12/stateMatchBoxes.length}`')
             v-item(:value='box')
-              v-card.d-flex.align-center(
+              v-card(
                 slot-scope='{ active, toggle }',
                 :class='active ? "elevation-7" : ""',
                 :color='`${box.teamColor} lighten-2`',
                 @click='toggle',
-                height='75',
+                height='85',
                 dark
               )
-                v-scroll-y-transition
+                // v-scroll-y-transition
                   //- span.display-1.text-xs-center(v-if='active') A
-                  v-icon.mdi-48px(
-                    :color='active ? "yellow darken-1": ""'
-                  ) {{ `mdi-numeric-${box.id}-box-outline` }}
-          v-flex(xs12)
-            v-chip(v-if='activeBox.player')
-              v-avatar
-                flag(:iso='countryById(activeBox.player.countryId).alpha2', :title='countryById(activeBox.player.countryId).name')
-              div.subheading {{ activeBox.player.fullName }}
+                v-icon.mdi-48px(
+                  :color='active ? "yellow darken-1": ""'
+                ) {{ `mdi-numeric-${box.id}-box-outline` }}
+                br
+                v-chip(small v-if='active')
+                  v-avatar
+                    flag(:iso='countryById(activeBox.player.countryId).alpha2', :title='countryById(activeBox.player.countryId).name')
+                  div.body-1 {{ activeBox.player.fullName | tryGetInitials }}
 </template>
 
 <script lang="ts">

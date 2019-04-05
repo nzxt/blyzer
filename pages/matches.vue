@@ -35,17 +35,25 @@ v-layout
 
           template(v-slot:item='props')
             v-flex(xs12 sm6 md4 lg3)
-              v-card(@dblclick='onMatchClicked(props.item)')
+              v-card(@click='props.expanded = !props.expanded' @dblclick='onMatchClicked(props.item)')
                 v-card-text.pa-1
                   v-layout
                     v-flex(xs2)
                       v-icon.mdi-24px(color='yellow') mdi-seal
                     v-flex(xs8)
-                      div.caption {{ props.item.matchType | enumTextById('matchTypes') }}
+                      div.body-2.font-weight-bold
+                        span.mr-2 {{ props.item.matchType | enumTextById('matchTypes') }}
+                        span.error--text {{ props.item.scoreRed }}
+                        | &nbsp;:&nbsp;
+                        span.primary--text {{ props.item.scoreBlue }}
                       div.caption Competition event: {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
                       div.body-2 {{ props.item.dateTimeStamp | dateUTCToDate }} / {{ props.item.dateTimeStamp | dateUTCToTime }}
                     v-flex(xs2)
                       v-icon.mdi-48px mdi-chevron-right
+                v-card-text(v-if="props.expanded")
+                  v-layout
+                    v-flex(xs6)
+                    v-flex(xs6)
 
     v-bottom-nav(
       :value='true'

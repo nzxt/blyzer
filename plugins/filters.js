@@ -36,8 +36,14 @@ export default ({ store, app }) => {
     tryGetInitials: (fullName) => {
       if (!fullName) return
       const nameParts = fullName.split(' ')
-
-      return (nameParts && nameParts.length === 3) ? `${nameParts[0]} ${nameParts[1][0]}.${nameParts[2][0]}.` : fullName
+      if (nameParts) {
+        if (nameParts.length === 3) {
+          return `${nameParts[0]} ${nameParts[1][0]}.${nameParts[2][0]}.`
+        } else if (nameParts.length === 2) {
+          return `${nameParts[0]} ${nameParts[1][0]}.`
+        }
+      }
+      return fullName
     },
 
     phoneNumber (number) {

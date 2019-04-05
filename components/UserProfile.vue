@@ -3,7 +3,7 @@
   v-flex
     v-card(dark, color='purple')
       v-card-title.headline(class='purple darken-1')
-        | {{ fullName }}&nbsp;<span class='font-weight-thin'>{{ $t('profile') }}</span>
+        | {{ fullName }}&nbsp;<span class='font-weight-thin'>{{ $t('profile').toLowerCase() }}</span>
         v-spacer
         //- v-avatar(v-if='picture', size='36', color='grey lighten-4')
         //-   img(:src='avatar', alt='avatar')
