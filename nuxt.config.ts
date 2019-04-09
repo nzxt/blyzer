@@ -74,7 +74,6 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    // { src: '~/plugins/vuex-persist', ssr: false },
     '~/plugins/axios',
     '~/plugins/api',
     '~/plugins/vuetify',
@@ -86,6 +85,7 @@ module.exports = {
     '~/plugins/eventbus',
     '~/plugins/spinners',
     '~/plugins/flag-icon'
+    // { src: '~/plugins/vuex-persist', ssr: false },
     // '~/plugins/nuxt-client-init'
     // '~/plugins/tasty-burger-button'
   ],
@@ -129,7 +129,7 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: `${AUTH_URL}/Login`, method: 'post', propertyName: '' },
+          login: { url: `${AUTH_URL}/Login`, method: 'post' },
           logout: { url: `${AUTH_URL}/Logout`, method: 'get' },
           user: { url: `${AUTH_URL}/GetProfile`, method: 'get', propertyName: '' }
         },
@@ -151,14 +151,14 @@ module.exports = {
     watchLoggedIn: true,
     rewriteRedirects: true,
     resetOnError: true,
+    localStorage: false,
+    cookie: false,
     redirect: {
       login: '/login',
       logout: '/',
       home: '/',
       callback: '/callback'
     },
-    localStorage: false,
-    cookie: false,
     scopeKey: 'roles',
     plugins: ['~/plugins/auth']
   },

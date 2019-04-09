@@ -44,35 +44,59 @@
             clearable
           )
 
-          v-combobox.my-2(
-            dense
-            v-model='stageType'
-            :items='stageTypes'
-            hide-details
-            hide-no-data
-            hide-selected
-            label='Stage type'
-            prepend-icon='mdi-tournament'
-            clearable
-          )
-            template(v-slot:selection='{ item }')
-              | {{ item.replace(/\b\w/g, l => l.toUpperCase()) }}
-            template(v-slot:item='{ item }')
-              | {{ item.replace(/\b\w/g, l => l.toUpperCase()) }}
+          // v-combobox.my-2(
+          //   dense
+          //   v-model='stageType'
+          //   :items='stageTypes'
+          //   hide-details
+          //   hide-no-data
+          //   hide-selected
+          //   label='Stage type'
+          //   prepend-icon='mdi-tournament'
+          //   clearable
+          // )
+          //   template(v-slot:selection='{ item }')
+          //     | {{ item.replace(/\b\w/g, l => l.toUpperCase()) }}
+          //   template(v-slot:item='{ item }')
+          //     | {{ item.replace(/\b\w/g, l => l.toUpperCase()) }}
 
-          v-combobox.my-2(
-            dense
-            v-model='stageIndex'
-            :items='stageIndexes'
-            item-text='text'
-            item-value='id'
-            hide-details
-            hide-no-data
-            hide-selected
-            label='Stage index'
-            prepend-icon='mdi-podium-gold'
-            clearable
-          )
+          v-item-group.mt-3.text-xs-center(v-model='stageType')
+            // div.subheading STAGE
+            v-item(:value='stype' v-for='stype in stageTypes' :key='stype')
+              v-chip.px-2(
+                slot-scope="{ active, toggle }"
+                @click="toggle"
+                :selected="active"
+                dark label flat
+                :color='active ? "primary" : "grey lighten-1"'
+              )
+                span.font-weight-medium {{ stype.toUpperCase() }}
+
+          v-item-group.mt-2.text-xs-center(v-model='stageIndex' v-if='stageIndexes.length')
+            // div.subheading INDEX
+            v-item(:value='sindex.id' v-for='sindex in stageIndexes' :key='sindex.id')
+              v-chip(
+                slot-scope="{ active, toggle }"
+                @click="toggle"
+                :selected="active"
+                dark label small flat
+                :color='active ? "primary" : "grey lighten-1"'
+              )
+                span.font-weight-medium {{ sindex.text.toUpperCase() }}
+          // v-combobox.my-2(
+          //   dense
+          //   v-model='stageIndex'
+          //   :items='stageIndexes'
+          //   v-if='stageIndexes.length'
+          //   item-text='text'
+          //   item-value='id'
+          //   hide-details
+          //   hide-no-data
+          //   hide-selected
+          //   label='Stage index'
+          //   prepend-icon='mdi-podium-gold'
+          //   clearable
+          // )
     //- v-dialog(
     //-   v-model='dialog'
     //-   max-width='290'
@@ -119,10 +143,8 @@ const Dicts = namespace(dicts.name)
   mixins: [GlobalMixin, ValidateRules]
 })
 export default class MatchInfo extends Vue {
-  $api
-
   snackbar: Boolean = false
-  panel: Boolean[] = [false]
+  panel: Boolean[] = [true]
   stageTypes: Array<string> = enums.stageTypes
 
   stageType: string | null = null
@@ -241,5 +263,5 @@ export default class MatchInfo extends Vue {
   >>> .v-expansion-panel__header
     padding 6px 12px
     color #ffffff
-    background-color var(--v-warning-lighten2)
+    background-color var(--v-warning-base)
 </style>

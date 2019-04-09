@@ -1,4 +1,5 @@
 export const strict = false
+
 /* eslint-disable */
 import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
 import { IRootState, ITournament, ITournamentType, IMatch, ITraining, IPlayer, IBox } from '../types/interfaces'
@@ -10,7 +11,8 @@ export const types = {
   SET_TRAINING: 'SET_TRAINING',
   SET_REDTEAM: 'SET_REDTEAM',
   SET_BLUETEAM: 'SET_BLUETEAM',
-  SET_MATCHBOXES: 'SET_MATCHBOXES'
+  SET_MATCHBOXES: 'SET_MATCHBOXES',
+  SET_COMPONENT: 'SET_COMPONENT'
 }
 
 export interface IState {
@@ -21,6 +23,7 @@ export interface IState {
   redTeam: IPlayer[];
   blueTeam: IPlayer[];
   matchBoxes: IBox[];
+  component: string | null;
 }
 
 export const state = (): IState => ({
@@ -30,7 +33,8 @@ export const state = (): IState => ({
   training: null,
   redTeam: [],
   blueTeam: [],
-  matchBoxes: []
+  matchBoxes: [],
+  component: null
 })
 
 export const mutations: MutationTree<IState> = {
@@ -40,7 +44,8 @@ export const mutations: MutationTree<IState> = {
   setTraining: (state, value: ITraining) => { state.training = value },
   setRedTeam: (state, value: IPlayer[]) => { state.redTeam = value },
   setBlueTeam: (state, value: IPlayer[]) => { state.blueTeam = value },
-  setMatchBoxes: (state, value: IBox[]) => { state.matchBoxes = value }
+  setMatchBoxes: (state, value: IBox[]) => { state.matchBoxes = value },
+  setComponent: (state, value: string | null) => { state.component = value }
 }
 
 export interface Actions<S, R> extends ActionTree<S, R> {
@@ -78,5 +83,6 @@ export const getters: GetterTree<IState, IRootState> = {
   getMatch: state => state.match,
   getTraining: state => state.training,
   getPlayers: state => [...state.redTeam, ...state.blueTeam],
-  getMatchBoxes: state => state.matchBoxes
+  getMatchBoxes: state => state.matchBoxes,
+  getComponent: state => state.component
 }

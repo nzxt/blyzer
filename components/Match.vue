@@ -26,15 +26,19 @@ v-card(flat)
         span.mx-1.font-weight-bold {{ competitionStage.toUpperCase() }}
         span.mx-1(v-if='stageIndex') {{ stageIndex }}
     v-divider(inset)
-    pre {{ match }}
+    pre
+      | {{ match }}
+      | {{ fetchedPlayers }}
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { AsyncComputed } from '~/utils/decorators'
-import { IMatch, ITournament } from '~/types/interfaces' // eslint-disable-line
+import { IMatch, ITournament, IPlayer } from '~/types/interfaces' // eslint-disable-line
 
 import GlobalMixins from '~/mixins/global'
+
+import { pick } from '~/utils/helpers'
 
 // import { Match } from '~/types/classes' // eslint-disable-line
 
@@ -84,6 +88,23 @@ export default class MatchPage extends Vue {
       .then(({ data }) => {
         // const _items = items.map(x => pick(x, 'id', 'fullName', 'playerClassification', 'countryId'))
         return data // _items
+      })
+  }
+
+  @AsyncComputed({ default: [] })
+  fetchedPlayers (): IPlayer[] {
+    const id: string | undefined = this.match.id
+    let filter: string | undefined
+
+    if (!id) return []
+    else filter = `matchId="${id}"`
+
+    // filter = filter || undefined
+
+    return this.$api.ApiPlayerGet(filter)
+      .then(({ data: { items } }) => {
+        const _items = items.map(x => pick(x, 'id', 'name'))
+        return _items
       })
   }
 }

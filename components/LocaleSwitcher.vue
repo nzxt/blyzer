@@ -13,7 +13,6 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({})
 export default class LocaleSwitcher extends Vue {
   $moment
-  $vuetify
 
   onLocaleSwitch (code) {
     this.$moment.locale(code)

@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
+import { Mutation, Getter } from 'vuex-class'
 
 @Component({
   components: {
@@ -18,12 +19,15 @@ export default class NewPage extends Vue {
   $bus
   component: string | null = null
 
+  @Mutation('setComponent') mutationSetComponent
+  @Getter('getComponent') getterGetComponent
+
   get isMatch (): Boolean {
     return this.$route.query.type === 'match'
   }
 
   created () {
-    this.component = this.isMatch ? 'AddMatch' : 'AddTraining'
+    this.component = this.getterGetComponent || this.isMatch ? 'AddMatch' : 'AddTraining'
 
     this.$bus.$on('setMatch', this.onSetMatch)
     this.$bus.$on('setTraining', this.onSetTraining)
@@ -51,6 +55,11 @@ export default class NewPage extends Vue {
   @Watch('isMatch')
   onQueryParamChanged (value: Boolean) {
     this.component = value ? 'AddMatch' : 'AddTraining'
+  }
+
+  @Watch('component')
+  onComponentChanged (value: string | null) {
+    this.mutationSetComponent(value)
   }
 }
 </script>

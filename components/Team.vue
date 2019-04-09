@@ -1,9 +1,9 @@
 <template lang="pug">
   //- :color='teamColor === "red" ? "error lighten-5" : "primary lighten-5"'
-  v-card(class='lighten-2' :class='teamColor === "red" ? "red-team" : "blue-team"')
+  v-card(dark class='lighten-2' :class='teamColor === "red" ? "red-team" : "blue-team"' :color='teamColor === "red" ? "error" : "primary"')
     v-card-title.py-1.title.font-weight-thin.justify-end(
       :class='teamColor === "red" ? "error--text" : "primary--text"'
-    ) {{ teamColor === "red" ? "RED team" : "BLUE team" }}
+    ) {{ teamColor === "red" ? "RED" : "BLUE" }}
     v-divider
     v-card-text.pa-1
       v-combobox.mb-2(
@@ -12,9 +12,9 @@
         :key='mb.id'
         v-model='mb.player'
         :items='fetchedPlayers'
-        :prepend-icon='`mdi-numeric-${mb.id}-box-outline`'
-        :label='`${mb.player ? `Classification: BC${mb.player.playerClassification+1}` : ""}`'
         :color='teamColor === "red" ? "warning darken-1" : "info darken-1"'
+        placeholder='Player name'
+        :prepend-icon='`mdi-numeric-${mb.id}-box-outline`'
         :search-input.sync='search[`${mb.id}`]'
         item-text='fullName'
         item-value='id'
@@ -24,15 +24,15 @@
         :rules='requiredField'
         clearable
       )
+        // :label='`${mb.player ? `Classification: BC${mb.player.playerClassification+1}` : ""}`'
         //- :hide-details='!!mb.player'
         //- :persistent-hint='!mb.player'
-        //- :hint='`Choose player for ${mb.teamColor} box #${mb.id}`'
         //- :hint='tournamentName ? `Type: <span class="body-2">${tournamentTypes.find(x => x.value === tournamentType).name}</span>` : "Choose or enter tournament name..."'
         template(v-slot:selection='{ item, index }')
           v-chip(small)
             v-avatar
               flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
-            div {{ item.fullName }}
+            div {{ item.fullName }} / BC{{item.playerClassification+1}}
         template(v-slot:item='{ index, item }')
           v-list-tile-avatar
             v-avatar

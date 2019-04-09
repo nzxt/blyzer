@@ -2,8 +2,6 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class AuthMixin extends Vue {
-  $noty: any
-  $auth: any
   username!: string
   password!: string
   /**

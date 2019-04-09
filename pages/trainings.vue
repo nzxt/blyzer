@@ -97,10 +97,10 @@ import { pick } from '~/utils/helpers'
 export default class TrainingsPage extends Vue {
   $api
 
-  rowsPerPageItems: Array<number> = [10, 15, 25, 50, 100]
+  rowsPerPageItems: Array<number> = [7, 15, 25]
   pagination: IPagination = {
     page: 1,
-    rowsPerPage: 50,
+    rowsPerPage: 7,
     sortBy: 'dateTimeStamp',
     descending: true,
     totalItems: 0,

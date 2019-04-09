@@ -23,7 +23,7 @@ v-card(flat style='min-width:320px')
           v-icon.mdi-24px.ml-1 mdi-account-group
 
     v-card-text.pa-1
-      v-item-group(v-model='competitionEvent' mandatory)
+      v-item-group(v-model='competitionEvent')
         v-item(
           v-for='d in competitionEvents'
           :key='d.value'
@@ -33,10 +33,10 @@ v-card(flat style='min-width:320px')
             slot-scope="{ active, toggle }"
             @click="toggle"
             :selected="active"
-            :color='active ? activeDivisionClass : "blue-grey darken-1"'
+            :color='active ? activeDivisionClass : "grey lighten-1"'
             small label dark flat
           )
-            div.font-weight-thin {{ d.text }}
+            div.mx-2.subheading.font-weight-thin {{ d.shortText }}
 
     v-card-text.pa-1
       Team(ref='redTeam' teamColor='red' :competitionType='competitionType' :competitionEvent='competitionEvent')
@@ -115,19 +115,31 @@ export default class AddMatch extends Vue {
     const item: IMatch = new Match(this.$moment().format(), this.$auth.user.appUserId)
 
     item.matchType = 1
-    item.competitionEvent = this.competitionEvent
+    item.competitionEvent = this.competitionEvent || 0
 
     if (tournament) item.tournamentId = tournament.id
+
     if (isPlainObject(stageIndex)) {
-      if (stageType === 'pool') item.poolStage = stageIndex.id
-      if (stageType === 'elimination') item.eliminationStage = stageIndex.id
+      if (stageType === 'pool') {
+        item.poolStage = stageIndex.id
+        item.eliminationStage = 0
+      } else if (stageType === 'elimination') {
+        item.poolStage = 0
+        item.eliminationStage = stageIndex.id
+      } else {
+        item.poolStage = 0
+        item.eliminationStage = 0
+      }
     }
 
-    const matchToPlayers: IMatchToPlayer[] = players.map((x) => {
-      return new MatchToPlayer(x.boxId, x.id)
-    })
+    if (players.length) {
+      const matchToPlayers: IMatchToPlayer[] = players.map((x) => {
+        return new MatchToPlayer(x.boxId, x.id)
+      })
 
-    item.matchToPlayers = matchToPlayers
+      item.matchToPlayers = matchToPlayers
+    }
+
     return item
   }
 
@@ -150,7 +162,7 @@ export default class AddMatch extends Vue {
     case 'individual': return enums.competitionEvents.individual
     case 'pair': return enums.competitionEvents.pair
     case 'team': return enums.competitionEvents.team
-    default: return enums.competitionEvents.default
+    default: return enums.competitionEvents.individual
     }
   }
 
@@ -159,11 +171,11 @@ export default class AddMatch extends Vue {
   }
 
   get activeCompetitionClass (): string {
-    return 'blue lighten-1 white--text'
+    return 'primary white--text'
   }
 
   get activeDivisionClass (): string {
-    return 'orange white--text'
+    return 'primary white--text'
   }
 }
 </script>
