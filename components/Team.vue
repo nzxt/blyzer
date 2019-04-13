@@ -35,8 +35,8 @@
             div {{ item.fullName }} / BC{{item.playerClassification+1}}
         template(v-slot:item='{ index, item }')
           v-list-tile-avatar
-            v-avatar
-              flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
+            // v-avatar
+            flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
           v-list-tile-content
             div {{ item.fullName }}
           v-list-tile-action

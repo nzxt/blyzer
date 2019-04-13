@@ -2,12 +2,15 @@
 v-card(flat)
   v-card-text.pa-0
     ScoreBoard
+
   v-card-text.pa-0
     Boxes
+
   v-card-text.px-0.pb-0
     v-tabs(v-model='activeTab', color='grey lighten-4',  fixed-tabs, slider-color='deep-orange')
       v-tab.font-weight-bold(v-for='tab in tabs', :key='tab.value', :href="`#tab-${tab.value}`", ripple)
-        v-icon.mdi-24px(left) {{ tab.icon }}
+        // v-icon.mdi-24px(left) {{ tab.icon }}
+        v-icon.mdi-24px(left) {{ activeTab === `tab-${tab.value}` ? 'mdi-radiobox-marked' : 'mdi-radiobox-blank'}}
         | {{ tab.text }}
       v-tab-item(value="tab-1")
         v-card(flat)
@@ -24,6 +27,7 @@ v-card(flat)
             v-chip(v-for='dead in enums.deadBallTypes', :key='dead.value')
               | {{ dead.text }}
             v-divider.my-3
+
   v-card-actions
     v-spacer
     v-btn.secondary.secondary--text(round, block, outline, @click='onCancel')

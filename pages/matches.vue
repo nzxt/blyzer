@@ -32,8 +32,8 @@ v-layout
                   label='Per Page'
                 )
               v-flex.text-xs-right
-                v-btn(dark small round color='backpurple' @click='$router.push("/new?type=match")')
-                  v-icon(left small) mdi-plus
+                v-btn(dark round color='backpurple' @click='$router.push("/new?type=match")')
+                  v-icon(left) mdi-plus
                   | Add New
 
         template(v-slot:item='props')
@@ -57,9 +57,9 @@ v-layout
                       v-flex.py-0(xs2)
                         v-chip.font-weight-bold.error--text(small label color='grey lighten-4') {{ props.item.scoreRed }}
                       v-flex.py-0(xs2)
-                        v-progress-linear(:value='56' color='accent' query)
+                        v-progress-linear(:value='props.item.avgPointRed' color='accent' query)
                       v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.grey--text(small label color='transparent') 56%
+                        v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
                     v-layout
                       v-flex(xs6)
                         v-btn.ma-0.mr-1(small icon)
@@ -68,16 +68,17 @@ v-layout
                       v-flex.py-0(xs2)
                         v-chip.font-weight-bold.primary--text(small label color='grey lighten-4') {{ props.item.scoreBlue }}
                       v-flex.py-0(xs2)
-                        v-progress-linear(:value='44' color='accent' query)
+                        v-progress-linear(:value='props.item.avgPointRed' color='accent' query)
                       v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.grey--text(small label color='transparent') 44%
+                        v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
                   // v-flex.justify-center.align-center(xs2 layout column)
                     v-btn(icon large @click='onMatchClicked(props.item)')
                       v-icon.mdi-36px(color='grey') mdi-chevron-right
               // v-divider
               v-card-actions.font-weight-medium
                 v-chip.mr-2.indigo--text(small label color='indigo lighten-5' v-if='props.item.competitionEvent') {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
-                v-chip.cyan--text(small label color='cyan lighten-5' v-if='props.item') Pool C
+                v-chip.cyan--text(small label color='cyan lighten-5' v-if='props.item.poolStage || props.item.eliminationStage')
+                  | {{ stageIndex }}
 
               // v-card-text(v-if="props.expanded")
               //   v-layout
@@ -122,7 +123,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import { ITournament, IMatch, IPagination } from 'types/interfaces' // eslint-disable-line
 import { AsyncComputed } from '~/utils/decorators'
 import GlobalMixins from '~/mixins/global'
-import { pick } from '~/utils/helpers'
+import { pick, isEmptyObject } from '~/utils/helpers'
+
+// import enums from '~/assets/enums'
 
 @Component({
   components: {
@@ -142,6 +145,21 @@ export default class MatchesPage extends Vue {
     totalItems: 0,
     totalPages: 0
   }
+
+  stageType (match: IMatch): string {
+    if (!isEmptyObject(match)) {
+      const { poolStage, eliminationStage } = match
+      if (poolStage) return 'pool'
+      else if (eliminationStage) return 'elimination'
+    }
+    return 'default'
+  }
+
+  // stageIndex (match: IMatch): string {
+  //   if (!isEmptyObject(match)) {
+  //     const { poolStage, eliminationStage } = match
+  //   }
+  // }
 
   @AsyncComputed({ default: [] })
   fetchedMatches (): IMatch[] {
@@ -174,7 +192,6 @@ export default class MatchesPage extends Vue {
     return this.$api.ApiTournamentByIdGet({ id })
       .then(({ data }) => {
         const _item = pick(data, 'id', 'name')
-        debugger
         return _item
       })
       .catch((err) => { console.log(err) })

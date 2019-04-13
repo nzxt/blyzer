@@ -123,9 +123,9 @@ export interface IApiService {
   $domain: string;
   request: Function;
   ApiAccountLoginPost: Function;
-  ApiAccountLogoutGet: Function;
   ApiAccountGetProfileGet: Function;
   ApiAccountRegistrationPost: Function;
+  ApiAccountRefreshTokensPost: Function;
   ApiAppRoleGet: Function;
   ApiAppRolePut: Function;
   ApiAppRolePost: Function;

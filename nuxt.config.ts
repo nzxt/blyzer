@@ -5,9 +5,10 @@ const i18n = require('./config/i18n')
 
 const isDev = process.env.NODE_ENV !== 'production'
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:2450'
-const API_URL = `${BASE_URL}/api`
-const AUTH_URL = `${API_URL}/Account`
+const {
+  AUTH_URL = 'http://localhost:3000',
+  BASE_URL = 'http://localhost:2450'
+} = process.env
 
 module.exports = {
   mode: 'spa',
@@ -74,7 +75,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/axios',
+    // '~/plugins/axios',
     '~/plugins/api',
     '~/plugins/vuetify',
     '~/plugins/async-computed',
@@ -95,9 +96,9 @@ module.exports = {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/pwa',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
+    '@nuxtjs/pwa',
     ['nuxt-i18n', i18n],
     ['@nuxtjs/dotenv', { filename: '.env' }],
     ['@nuxtjs/moment', { locales: ['uk', 'ru'],  defaultLocale: 'en',  plugin: true }]
@@ -109,8 +110,8 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: isDev,
-    https: false,
-    proxy: false,
+    https: true,
+    proxy: true,
     credentials: true,
     baseURL: BASE_URL
     // redirectError: {
@@ -119,7 +120,8 @@ module.exports = {
     // }
   },
   proxy: {
-    "/api": API_URL
+    "/api/auth": AUTH_URL,
+    "/api": BASE_URL
   },
 
   /*
@@ -128,13 +130,29 @@ module.exports = {
   auth: {
     strategies: {
       local: {
+        _scheme: 'local',
         endpoints: {
-          login: { url: `${AUTH_URL}/Login`, method: 'post' },
-          logout: { url: `${AUTH_URL}/Logout`, method: 'get' },
-          user: { url: `${AUTH_URL}/GetProfile`, method: 'get', propertyName: '' }
+          user: { url: '/api/account/getprofile', method: 'get', propertyName: '' },
+          login: { url: '/api/account/login', method: 'post', propertyName: 'accessToken' },
+          logout: false, // { url: '/api/account/logout', method: 'get' }
         },
-        tokenRequired: false,
+        // tokenRequired: true,
         // tokenType: 'Bearer'
+      },
+      jwt: {
+        _scheme: '~/services/jwt-strategy.js',
+        endpoints: {
+          user: { url: `/api/account/getprofile`, method: 'get', propertyName: '' },
+          login: { url: `/api/account/login`, method: 'post', propertyName: 'accessToken' },
+          logout: false, // { url: `/api/account/logout`, method: 'get' }
+        }
+        // tokenType: 'Bearer',
+        // tokenKey: 'access_token',
+        // refreshTokenKey: 'refresh_token'
+      },
+      auth0: {
+        domain: 'nzxt.auth0.com',
+        client_id: 'wMKQRddoM79cMrcbk6yAohRXkhJpe-Rn'
       },
       facebook: {
         client_id: '1671464192946675',
@@ -148,23 +166,24 @@ module.exports = {
         client_id: 'FAJNuxjMTicff6ciDKLiZ4t0D'
       }
     },
-    watchLoggedIn: true,
-    rewriteRedirects: true,
+    // watchLoggedIn: true,
+    // rewriteRedirects: true,
     resetOnError: true,
-    localStorage: false,
+    // localStorage: {
+    //   prefix: 'auth.'
+    // },
     cookie: false,
     redirect: {
+      home: '/',
       login: '/login',
       logout: '/',
-      home: '/',
       callback: '/callback'
     },
-    scopeKey: 'roles',
     plugins: ['~/plugins/auth']
   },
 
   router: {
-    middleware: 'auth'
+    middleware: ['auth']
   },
 
   Vue: {

@@ -12,6 +12,7 @@
     "allowJs": true,
     "sourceMap": true,
     "strict": true,
+	"strictNullChecks": false,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "noEmit": true,

@@ -39,9 +39,9 @@ module.exports = {
   stageTypes: ['pool', 'elimination'],
 
   stageIndexes: {
-    // default: [
-    //   { id: 0, value: 'none', text: 'None' }
-    // ],
+    default: [
+      { id: 0, value: 'none', text: 'None' }
+    ],
     pool: [
       // { id: 0, value: 'none', text: 'N/A' },
       { id: 1, value: 'poolA', text: '1st' },

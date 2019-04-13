@@ -46,24 +46,6 @@ export default class ApiService {
     return this.request('post', domain + path, body, queryParameters, form, config)
   }
   /**
-   * Вихід з системи
-   * request: ApiAccountLogoutGet
-   */
-  ApiAccountLogoutGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
-    const config = parameters.$config
-    let path = '/api/Account/Logout'
-    let body
-    let queryParameters = {}
-    let form = {}
-    if (parameters.$queryParameters) {
-      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
-        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
-      });
-    }
-    return this.request('get', domain + path, body, queryParameters, form, config)
-  }
-  /**
    * Отримати профіль користувача
    * request: ApiAccountGetProfileGet
    */
@@ -90,6 +72,28 @@ export default class ApiService {
     const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Account/Registration'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['item'] !== undefined) {
+      body = parameters['item']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('post', domain + path, body, queryParameters, form, config)
+  }
+  /**
+   * Оновлення токенів
+   * request: ApiAccountRefreshTokensPost
+   * @param item - Модель токенів
+   */
+  ApiAccountRefreshTokensPost(parameters = {}) {
+    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    const config = parameters.$config
+    let path = '/api/Account/RefreshTokens'
     let body
     let queryParameters = {}
     let form = {}

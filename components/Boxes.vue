@@ -8,7 +8,7 @@ v-card(flat)
             v-item(:value='box')
               v-card(
                 slot-scope='{ active, toggle }',
-                :class='active ? "elevation-7" : ""',
+                :class='active ? "elevation-10" : ""',
                 :color='`${box.teamColor} lighten-2`',
                 @click='toggle',
                 height='85',
@@ -20,10 +20,12 @@ v-card(flat)
                   :color='active ? "yellow darken-1": ""'
                 ) {{ `mdi-numeric-${box.id}-box-outline` }}
                 br
-                v-chip(small v-if='active')
-                  v-avatar
-                    flag(:iso='countryById(activeBox.player.countryId).alpha2', :title='countryById(activeBox.player.countryId).name')
-                  div.body-1 {{ activeBox.player.fullName | tryGetInitials }}
+                div.body-1.font-weight-thin {{ box.player.fullName | tryGetInitials }}
+  v-card-text.pb-0
+    v-chip
+      v-avatar
+        flag(:iso='countryById(activeBox.player.countryId).alpha2', :title='countryById(activeBox.player.countryId).name')
+      div.body-1 {{ activeBox.player.fullName | tryGetInitials }}
 </template>
 
 <script lang="ts">
