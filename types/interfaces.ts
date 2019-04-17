@@ -118,9 +118,14 @@ export interface IBox {
   player?: IPlayer;
 }
 
+export interface ITokens {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+}
+
 export interface IApiService {
   $axios: any;
-  $domain: string;
   request: Function;
   ApiAccountLoginPost: Function;
   ApiAccountGetProfileGet: Function;

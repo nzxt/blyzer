@@ -7,25 +7,28 @@
         v-spacer
         //- v-avatar(v-if='picture', size='36', color='grey lighten-4')
         //-   img(:src='avatar', alt='avatar')
-        v-btn(small icon @click='$auth.logout()')
+        v-btn(icon @click='$auth.logout()')
           v-icon.mdi-24px mdi-logout
-        v-icon.mdi-36px(@click='fetchUserProfile') mdi-account-circle-outline
+        v-btn(icon @click='refreshAuthToken')
+          v-icon.mdi-24px mdi-account-convert
+        v-btn(icon @click='fetchUserProfile')
+          v-icon.mdi-36px mdi-account-circle-outline
       v-card-text.pt-0
           //- v-container(pa-0, grid-list-md)
           v-layout(wrap, justify-space-between, align-start)
             v-flex.mt-3.ml-2(xs3, layout, align-center)
-              v-layout(column)
+              v-layout(column text-xs-center)
                 v-flex.pb-2
                   a(:href='socialProfile')
                     v-avatar(size='80', color='grey lighten-4')
                       img(v-if='avatar', :src='avatar', :alt='fullName')
                 v-flex
                   span.subheading
-                    |{{ country }}
+                    | {{ country }}
                     flag.ml-1(iso='ua', style='font-size:18px;border-radius:50%')
                 v-flex
-                  span.subheading
-                    |{{ dateOfBirth }}
+                  span.caption
+                    | {{ dateOfBirth }}
             v-flex(xs8)
               v-text-field(label='Given Name', v-model='firstName', readonly, hide-details)
               v-text-field(label='Family Name', v-model='lastName', readonly, hide-details)
@@ -97,6 +100,10 @@ export default class UserProfile extends Vue {
 
   async fetchUserProfile () {
     await this.$auth.fetchUser()
+  }
+
+  refreshAuthToken () {
+    this.$auth.strategy.refreshTokens() // eslint-disable-line
   }
 }
 </script>

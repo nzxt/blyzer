@@ -6,7 +6,7 @@
 {{/parameters}}
 */
 {{&methodName}} (parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
+    {{!-- const domain = parameters.$domain ? parameters.$domain : this.$domain --}}
     const config = parameters.$config
     let path = '{{&path}}'
     let body
@@ -50,5 +50,5 @@ if (parameters.$queryParameters) {
     });
 }
 
-    return this.request('{{toLowerCase method}}', domain + path, body, queryParameters, form, config)
+    return this.request('{{toLowerCase method}}', path, body, queryParameters, form, config)
 }

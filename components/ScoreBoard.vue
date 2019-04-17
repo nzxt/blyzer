@@ -1,29 +1,34 @@
 <template lang="pug">
-  v-card.mx-1(flat, color='grey lighten-3')
+  v-card.mx-1(flat, color='grey lighten-3' width='360px')
     v-card-text.pa-1
       v-layout(justify-end)
-        //- v-flex(xs11, offset-xs1, layout, justify-space-around)
-          //- v-chip.ml-2(dark, small, color='grey', v-for='i in 12' :key='i') {{ i }}
-          div(d-flex, text-xs-right, justify-end, v-for='i in 12' :key='i') {{ i }}
-        v-flex.pl-2.pt-2(xs1 layout column)
-          v-icon.mdi-24px(color='white') {{ scores[0].team === "red" ? "mdi-volleyball" : "mdi-blank" }}
-          v-icon.mdi-24px(color='white') {{ scores[0].team === "blue" ? "mdi-volleyball" : "mdi-blank" }}
+        // div(d-flex,   text-xs-right, justify-end, v-for='i in 12' :key='i') {{ i }}
+        v-flex.ma-0(xs1 layout column)
+          v-icon.mdi-28px(
+            :color='scores[0].team === "red" ? "error" : "primary"'
+            :class='active === 0 ? "mdi-spin" : ""'
+          ) mdi-volleyball
         v-divider(vertical, class='mx-2')
-        v-flex(xs11 layout wrap)
-          v-flex(xs12 layout justify-space-between)
-            v-icon.mdi-24px(:color='i.team === "red" ? "error" : "grey lighten-2"', v-for='i in scores.slice(1)', :key='i.value') mdi-volleyball
-          v-flex(xs12, layout, justify-space-between)
-            //- v-icon.mdi-24px(color='white') mdi-volleyball
-            v-icon.mdi-24px(:color='i.team === "blue" ? "primary" : "grey lighten-2"', v-for='i in scores.slice(1)', :key='i.value') mdi-volleyball
-        //- v-flex(xs12, layout, justify-space-between)
-          v-icon.mdi-24px(color='grey', v-for='i in 5' :key='i') mdi-volleyball
+        v-flex.ma-0(xs11 layout)
+          // v-flex(xs12 layout justify-space-between)
+          v-icon.mdi-28px(
+            :color='i.team === "red" ? "error" : "primary"'
+            v-for='i in scores.slice(1)'
+            :key='i.value'
+          ) mdi-volleyball
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import { IStage } from '../types/interfaces' // eslint-disable-line
 
 @Component({})
 export default class ScoreBoard extends Vue {
+  @Prop({ default: [] })
+  stage!: IStage
+
+  active: number | null = 0
+
   scores: Array<any> = [
     { value: 0, team: 'red', player: 'Peters' },
     { value: 1, team: 'red', player: 'Adams' },
@@ -39,5 +44,14 @@ export default class ScoreBoard extends Vue {
     { value: 11, team: 'blue', player: 'Sam' },
     { value: 12, team: 'blue', player: 'Sam' }
   ]
+
+  mounted () {
+    // debugger
+  }
 }
 </script>
+
+<style lang="stylus" scoped>
+.mdi-28px
+  font-size: 28px
+</style>

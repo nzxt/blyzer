@@ -47,14 +47,13 @@ v-container
             v-btn.secondary(
               dark flat icon
               @click='$auth.loginWith("auth0")'
-              :disabled='!valid'
             )
               v-icon mdi-shield-key
-            v-btn.secondary(
-              dark flat icon
-              @click='jwtSignIn'
-              :disabled='!valid'
-            )
+            // v-btn.secondary(
+            //   dark flat icon
+            //   @click='jwtSignIn'
+            //   :disabled='!valid'
+            // )
               v-icon mdi-shield-key-outline
             v-btn.primary(
               dark flat block

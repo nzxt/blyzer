@@ -72,7 +72,7 @@ export const actions: Actions<IState, IRootState> = {
     }
   },
 
-  kilTeamMatchBoxes ({state, commit }, teamColor: string): void {
+  killTeamMatchBoxes ({state, commit }, teamColor: string): void {
     const { matchBoxes } = state
     commit('setMatchBoxes', matchBoxes.filter(x => x.teamColor !== teamColor))
   }

@@ -3,7 +3,6 @@ import qs from 'qs'
 export default class ApiService {
   constructor(ctx) {
     this.$axios = ctx.$axios
-    this.$domain = ctx.$axios.defaults.baseURL
   }
   request(method, url, body, queryParameters, form, config) {
     method = method.toLowerCase()
@@ -29,7 +28,6 @@ export default class ApiService {
    * @param loginModel - Модель авторизації
    */
   ApiAccountLoginPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Account/Login'
     let body
@@ -43,14 +41,13 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати профіль користувача
    * request: ApiAccountGetProfileGet
    */
   ApiAccountGetProfileGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Account/GetProfile'
     let body
@@ -61,7 +58,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Реєстрація нового користувача
@@ -69,7 +66,6 @@ export default class ApiService {
    * @param item - Модель реєстрації
    */
   ApiAccountRegistrationPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Account/Registration'
     let body
@@ -83,7 +79,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Оновлення токенів
@@ -91,7 +87,6 @@ export default class ApiService {
    * @param item - Модель токенів
    */
   ApiAccountRefreshTokensPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Account/RefreshTokens'
     let body
@@ -105,7 +100,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -116,7 +111,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiAppRoleGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppRole'
     let body
@@ -139,7 +133,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -147,7 +141,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiAppRolePut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppRole'
     let body
@@ -161,7 +154,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -169,7 +162,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiAppRolePost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppRole'
     let body
@@ -183,7 +175,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -191,7 +183,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiAppRoleByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppRole/{id}'
     let body
@@ -206,14 +197,13 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Отримати ідентифікатор ролі за замовчуванням
    * request: ApiAppRoleGetDefaultGet
    */
   ApiAppRoleGetDefaultGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppRole/GetDefault'
     let body
@@ -224,7 +214,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -235,7 +225,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiAppUserGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppUser'
     let body
@@ -258,7 +247,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати користувача
@@ -266,7 +255,6 @@ export default class ApiService {
    * @param item - Користувач
    */
   ApiAppUserPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppUser'
     let body
@@ -280,7 +268,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -288,7 +276,6 @@ export default class ApiService {
    * @param item - Модель реєстрації
    */
   ApiAppUserPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppUser'
     let body
@@ -302,7 +289,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -310,7 +297,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiAppUserByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppUser/{id}'
     let body
@@ -325,7 +311,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -333,7 +319,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiAppUserByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppUser/{id}'
     let body
@@ -348,7 +333,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Призначити ролі користувачу
@@ -356,7 +341,6 @@ export default class ApiService {
    * @param rolesModel - Модель для додавання ролей користувачу
    */
   ApiAppUserSetRolesPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppUser/SetRoles'
     let body
@@ -370,7 +354,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Встановити новий пароль
@@ -379,7 +363,6 @@ export default class ApiService {
    * @param pass - Новий пароль
    */
   ApiAppUserSetPassPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/AppUser/SetPass'
     let body
@@ -396,7 +379,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -407,7 +390,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiBallGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Ball'
     let body
@@ -430,7 +412,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -438,7 +420,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiBallPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Ball'
     let body
@@ -452,7 +433,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -460,7 +441,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiBallPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Ball'
     let body
@@ -474,7 +454,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -482,7 +462,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiBallByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Ball/{id}'
     let body
@@ -497,7 +476,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -505,7 +484,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiBallByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Ball/{id}'
     let body
@@ -520,7 +498,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -531,7 +509,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiConfigurationGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Configuration'
     let body
@@ -554,7 +531,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -562,7 +539,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiConfigurationPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Configuration'
     let body
@@ -576,7 +552,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -584,7 +560,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiConfigurationPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Configuration'
     let body
@@ -598,7 +573,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -606,7 +581,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiConfigurationByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Configuration/{id}'
     let body
@@ -621,7 +595,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -629,7 +603,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiConfigurationByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Configuration/{id}'
     let body
@@ -644,7 +617,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -655,7 +628,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiCountryGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Country'
     let body
@@ -678,7 +650,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -686,7 +658,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiCountryPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Country'
     let body
@@ -700,7 +671,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -708,7 +679,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiCountryPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Country'
     let body
@@ -722,7 +692,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -730,7 +700,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiCountryByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Country/{id}'
     let body
@@ -745,7 +714,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -753,7 +722,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiCountryByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Country/{id}'
     let body
@@ -768,7 +736,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -779,7 +747,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiMatchGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Match'
     let body
@@ -802,7 +769,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -810,7 +777,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiMatchPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Match'
     let body
@@ -824,7 +790,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -832,7 +798,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiMatchPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Match'
     let body
@@ -846,7 +811,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -854,7 +819,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiMatchByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Match/{id}'
     let body
@@ -869,7 +833,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -877,7 +841,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiMatchByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Match/{id}'
     let body
@@ -892,7 +855,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -903,7 +866,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiMatchToPlayerGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/MatchToPlayer'
     let body
@@ -926,7 +888,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -934,7 +896,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiMatchToPlayerPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/MatchToPlayer'
     let body
@@ -948,7 +909,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -956,7 +917,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiMatchToPlayerPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/MatchToPlayer'
     let body
@@ -970,7 +930,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -978,7 +938,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiMatchToPlayerByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/MatchToPlayer/{id}'
     let body
@@ -993,7 +952,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -1001,7 +960,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiMatchToPlayerByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/MatchToPlayer/{id}'
     let body
@@ -1016,7 +974,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -1027,7 +985,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiPlayerGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Player'
     let body
@@ -1050,7 +1007,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -1058,7 +1015,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiPlayerPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Player'
     let body
@@ -1072,7 +1028,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -1080,7 +1036,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiPlayerPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Player'
     let body
@@ -1094,7 +1049,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -1102,7 +1057,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiPlayerByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Player/{id}'
     let body
@@ -1117,7 +1071,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -1125,7 +1079,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiPlayerByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Player/{id}'
     let body
@@ -1140,7 +1093,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -1151,7 +1104,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiStageGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Stage'
     let body
@@ -1174,7 +1126,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -1182,7 +1134,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiStagePut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Stage'
     let body
@@ -1196,7 +1147,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -1204,7 +1155,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiStagePost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Stage'
     let body
@@ -1218,7 +1168,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -1226,7 +1176,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiStageByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Stage/{id}'
     let body
@@ -1241,7 +1190,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -1249,7 +1198,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiStageByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Stage/{id}'
     let body
@@ -1264,7 +1212,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -1275,7 +1223,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiStageToPlayerGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/StageToPlayer'
     let body
@@ -1298,7 +1245,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -1306,7 +1253,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiStageToPlayerPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/StageToPlayer'
     let body
@@ -1320,7 +1266,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -1328,7 +1274,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiStageToPlayerPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/StageToPlayer'
     let body
@@ -1342,7 +1287,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -1350,7 +1295,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiStageToPlayerByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/StageToPlayer/{id}'
     let body
@@ -1365,7 +1309,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -1373,7 +1317,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiStageToPlayerByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/StageToPlayer/{id}'
     let body
@@ -1388,7 +1331,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -1399,7 +1342,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiTournamentGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Tournament'
     let body
@@ -1422,7 +1364,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -1430,7 +1372,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiTournamentPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Tournament'
     let body
@@ -1444,7 +1385,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -1452,7 +1393,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiTournamentPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Tournament'
     let body
@@ -1466,7 +1406,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -1474,7 +1414,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiTournamentByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Tournament/{id}'
     let body
@@ -1489,7 +1428,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -1497,7 +1436,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiTournamentByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Tournament/{id}'
     let body
@@ -1512,7 +1450,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -1523,7 +1461,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiTournamentTypeGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/TournamentType'
     let body
@@ -1546,7 +1483,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -1554,7 +1491,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiTournamentTypePut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/TournamentType'
     let body
@@ -1568,7 +1504,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -1576,7 +1512,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiTournamentTypePost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/TournamentType'
     let body
@@ -1590,7 +1525,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -1598,7 +1533,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiTournamentTypeByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/TournamentType/{id}'
     let body
@@ -1613,7 +1547,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -1621,7 +1555,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiTournamentTypeByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/TournamentType/{id}'
     let body
@@ -1636,7 +1569,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
    * Отримати список (пагінація)
@@ -1647,7 +1580,6 @@ export default class ApiService {
    * @param order - Сортування
    */
   ApiTrainingGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Training'
     let body
@@ -1670,7 +1602,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Модифікувати запис
@@ -1678,7 +1610,6 @@ export default class ApiService {
    * @param item - Об'єкт
    */
   ApiTrainingPut(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Training'
     let body
@@ -1692,7 +1623,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('put', domain + path, body, queryParameters, form, config)
+    return this.request('put', path, body, queryParameters, form, config)
   }
   /**
    * Створити новий запис
@@ -1700,7 +1631,6 @@ export default class ApiService {
    * @param item - Новий об'єкт
    */
   ApiTrainingPost(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Training'
     let body
@@ -1714,7 +1644,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('post', domain + path, body, queryParameters, form, config)
+    return this.request('post', path, body, queryParameters, form, config)
   }
   /**
    * Отримати деталі за ідентифікатором
@@ -1722,7 +1652,6 @@ export default class ApiService {
    * @param id - Ідентифікатор запису
    */
   ApiTrainingByIdGet(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Training/{id}'
     let body
@@ -1737,7 +1666,7 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('get', domain + path, body, queryParameters, form, config)
+    return this.request('get', path, body, queryParameters, form, config)
   }
   /**
    * Видалити запис
@@ -1745,7 +1674,6 @@ export default class ApiService {
    * @param id - Ідентифікатор
    */
   ApiTrainingByIdDelete(parameters = {}) {
-    const domain = parameters.$domain ? parameters.$domain : this.$domain
     const config = parameters.$config
     let path = '/api/Training/{id}'
     let body
@@ -1760,6 +1688,6 @@ export default class ApiService {
         queryParameters[parameterName] = parameters.$queryParameters[parameterName]
       });
     }
-    return this.request('delete', domain + path, body, queryParameters, form, config)
+    return this.request('delete', path, body, queryParameters, form, config)
   }
 }

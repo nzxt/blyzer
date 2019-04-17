@@ -6,8 +6,8 @@ const i18n = require('./config/i18n')
 const isDev = process.env.NODE_ENV !== 'production'
 
 const {
-  AUTH_URL = 'http://localhost:3000',
-  BASE_URL = 'http://localhost:2450'
+  API_URL = 'http://localhost:2450',
+  // BASE_URL = 'http://localhost:3000'
 } = process.env
 
 module.exports = {
@@ -37,19 +37,12 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // { rel: 'stylesheet',  href: 'https://fonts.googleapis.com/css?family=Material+Icons' },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Exo+2:100,300,400,500,700,900&amp;subset=cyrillic'
-      }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Exo+2:100,300,400,500,700,900&amp;subset=cyrillic' }
     ]
-    // scripts:[
-    //   {
-    //     rel: 'text/javasccript',
-    //     href:
-    //       'https://unpkg.com/babel-polyfill/dist/polyfill.min.js'
-    //   }
-    // ]
+    // scripts:[{
+    //   rel: 'text/javascript',
+    //   href: 'https://unpkg.com/babel-polyfill/dist/polyfill.min.js'
+    // }]
   },
 
   /*
@@ -75,20 +68,22 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    // '~/plugins/axios',
-    '~/plugins/api',
     '~/plugins/vuetify',
+    '~/plugins/api',
     '~/plugins/async-computed',
-    // '~/plugins/mixins',
-    '~/plugins/filters',
-    '~/plugins/noty',
-    '~/plugins/hotkey',
     '~/plugins/eventbus',
+    '~/plugins/filters',
+    '~/plugins/flag-icon',
+    '~/plugins/hotkey',
+    // '~/plugins/lodash',
+    // '~/plugins/mixins',
+    '~/plugins/noty',
     '~/plugins/spinners',
-    '~/plugins/flag-icon'
+    // '~/plugins/tasty-burger-button',
+    // '~/plugins/timers',
     // { src: '~/plugins/vuex-persist', ssr: false },
-    // '~/plugins/nuxt-client-init'
-    // '~/plugins/tasty-burger-button'
+    // { src: '~/plugins/local-storage', ssr: false },
+    // { src: '~/plugins/nuxt-client-init', ssr: fasle }
   ],
 
   /*
@@ -110,18 +105,19 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     debug: isDev,
-    https: true,
+    https: false,
     proxy: true,
-    credentials: true,
-    baseURL: BASE_URL
+    credentials: true
+    // prefix: BASE_URL
+    // baseURL: BASE_URL
     // redirectError: {
     //   401: '/login',
     //   404: '/notfound'
     // }
   },
+
   proxy: {
-    "/api/auth": AUTH_URL,
-    "/api": BASE_URL
+    '/api': API_URL
   },
 
   /*
@@ -130,25 +126,16 @@ module.exports = {
   auth: {
     strategies: {
       local: {
-        _scheme: 'local',
-        endpoints: {
-          user: { url: '/api/account/getprofile', method: 'get', propertyName: '' },
-          login: { url: '/api/account/login', method: 'post', propertyName: 'accessToken' },
-          logout: false, // { url: '/api/account/logout', method: 'get' }
-        },
-        // tokenRequired: true,
-        // tokenType: 'Bearer'
-      },
-      jwt: {
         _scheme: '~/services/jwt-strategy.js',
         endpoints: {
-          user: { url: `/api/account/getprofile`, method: 'get', propertyName: '' },
-          login: { url: `/api/account/login`, method: 'post', propertyName: 'accessToken' },
-          logout: false, // { url: `/api/account/logout`, method: 'get' }
+          user: { url: `/api/Account/GetProfile`, method: 'get', propertyName: '' },
+          login: { url: `/api/Account/Login`, method: 'post', propertyName: '' },
+          logout: false, // { url: `/api/account/logout`, method: 'get' },
+          refresh: { url: `/api/Account/RefreshTokens`, method: 'post', propertyName: '' }
         }
         // tokenType: 'Bearer',
-        // tokenKey: 'access_token',
-        // refreshTokenKey: 'refresh_token'
+        // tokenKey: 'accessToken',
+        // refreshTokenKey: 'refreshToken'
       },
       auth0: {
         domain: 'nzxt.auth0.com',
@@ -172,6 +159,7 @@ module.exports = {
     // localStorage: {
     //   prefix: 'auth.'
     // },
+    scopeKey: 'role',
     cookie: false,
     redirect: {
       home: '/',
@@ -199,8 +187,8 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    // babel: { 'plugins': ['@babel/plugin-proposal-optional-chaining'] },
     extractCSS: true,
+    // babel: { 'plugins': ['@babel/plugin-proposal-optional-chaining'] },
     transpile: ['vuetify/lib'],
     plugins: [new VuetifyLoaderPlugin()],
     loaders: {

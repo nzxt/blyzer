@@ -78,7 +78,7 @@ v-layout
               v-card-actions.font-weight-medium
                 v-chip.mr-2.indigo--text(small label color='indigo lighten-5' v-if='props.item.competitionEvent') {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
                 v-chip.cyan--text(small label color='cyan lighten-5' v-if='props.item.poolStage || props.item.eliminationStage')
-                  | {{ stageIndex }}
+                  // | {{ stageIndex }}
 
               // v-card-text(v-if="props.expanded")
               //   v-layout

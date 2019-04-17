@@ -76,7 +76,7 @@ export default class Team extends Vue {
   // @Dicts.Action('fetchCountries') dictsActionFetchCountries
 
   @Action('setMatchBoxes') actionSetMatchBoxes
-  @Action('kilTeamMatchBoxes') actionKilTeamMatchBoxes
+  @Action('killTeamMatchBoxes') actionKillTeamMatchBoxes
   @Mutation('setRedTeam') mutationSetRedTeam
   @Mutation('setBlueTeam') mutationSetBlueTeam
 
@@ -107,7 +107,7 @@ export default class Team extends Vue {
     }, [])
 
     this.teamColor === 'red' ? this.mutationSetRedTeam(team) : this.mutationSetBlueTeam(team)
-    this.actionKilTeamMatchBoxes(this.teamColor)
+    this.actionKillTeamMatchBoxes(this.teamColor)
     this.actionSetMatchBoxes(value)
   }
 
