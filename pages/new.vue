@@ -12,7 +12,7 @@ import { Mutation, Getter } from 'vuex-class'
   components: {
     AddMatch: () => import('~/components/AddMatch.vue'),
     AddTraining: () => import('~/components/AddTraining.vue'),
-    AddBalls: () => import('~/components/AddBalls.vue')
+    AddStage: () => import('~/components/AddStage.vue')
   }
 })
 export default class NewPage extends Vue {
@@ -26,18 +26,19 @@ export default class NewPage extends Vue {
     return this.$route.query.type === 'match'
   }
 
-  created () {
+  mounted () {
+    // debugger
     this.component = this.getterGetComponent || this.isMatch ? 'AddMatch' : 'AddTraining'
 
     this.$bus.$on('setMatch', this.onSetMatch)
     this.$bus.$on('setTraining', this.onSetTraining)
-    this.$bus.$on('setBalls', this.onSetBalls)
+    this.$bus.$on('setStage', this.onSetStage)
   }
 
   beforeDestroy () {
     this.$bus.$off('AddMatch')
     this.$bus.$off('AddTraining')
-    this.$bus.$off('setBalls')
+    this.$bus.$off('setStage')
   }
 
   onSetMatch () : void {
@@ -48,8 +49,8 @@ export default class NewPage extends Vue {
     this.component = 'AddTraining'
   }
 
-  onSetBalls () : void {
-    this.component = 'AddBalls'
+  onSetStage () : void {
+    this.component = 'AddStage'
   }
 
   @Watch('isMatch')

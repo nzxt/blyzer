@@ -1,6 +1,6 @@
 <template lang="pug">
 v-app(light, v-hotkey='keymap')
-  v-toolbar.main(color='white', :extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight', app)
+  v-toolbar.main(color='white', :extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight' app :scroll-threshold='32' scroll-off-screen)
     v-list(slot='extension', v-if="btnGroup === 1", class='backpurple', dark, @click.native='btnGroup = undefined')
       v-list-tile.px-5(@click.native='$router.push("/new?type=match")')
         v-list-tile-title.title Add New Match
@@ -23,10 +23,10 @@ v-app(light, v-hotkey='keymap')
             v-icon.mdi-48px(color='error') mdi-plus
           v-btn(large, icon, flat, nuxt, to='/profile' :ripple='false', :value='2', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-account-circle-outline
+          v-btn(large, icon, class='toolbar--btn-large', @click.stop='toggleRightDrawer')
+            v-icon.mdi-36px(color='secondary') mdi-menu-open
     //- v-btn(large, icon, class='toolbar--btn-large')
       tasty-burger-button(@toggle.stop='toggleRightDrawer', :active='rightDrawer', type='elastic', size='s', color='orange', active-color='red')
-    v-btn(large, icon, class='toolbar--btn-large', @click.stop='toggleRightDrawer')
-      v-icon.mdi-36px(color='secondary') mdi-menu-open
 
   v-content
     v-container.pa-1(fluid grid-list-md fill-height justify-start class='white')
@@ -43,7 +43,7 @@ v-app(light, v-hotkey='keymap')
             //- v-icon.mdi-36px mdi-close
             v-icon.mdi-48px.mdi-rotate-45 mdi-xbox
     v-list(two-line)
-      v-list-tile(v-for='(item, i) in items', :key='i', :to='item.to', router, exact)
+      v-list-tile(v-for='(item, i) in navigation', :key='i', :to='item.to', router, exact)
         v-list-tile-action(class='justify-center')
         v-list-tile-content
           v-list-tile-title.title(v-text='item.title')
@@ -76,7 +76,7 @@ export default class DefaultLayout extends Vue {
   clippedRight: Boolean = true
   rightDrawer: Boolean = false
   inset: Boolean = false
-  items: Array<any> = [
+  navigation: Array<any> = [
     {
       icon: 'mdi-chevron-right',
       title: 'Dashboard',
@@ -87,7 +87,11 @@ export default class DefaultLayout extends Vue {
       icon: 'mdi-chevron-right',
       title: 'Matches',
       description: 'Add or lookup your matches',
-      to: '/matches'
+      // to: '/matches',
+      submenu: [
+        { text: 'All Matches', to: '/matches' },
+        { text: 'Add New Match', to: '/new?type=match' }
+      ]
     },
     {
       icon: 'mdi-chevron-right',

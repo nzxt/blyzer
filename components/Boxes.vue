@@ -4,7 +4,11 @@ v-card(flat)
     v-item-group(v-model='activeBox', mandatory)
       v-container(pa-1, grid-list-md)
         v-layout(wrap, justify-center)
-          v-flex(v-for='box in stateMatchBoxes' :key='box.id' :class='`xs${12/stateMatchBoxes.length}`')
+          v-flex(
+            v-for='box in stateMatchBoxes'
+            :key='box.id'
+            :class='`xs${12/stateMatchBoxes.length}`'
+          )
             v-item(:value='box')
               v-card(
                 slot-scope='{ active, toggle }',
@@ -21,11 +25,11 @@ v-card(flat)
                 ) {{ `mdi-numeric-${box.id}-box-outline` }}
                 br
                 div.body-1.font-weight-thin {{ box.player.fullName | tryGetInitials }}
-  v-card-text.pb-0
+  v-card-text.py-1
     v-chip
       v-avatar
         flag(:iso='countryById(activeBox.player.countryId).alpha2', :title='countryById(activeBox.player.countryId).name')
-      div.body-1 {{ activeBox.player.fullName | tryGetInitials }}
+      div.body-1 {{ activeBox.player.fullName }}
 </template>
 
 <script lang="ts">

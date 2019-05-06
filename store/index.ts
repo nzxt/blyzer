@@ -2,7 +2,7 @@ export const strict = false
 
 /* eslint-disable */
 import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
-import { IRootState, ITournament, ITournamentType, IMatch, ITraining, IPlayer, IBox } from '../types/interfaces'
+import { IRootState, ITournament, ITournamentType, IMatch, IStage, ITraining, IPlayer, IBox } from '../types/interfaces'
 
 export const types = {
   SET_TOURNAMENT: 'SET_TOURNAMENT',
@@ -19,6 +19,7 @@ export interface IState {
   tournament: ITournament | null;
   tournamentType: ITournamentType | null;
   match: IMatch | null;
+  stage: IStage | null;
   training: ITraining | null;
   redTeam: IPlayer[];
   blueTeam: IPlayer[];
@@ -30,6 +31,7 @@ export const state = (): IState => ({
   tournament: null,
   tournamentType: null,
   match: null,
+  stage: null,
   training: null,
   redTeam: [],
   blueTeam: [],

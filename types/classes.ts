@@ -82,6 +82,8 @@ export class Stage implements IStage {
   ) {
     this.index = index
     this.matchId = matchId
+    this.balls = []
+    this.stageToPlayers = []
   }
   id?: string;
   index: number;

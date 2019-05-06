@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card(flat style='min-width:320px')
+v-card.card(flat)
   v-form(v-model='valid' @submit.prevent='onSubmit')
     v-card-text.pa-1
       v-btn-toggle(v-model='competitionType' mandatory)
@@ -29,21 +29,22 @@ v-card(flat style='min-width:320px')
           :key='d.value'
           :value='d.id'
         )
-          v-chip(
+          v-chip.mx-1(
             slot-scope="{ active, toggle }"
             @click="toggle"
             :selected="active"
-            :color='active ? activeDivisionClass : "grey lighten-1"'
-            small label dark flat
+            :color='active ? activeDivisionClass : "transparent grey--text"'
+            small label flat
+            :dark='active'
           )
-            div.mx-2.subheading.font-weight-thin {{ d.shortText }}
+            div.mx-2.subheading.font-weight-medium {{ d.shortText }}
 
     v-card-text.pa-1
       Team(ref='redTeam' teamColor='red' :competitionType='competitionType' :competitionEvent='competitionEvent')
     v-card-text.pa-1
       Team(ref='blueTeam' teamColor='blue' :competitionType='competitionType' :competitionEvent='competitionEvent' )
 
-    v-card-text.pa-1
+    v-card-text.mt-2.pa-1
       MatchInfo(ref='matchInfo')
 
     v-card-actions
@@ -78,9 +79,6 @@ import enums from '~/assets/enums'
   }
 })
 export default class AddMatch extends Vue {
-  $api
-  $bus
-  $auth
   $refs
   $moment
 
@@ -101,7 +99,7 @@ export default class AddMatch extends Vue {
     await this.createMatch(this.prepareMatch())
     setTimeout(() => {
       this.isLoading = false
-      this.$bus.$emit('setBalls')
+      this.$bus.$emit('setStage')
     }, 680)
   }
 
@@ -181,6 +179,9 @@ export default class AddMatch extends Vue {
 </script>
 
 <style lang="stylus" scoped>
+.card
+  min-width: 320px
+  max-width: 360px
 .v-btn-toggle
   >>> .v-btn:not(:last-child)
     border none

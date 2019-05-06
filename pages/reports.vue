@@ -11,14 +11,14 @@ v-layout(wrap, justify-center, align-center)
 import { Component, Vue } from 'vue-property-decorator'
 
 import * as am4core from '@amcharts/amcharts4/core' // Core functionality
-import * as am4charts from '@amcharts/amcharts4/charts' // Charting functionality
+// import * as am4charts from '@amcharts/amcharts4/charts' // Charting functionality
 // import * as am4charts from '@amcharts/amcharts4/maps' // Maps functionality
 
 // Importing themes
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
 // import am4themes_dark from "@amcharts/amcharts4/themes/dark"
 
-import am4langRU from '@amcharts/amcharts4/lang/ru_RU'
+// import am4langRU from '@amcharts/amcharts4/lang/ru_RU'
 // import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow" // Importing geodata (map data)
 
 am4core.useTheme(am4themesAnimated) // Importing translations
@@ -33,45 +33,46 @@ export default class IndexPage extends Vue {
   chart?: any
 
   mounted (): void {
-    const chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart)
 
-    chart.language.locale = am4langRU
+    // const chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart)
 
-    chart.paddingRight = 20
+    // chart.language.locale = am4langRU
 
-    const data = []
-    let visits = 10
-    for (let i = 1; i < 366; i++) {
-      visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10)
-      data.push({
-        date: new Date(2019, 0, i),
-        name: 'name' + i,
-        value: visits
-      })
-    }
+    // chart.paddingRight = 20
 
-    chart.data = data
+    // const data = []
+    // let visits = 10
+    // for (let i = 1; i < 366; i++) {
+    //   visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10)
+    //   data.push({
+    //     date: new Date(2019, 0, i),
+    //     name: 'name' + i,
+    //     value: visits
+    //   })
+    // }
 
-    const dateAxis = chart.xAxes.push(new am4charts.DateAxis())
-    dateAxis.renderer.grid.template.location = 0
+    // chart.data = data
 
-    let valueAxis: any = {}
-    valueAxis = chart.yAxes.push(new am4charts.ValueAxis())
-    valueAxis.tooltip.disabled = true
-    valueAxis.renderer.minWidth = 35
+    // const dateAxis = chart.xAxes.push(new am4charts.DateAxis())
+    // dateAxis.renderer.grid.template.location = 0
 
-    const series = chart.series.push(new am4charts.LineSeries())
-    series.dataFields.dateX = 'date'
-    series.dataFields.valueY = 'value'
+    // let valueAxis: any = {}
+    // valueAxis = chart.yAxes.push(new am4charts.ValueAxis())
+    // valueAxis.tooltip.disabled = true
+    // valueAxis.renderer.minWidth = 35
 
-    series.tooltipText = '{valueY.value}'
-    chart.cursor = new am4charts.XYCursor()
+    // const series = chart.series.push(new am4charts.LineSeries())
+    // series.dataFields.dateX = 'date'
+    // series.dataFields.valueY = 'value'
 
-    const scrollbarX = new am4charts.XYChartScrollbar()
-    scrollbarX.series.push(series)
-    chart.scrollbarX = scrollbarX
+    // series.tooltipText = '{valueY.value}'
+    // chart.cursor = new am4charts.XYCursor()
 
-    this.chart = chart
+    // const scrollbarX = new am4charts.XYChartScrollbar()
+    // scrollbarX.series.push(series)
+    // chart.scrollbarX = scrollbarX
+
+    // this.chart = chart
   }
 
   beforeDestroy () {

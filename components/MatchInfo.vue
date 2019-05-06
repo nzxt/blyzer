@@ -4,8 +4,8 @@
       template(v-slot:header)
         div.subheading Additional Info
       template(v-slot:actions)
-        v-icon(color='grey lighten-5' v-if='tournament') mdi-progress-download
-        v-icon(color='deep-orange lighten-5' v-else) mdi-car-brake-alert
+        v-icon(color='grey lighten-3' v-if='tournament') mdi-progress-download
+        v-icon(color='deep-orange lighten-3' v-else) mdi-car-brake-alert
       v-card
         v-card-text.pa-1
           //- :items='[].concat(fetchedTournaments, ["BISFed 2019 Zagreb", "BISFed 2019 Guangzhou Boccia", "BISFed 2019 Montreal Boccia"])'
@@ -262,6 +262,6 @@ export default class MatchInfo extends Vue {
 .v-expansion-panel
   >>> .v-expansion-panel__header
     padding 6px 12px
-    color #ffffff
-    background-color var(--v-warning-base)
+    color grey // #ffffff
+    // background-color var(--v-warning-base)
 </style>

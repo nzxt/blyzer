@@ -8,6 +8,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $api: IApiService;
     $auth: any;
+    $bus: Vue;
     $noty: any;
     guidRegex: RegExp;
     switchLocalePath: Function;

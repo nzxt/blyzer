@@ -1,20 +1,21 @@
 <template lang="pug">
-  v-card.mx-1(flat, color='grey lighten-3' width='360px')
+  v-card(flat, color='grey lighten-1' min-width='335px' width='100%')
     v-card-text.pa-1
       v-layout(justify-end)
         // div(d-flex,   text-xs-right, justify-end, v-for='i in 12' :key='i') {{ i }}
         v-flex.ma-0(xs1 layout column)
-          v-icon.mdi-28px(
-            :color='scores[0].team === "red" ? "error" : "primary"'
-            :class='active === 0 ? "mdi-spin" : ""'
+          v-icon.mdi-24px(
+            :color='scores[0].team === "red" ? "white" : "white"'
+            :class='stage.index === 0 ? "mdi-spin" : ""'
           ) mdi-volleyball
-        v-divider(vertical, class='mx-2')
+        v-divider.ml-4.mr-0(vertical)
         v-flex.ma-0(xs11 layout)
           // v-flex(xs12 layout justify-space-between)
-          v-icon.mdi-28px(
-            :color='i.team === "red" ? "error" : "primary"'
+          v-icon.mdi-24px(
             v-for='i in scores.slice(1)'
             :key='i.value'
+            :color='i.team === "red" ? "error" : "primary"'
+            :class='stage.index === i.value ? "mdi-spin" : ""'
           ) mdi-volleyball
 </template>
 
@@ -46,6 +47,10 @@ export default class ScoreBoard extends Vue {
   ]
 
   mounted () {
+    // debugger
+  }
+
+  created () {
     // debugger
   }
 }
