@@ -6,7 +6,7 @@
         v-flex.ma-0(xs1 layout column)
           v-icon.mdi-24px(
             :color='scores[0].team === "red" ? "white" : "white"'
-            :class='stage.index === 0 ? "mdi-spin" : ""'
+            :class='!stage.balls.lenght ? "mdi-spin" : ""'
           ) mdi-volleyball
         v-divider.ml-4.mr-0(vertical)
         v-flex.ma-0(xs11 layout)

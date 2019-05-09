@@ -65,12 +65,14 @@ export interface IMatchToPlayer {
 
 export interface IStage {
   id?: string;
-  index: number;
   matchId: string;
+  index: number;
   isDisrupted?: Boolean;
   isTieBreak?: Boolean;
   scoreRed?: number;
   scoreBlue?:	number;
+  avgPointRed?: number;
+  avgPointBlue?: number;
   balls?: IBall[];
   stageToPlayers?: IStageToPlayer[];
 }
@@ -86,13 +88,14 @@ export interface IStageToPlayer {
 export interface IBall {
   id?: string;
   rating?: number;
+  isJack?: Boolean;
   isPenalty?: Boolean;
   isDeadBall?: Boolean;
   deadBallType?: number;
   shotType?: number;
-  box: number;
+  box?: number;
   distance?: number;
-  stageId: string;
+  stageId?: string;
   playerId: string;
   trainingId?: string;
 }

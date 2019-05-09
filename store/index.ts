@@ -2,12 +2,13 @@ export const strict = false
 
 /* eslint-disable */
 import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
-import { IRootState, ITournament, ITournamentType, IMatch, IStage, ITraining, IPlayer, IBox } from '../types/interfaces'
+import { IRootState, ITournament, ITournamentType, IMatch, IStage, ITraining, IPlayer, IBox, IBall } from '../types/interfaces'
 
 export const types = {
   SET_TOURNAMENT: 'SET_TOURNAMENT',
   SET_TOURNAMENT_TYPE: 'SET_TOURNAMENT_TYPE',
   SET_MATCH: 'SET_MATCH',
+  SET_STAGE: 'SET_STAGE',
   SET_TRAINING: 'SET_TRAINING',
   SET_REDTEAM: 'SET_REDTEAM',
   SET_BLUETEAM: 'SET_BLUETEAM',
@@ -31,7 +32,11 @@ export const state = (): IState => ({
   tournament: null,
   tournamentType: null,
   match: null,
-  stage: null,
+  stage: {
+    index: 0,
+    matchId: '',
+    balls: []
+  },
   training: null,
   redTeam: [],
   blueTeam: [],
@@ -44,10 +49,12 @@ export const mutations: MutationTree<IState> = {
   setTournamentType: (state, value: ITournamentType) => { state.tournamentType = value },
   setMatch: (state, value: IMatch) => { state.match = value },
   setTraining: (state, value: ITraining) => { state.training = value },
+  setStage: (state, value: IStage) => { state.stage = value },
   setRedTeam: (state, value: IPlayer[]) => { state.redTeam = value },
   setBlueTeam: (state, value: IPlayer[]) => { state.blueTeam = value },
   setMatchBoxes: (state, value: IBox[]) => { state.matchBoxes = value },
-  setComponent: (state, value: string | null) => { state.component = value }
+  setComponent: (state, value: string | null) => { state.component = value },
+  addStageBall: (state, value: IBall) => { state.stage.balls.push(value) }
 }
 
 export interface Actions<S, R> extends ActionTree<S, R> {

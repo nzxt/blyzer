@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card.card(flat)
+v-card.card
   v-form(v-model='valid' @submit.prevent='onSubmit')
     v-card-text.pa-1
       v-btn-toggle(v-model='competitionType' mandatory)
@@ -40,18 +40,40 @@ v-card.card(flat)
             div.mx-2.subheading.font-weight-medium {{ d.shortText }}
 
     v-card-text.pa-1
-      Team(ref='redTeam' teamColor='red' :competitionType='competitionType' :competitionEvent='competitionEvent')
+      Team(
+        ref='redTeam'
+        teamColor='red'
+        :competitionType='competitionType'
+        :competitionEvent='competitionEvent'
+      )
     v-card-text.pa-1
-      Team(ref='blueTeam' teamColor='blue' :competitionType='competitionType' :competitionEvent='competitionEvent' )
+      Team(
+        ref='blueTeam'
+        teamColor='blue'
+        :competitionType='competitionType'
+        :competitionEvent='competitionEvent'
+      )
 
     v-card-text.mt-2.pa-1
       MatchInfo(ref='matchInfo')
 
     v-card-actions
-      v-btn.secondary.secondary--text(round, block, outline, @click='$router.push("/")')
+      v-btn.secondary.secondary--text(
+        round
+        block
+        outline
+        @click='$router.push("/")'
+      )
         v-icon.mdi-18px(left) mdi-reply
         | {{ $t('forms.cancel') }}
-      v-btn.warning(round, block, :dark='valid' :outline='!valid', type='submit', :loading='isLoading', :disabled='!valid')
+      v-btn.warning(
+        round
+        block
+        :dark='valid' :outline='!valid'
+        type='submit'
+        :loading='isLoading'
+        :disabled='!valid'
+      )
         | {{ $t('forms.start') }}
         v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
@@ -179,9 +201,6 @@ export default class AddMatch extends Vue {
 </script>
 
 <style lang="stylus" scoped>
-.card
-  min-width: 320px
-  max-width: 360px
 .v-btn-toggle
   >>> .v-btn:not(:last-child)
     border none
