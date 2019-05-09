@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-expansion-panel(popup expand v-model='panel')
+  v-expansion-panel(expand v-model='panel')
     v-expansion-panel-content
       template(v-slot:header)
         div.subheading Additional Info
@@ -261,7 +261,8 @@ export default class MatchInfo extends Vue {
 <style lang="stylus" scoped>
 .v-expansion-panel
   >>> .v-expansion-panel__header
-    padding 6px 12px
-    color grey // #ffffff
+    padding: 6px 12px
+    color: grey // #ffffff
+    background-color: beige
     // background-color var(--v-warning-base)
 </style>

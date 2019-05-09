@@ -31,6 +31,8 @@ export class Match implements IMatch {
   ) {
     this.dateTimeStamp = dateTimeStamp
     this.appUserId = appUserId
+    this.matchToPlayers = []
+    this.stages = []
   }
   id?: string;
   dateTimeStamp: Date;
@@ -40,10 +42,15 @@ export class Match implements IMatch {
   eliminationStage?: number;
   scoreRed?: number;
   scoreBlue?: number;
+  avgPointRed?: number;
+  avgPointBlue?: number;
+  flagRed?: string;
+  flagBlue?: string;
   appUserId: string;
   trainingId?: string;
   tournamentId?: string;
   matchToPlayers?: IMatchToPlayer[];
+  stages?: IStage[];
 }
 
 export class Training implements ITraining {
@@ -98,23 +105,20 @@ export class Stage implements IStage {
 
 export class Ball implements IBall {
   constructor (
-    box: number,
-    stageId: string,
     playerId: string
   ) {
-    this.box = box
-    this.stageId = stageId
     this.playerId = playerId
   }
   id?: string;
   rating?: number;
+  isJack?: Boolean;
   isPenalty?: Boolean;
   isDeadBall?: Boolean;
   deadBallType?: number;
   shotType?: number;
-  box: number;
+  box?: number;
   distance?: number;
-  stageId: string;
+  stageId?: string;
   playerId: string;
   trainingId?: string;
 }

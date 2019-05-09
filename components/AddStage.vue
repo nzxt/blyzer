@@ -1,51 +1,14 @@
 <template lang="pug">
-v-card(width='360px')
-  v-toolbar.px-0.ma-0(dense height='32' card flat)
-    v-toolbar-items
-      v-menu(offset-y)
-        template(v-slot:activator='{ on }')
-          v-btn(
-            color='secondary'
-            dark
-            flat
-            depressed
-            v-on='on'
-          ) Ends
-          // {{ stage[activeBox].box }}
-        v-list(dense)
-          v-list-tile(
-            v-for='(ball, index) in stage'
-            :key='index'
-            @click='active = ball.box'
-          )
-            v-list-tile-title {{ ball.stageId }}
-    v-spacer
-    v-toolbar-items
-      v-menu(offset-y)
-        template(v-slot:activator='{ on }')
-          v-btn(
-            color='secondary'
-            dark
-            flat
-            depressed
-            v-on='on'
-          ) Balls
-          // {{ stage[activeBox].box }}
-        v-list(dense)
-          v-list-tile(
-            v-for='(ball, index) in stage'
-            :key='index'
-            @click='active = ball.box'
-          )
-            v-list-tile-title {{ ball.stageId }}
+v-card.card
+  Toolbar
 
   v-card-text.px-0.py-2
-    ScoreBoard(:stage='stage')
+    ScoreBoard(:stage='stateStage')
 
   v-card-text.pa-0
-    Boxes
+    Boxes(ref='boxes')
 
-  v-card-text.px-0.pb-0(v-if='stage.index')
+  v-card-text.px-0.pb-0(v-if='stateStage.index')
     v-tabs(
       v-model='activeTab'
       color='grey lighten-4'
@@ -122,20 +85,24 @@ v-card(width='360px')
     span.title.font-weight-light Opposite box
     v-item-group(v-model='throwBox')
       v-item(
-        v-for='box in stateMatchBoxes'
-        :key='box.id'
-        :value='box.id'
+        v-for='box in 6'
+        :key='box'
+        :value='box'
       )
-        v-icon(
+        v-icon.mdi-48px(
           slot-scope="{ active, toggle }"
           @click="toggle"
           :color='active ? "primary" : ""'
-          x-large
-        ) {{ `mdi-numeric-${box.id}-box-outline` }}
+        ) {{ `mdi-numeric-${box}-box-outline` }}
 
   v-card-actions
     v-spacer
-    v-btn.secondary.secondary--text(round, block, outline, @click='onCancel')
+    v-btn.secondary.secondary--text(
+      round
+      block
+      outline
+      @click='onCancel'
+    )
       v-icon.mdi-18px(left) mdi-reply
       | {{ $t('forms.previous') }}
     v-spacer
@@ -144,8 +111,8 @@ v-card(width='360px')
 <script lang="ts">
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import {
-  State
-  // Mutation,
+  State,
+  Mutation
   // Getter
 } from 'vuex-class'
 
@@ -156,6 +123,7 @@ import enums from '~/assets/enums'
 
 @Component({
   components: {
+    Toolbar: () => import('./stageParts/toolbar.vue'),
     ScoreBoard: () => import('~/components/ScoreBoard.vue'),
     Boxes: () => import('~/components/Boxes.vue')
   }
@@ -171,7 +139,7 @@ export default class AddStage extends Vue {
 
   deadBallType: number = null
 
-  stage: IStage = null
+  // stage: IStage = null
   ball: IBall = null
 
   activeTab: number = 0
@@ -181,23 +149,29 @@ export default class AddStage extends Vue {
   ]
 
   @State('match') stateMatch
+  @Mutation('setStage') mutationSetStage
+
   @State('matchBoxes') stateMatchBoxes
 
+  @State('stage') stateStage
+  @Mutation('addStageBall') mutationAddStageBall
+
   created (): void {
-    const stageIndex = 0
-    this.stage = new Stage(stageIndex, this.stateMatch.id)
-
-    const ball0: IBall = new Ball(0, 'Jack Ball', 'baa821a6-f86a-4e1c-a9a7-45338baa7d5a')
-
-    this.stage.balls.push(ball0)
+    const stage: IStage = new Stage(0, this.stateMatch.id)
+    this.mutationSetStage(stage)
   }
 
   onCancel () {
     this.$bus.$emit('setMatch')
   }
 
-  nextBall () {
-
+  addJackBall () {
+    const { id: playerId } = this.activeBoxPlayer
+    const ball: IBall = new Ball(playerId)
+    ball.isJack = true
+    ball.box = this.throwBox
+    ball.distance = this.throwDistance
+    this.mutationAddStageBall(ball)
   }
 
   get throwDistances () {
@@ -212,35 +186,38 @@ export default class AddStage extends Vue {
     return this.throwDistances[this.throwDistance]
   }
 
+  get activeBoxPlayer () {
+    return this.$refs.boxes.activeBox.player
+  }
+
   @Watch('throwBox')
   onThrowBoxChange (value: number) {
     if (value && this.throwDistance) {
-      const stageIndex = this.stage.index + 1
-      this.stage = new Stage(stageIndex, this.stateMatch.id)
+      this.addJackBall()
     }
   }
 
   @Watch('throwType')
   onThrowTypeChange (value: number) {
     if (value && this.throwRating) {
-      const stageIndex = this.stage.index + 1
-      this.stage = new Stage(stageIndex, this.stateMatch.id)
+      // const stageIndex = this.stage.index + 1
+      // this.stage = new Stage(stageIndex, this.stateMatch.id)
     }
   }
 
   @Watch('throwRating')
   onThrowRatingChange (value: number) {
     if (value && this.throwType) {
-      const stageIndex = this.stage.index + 1
-      this.stage = new Stage(stageIndex, this.stateMatch.id)
+      // const stageIndex = this.stage.index + 1
+      // this.stage = new Stage(stageIndex, this.stateMatch.id)
     }
   }
 
   @Watch('deadBallType')
   onDeadBallTypeChange (value: number) {
     if (value) {
-      const stageIndex = this.stage.index + 1
-      this.stage = new Stage(stageIndex, this.stateMatch.id)
+      // const stageIndex = this.stage.index + 1
+      // this.stage = new Stage(stageIndex, this.stateMatch.id)
     }
   }
 }
