@@ -87,7 +87,7 @@ export default class DefaultLayout extends Vue {
       icon: 'mdi-chevron-right',
       title: 'Matches',
       description: 'Add or lookup your matches',
-      // to: '/matches',
+      to: '/matches',
       submenu: [
         { text: 'All Matches', to: '/matches' },
         { text: 'Add New Match', to: '/new?type=match' }

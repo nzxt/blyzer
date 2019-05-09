@@ -39,7 +39,6 @@ v-card.card
                   @click='toggle'
                   :color='active ? "primary" : ""'
                   :dark='active'
-                  small
                 ) {{ scored.text }}
             v-divider.my-2
             //- span.title.grey--text Rate this shot
@@ -62,7 +61,6 @@ v-card.card
                   @click='toggle'
                   :color='active ? "primary" : ""'
                   :dark='active'
-                  small
                 ) {{ dead.text }}
             v-divider.my-3
 
@@ -194,6 +192,8 @@ export default class AddStage extends Vue {
   onThrowBoxChange (value: number) {
     if (value && this.throwDistance) {
       this.addJackBall()
+      this.throwBox = null
+      this.throwDistance = 8
     }
   }
 
@@ -208,16 +208,13 @@ export default class AddStage extends Vue {
   @Watch('throwRating')
   onThrowRatingChange (value: number) {
     if (value && this.throwType) {
-      // const stageIndex = this.stage.index + 1
-      // this.stage = new Stage(stageIndex, this.stateMatch.id)
+      this.throwType = null
     }
   }
 
   @Watch('deadBallType')
   onDeadBallTypeChange (value: number) {
     if (value) {
-      // const stageIndex = this.stage.index + 1
-      // this.stage = new Stage(stageIndex, this.stateMatch.id)
     }
   }
 }

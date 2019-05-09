@@ -2,7 +2,7 @@
 v-layout(align-center)
   v-flex(text-xs-center)
     v-btn.ma-5.add-btn(large, fab, color='white')
-      v-icon.mdi-48px(color='primary') mdi-plus
+      v-icon.mdi-48px(color='primary' @click='createNew') mdi-plus
     p.headline.grey--text(v-text='`Please add your first ${eventType}`')
     v-chip
       div.title.grey--text {{ eventType === 'Match' ? "Alt + M" : "Alt + T" }}
@@ -15,6 +15,10 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 export default class NoResults extends Vue {
   @Prop({ default: 'Results' })
   eventType!: string
+
+  createNew () {
+    this.$router.push(`/new?type=${this.eventType}`)
+  }
 }
 </script>
 
