@@ -1334,6 +1334,27 @@ export default class ApiService {
     return this.request('delete', path, body, queryParameters, form, config)
   }
   /**
+   * Отримати статистику
+   * request: ApiStatPost
+   * @param param - Параметри статистики
+   */
+  ApiStatPost(parameters = {}) {
+    const config = parameters.$config
+    let path = '/api/Stat'
+    let body
+    let queryParameters = {}
+    let form = {}
+    if (parameters['param'] !== undefined) {
+      body = parameters['param']
+    }
+    if (parameters.$queryParameters) {
+      Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+        queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+      });
+    }
+    return this.request('post', path, body, queryParameters, form, config)
+  }
+  /**
    * Отримати список (пагінація)
    * request: ApiTournamentGet
    * @param pageNumber - Номер сторінки (за замовчуванням 1)

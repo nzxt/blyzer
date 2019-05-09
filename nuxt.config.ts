@@ -7,7 +7,6 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 const {
   API_URL = 'http://localhost:2450',
-  // BASE_URL = 'http://localhost:3000'
 } = process.env
 
 module.exports = {
