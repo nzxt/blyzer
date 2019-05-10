@@ -1,17 +1,17 @@
 <template lang="pug">
-  v-card(flat, color='grey lighten-1' min-width='335px' width='100%')
+  v-card(flat, color='grey lighten-2' min-width='320px' width='100%')
     v-card-text.pa-1
       v-layout(justify-end)
         // div(d-flex,   text-xs-right, justify-end, v-for='i in 12' :key='i') {{ i }}
         v-flex.ma-0(xs1 layout column)
-          v-icon.mdi-24px(
+          v-icon.mdi-36px(
             :color='scores[0].team === "red" ? "white" : "white"'
             :class='!stage.balls.lenght ? "mdi-spin" : ""'
           ) mdi-volleyball
-        v-divider.ml-4.mr-0(vertical)
-        v-flex.ma-0(xs11 layout)
+        v-divider.ml-4.mr-2(vertical)
+        v-flex.ma-0(xs11 layout wrap)
           // v-flex(xs12 layout justify-space-between)
-          v-icon.mdi-24px(
+          v-icon.mdi-36px(
             v-for='i in scores.slice(1)'
             :key='i.value'
             :color='i.team === "red" ? "error" : "primary"'

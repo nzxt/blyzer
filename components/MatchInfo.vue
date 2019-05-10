@@ -22,27 +22,27 @@
             hide-selected
             return-object
             label='Tournament name'
-            prepend-icon='mdi-trophy-award'
+            :prepend-icon='tournamentType.icon || "mdi-trophy-award"'
             autofocus
             clearable
           )
             //- persistent-hint
             //- :hint='tournamentName ? `Type: <span class="font-weight-bold">${tournamentTypes.find(x => x.value === tournamentType).name}</span>` : "Choose or enter tournament name..."'
             //- :rules='requiredField'
-          v-combobox.my-2(
-            dense
-            v-model='tournamentType'
-            :items='stateTournamentTypes'
-            item-text='name'
-            item-value='id'
-            return-object
-            hide-details
-            hide-no-data
-            hide-selected
-            label='Tournament type'
-            prepend-icon='mdi-shape-outline'
-            clearable
-          )
+          //- v-combobox.my-2(
+            //- dense
+            //- v-model='tournamentType'
+            //- :items='stateTournamentTypes'
+            //- item-text='name'
+            //- item-value='id'
+            //- return-object
+            //- hide-details
+            //- hide-no-data
+            //- hide-selected
+            //- label='Tournament type'
+            //- prepend-icon='mdi-shape-outline'
+            //- clearable
+          //- )
 
           // v-combobox.my-2(
           //   dense

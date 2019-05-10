@@ -39,11 +39,13 @@ v-card.card
                   @click='toggle'
                   :color='active ? "primary" : ""'
                   :dark='active'
+                  small
                 ) {{ scored.text }}
             v-divider.my-2
             //- span.title.grey--text Rate this shot
             v-rating(
               v-model='throwRating'
+              @click='onClickThrowRating'
               large
             )
 
@@ -61,6 +63,7 @@ v-card.card
                   @click='toggle'
                   :color='active ? "primary" : ""'
                   :dark='active'
+                  small
                 ) {{ dead.text }}
             v-divider.my-3
 
@@ -87,7 +90,7 @@ v-card.card
         :key='box'
         :value='box'
       )
-        v-icon.mdi-48px(
+        v-icon.mdi-36px(
           slot-scope="{ active, toggle }"
           @click="toggle"
           :color='active ? "primary" : ""'
@@ -107,6 +110,7 @@ v-card.card
 </template>
 
 <script lang="ts">
+import { setTimeout } from 'timers'
 import { Component, Watch, Vue } from 'vue-property-decorator'
 import {
   State,
@@ -137,9 +141,6 @@ export default class AddStage extends Vue {
 
   deadBallType: number = null
 
-  // stage: IStage = null
-  ball: IBall = null
-
   activeTab: number = 0
   tabs: Array<any> = [
     { value: 1, text: 'Scored Ball', icon: 'mdi-radiobox-marked' },
@@ -163,6 +164,13 @@ export default class AddStage extends Vue {
     this.$bus.$emit('setMatch')
   }
 
+  onClickThrowRating () {
+    const rating = this.throwRating
+    if (rating) {
+      this.resetValues()
+    }
+  }
+
   addJackBall () {
     const { id: playerId } = this.activeBoxPlayer
     const ball: IBall = new Ball(playerId)
@@ -170,6 +178,17 @@ export default class AddStage extends Vue {
     ball.box = this.throwBox
     ball.distance = this.throwDistance
     this.mutationAddStageBall(ball)
+  }
+
+  resetValues () {
+    setTimeout(() => {
+      this.throwDistance = 8
+      this.throwBox = null
+      this.throwType = null
+      this.throwRating = null
+      this.deadBallType = null
+      this.activeTab = 0
+    }, 680)
   }
 
   get throwDistances () {
@@ -185,36 +204,35 @@ export default class AddStage extends Vue {
   }
 
   get activeBoxPlayer () {
-    return this.$refs.boxes.activeBox.player
+    return (this.$refs.boxes as any).activeBox.player
   }
 
   @Watch('throwBox')
   onThrowBoxChange (value: number) {
     if (value && this.throwDistance) {
       this.addJackBall()
-      this.throwBox = null
-      this.throwDistance = 8
+      this.resetValues()
     }
   }
 
   @Watch('throwType')
   onThrowTypeChange (value: number) {
     if (value && this.throwRating) {
-      // const stageIndex = this.stage.index + 1
-      // this.stage = new Stage(stageIndex, this.stateMatch.id)
+      this.resetValues()
     }
   }
 
   @Watch('throwRating')
   onThrowRatingChange (value: number) {
     if (value && this.throwType) {
-      this.throwType = null
+      this.resetValues()
     }
   }
 
   @Watch('deadBallType')
   onDeadBallTypeChange (value: number) {
     if (value) {
+      this.resetValues()
     }
   }
 }

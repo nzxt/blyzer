@@ -105,10 +105,10 @@ module.exports = {
     // See https://github.com/nuxt-community/axios-module#options
     debug: isDev,
     https: false,
-    proxy: true,
-    credentials: true
+    // proxy: true,
+    credentials: true,
     // prefix: BASE_URL
-    // baseURL: BASE_URL
+    baseURL: API_URL
     // redirectError: {
     //   401: '/login',
     //   404: '/notfound'
@@ -127,10 +127,10 @@ module.exports = {
       local: {
         _scheme: '~/services/jwt-strategy.js',
         endpoints: {
-          user: { url: `/api/Account/GetProfile`, method: 'get', propertyName: '' },
-          login: { url: `/api/Account/Login`, method: 'post', propertyName: '' },
+          user: { url: `${API_URL}/api/Account/GetProfile`, method: 'get', propertyName: '' },
+          login: { url: `${API_URL}/api/Account/Login`, method: 'post', propertyName: '' },
           logout: false, // { url: `/api/account/logout`, method: 'get' },
-          refresh: { url: `/api/Account/RefreshTokens`, method: 'post', propertyName: '' }
+          refresh: { url: `${API_URL}/api/Account/RefreshTokens`, method: 'post', propertyName: '' }
         }
         // tokenType: 'Bearer',
         // tokenKey: 'accessToken',

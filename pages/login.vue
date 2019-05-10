@@ -19,10 +19,10 @@ v-container
                 v-icon.mdi-24px mdi-account-circle
               v-btn.px-1(icon, @click='googleSignIn')
                 v-icon.mdi-24px.red--text mdi-google
-              v-btn(icon, @click='facebookSignIn')
-                v-icon.mdi-24px.blue--text mdi-facebook-box
-              v-btn(icon, @click='twitterSignIn')
-                v-icon.mdi-24px.light-blue--text mdi-twitter
+              //- v-btn(icon, @click='facebookSignIn')
+              //-   v-icon.mdi-24px.blue--text mdi-facebook-box
+              //- v-btn(icon, @click='twitterSignIn')
+              //-   v-icon.mdi-24px.light-blue--text mdi-twitter
           v-card-text
             v-text-field(
               v-model='username'
@@ -44,11 +44,12 @@ v-container
               clearable
             )
           v-card-actions.lighten-3
-            v-btn.secondary(
-              dark flat icon
-              @click='$auth.loginWith("auth0")'
-            )
-              v-icon mdi-shield-key
+            //- v-btn.secondary(
+            //-   dark flat icon
+            //-   @click='$auth.loginWith("auth0")'
+            //- )
+            //-   v-icon mdi-shield-key
+
             // v-btn.secondary(
             //   dark flat icon
             //   @click='jwtSignIn'

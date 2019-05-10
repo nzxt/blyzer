@@ -29,7 +29,7 @@ v-card.card
           :key='d.value'
           :value='d.id'
         )
-          v-chip.mx-1(
+          v-chip(
             slot-scope="{ active, toggle }"
             @click="toggle"
             :selected="active"
@@ -37,7 +37,7 @@ v-card.card
             small label flat
             :dark='active'
           )
-            div.mx-2.subheading.font-weight-medium {{ d.shortText }}
+            div.mx-1.subheading.font-weight-medium {{ d.shortText }}
 
     v-card-text.pa-1
       Team(

@@ -30,7 +30,12 @@ export interface IState {
 
 export const state = (): IState => ({
   tournament: null,
-  tournamentType: null,
+  tournamentType: {
+    id: '1c34cfbb-840c-42dc-a4b4-9028e39193b0',
+    name: 'General Tourney',
+    abbr: 'GT',
+    icon: 'mdi-triforce'
+  },
   match: null,
   stage: {
     index: 0,
