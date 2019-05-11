@@ -58,7 +58,7 @@ v-app(light, v-hotkey='keymap')
   //- )
 
   v-footer.px-3.justify-end(:inset='inset', height='24', style='min-height:24px;', app)
-    span.caption.blue-grey--text.text--lighten-3.font-weight-bold boccialyzer © 2019. All rights reserved.
+    span.caption.blue-grey--text.text--lighten-3.font-weight-bold boccialyzer © 2019. Powered by molfarDevs
 </template>
 
 <script lang="ts">

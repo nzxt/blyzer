@@ -58,28 +58,29 @@ v-card.card
       MatchInfo(ref='matchInfo')
 
     v-card-actions
-      v-btn.secondary.secondary--text(
+      v-btn.secondary(
         round
         block
-        outline
         @click='$router.push("/")'
       )
+        //- outline
         v-icon.mdi-18px(left) mdi-reply
         | {{ $t('forms.cancel') }}
       v-btn.warning(
         round
         block
-        :dark='valid' :outline='!valid'
         type='submit'
         :loading='isLoading'
         :disabled='!valid'
       )
+        //- :dark='valid'
+        //- :outline='!valid'
         | {{ $t('forms.start') }}
         v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
 
 <script lang="ts">
-import { Component, Watch, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { State, Mutation, Getter } from 'vuex-class'
 
 import { IObj, IMatch, IMatchToPlayer, IBox } from '~/types/interfaces' // eslint-disable-line
@@ -172,10 +173,10 @@ export default class AddMatch extends Vue {
       .catch(err => console.log(err))
   }
 
-  @Watch('competitionType')
-  onCompetitionChange (value: string) {
-    this.competitionEvent = enums.competitionEvents[value][0].id
-  }
+  // @Watch('competitionType')
+  // onCompetitionChange (value: string) {
+  // this.competitionEvent = enums.competitionEvents[value][0].id
+  // }
 
   get competitionEvents (): Array<IObj> {
     switch (this.competitionType) {

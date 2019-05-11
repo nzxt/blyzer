@@ -1,6 +1,6 @@
 <template lang="pug">
   v-layout(column, text-xs-center, justify-start, align-center)
-    v-flex(xs12)
+    v-flex.px-0(xs12)
       component(transition='fade-transition', :is='component')
 </template>
 

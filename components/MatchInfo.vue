@@ -67,7 +67,7 @@
                 slot-scope="{ active, toggle }"
                 @click="toggle"
                 :selected="active"
-                dark label flat
+                dark label small flat
                 :color='active ? "primary" : "grey lighten-1"'
               )
                 span.font-weight-medium {{ stype.toUpperCase() }}
@@ -75,7 +75,7 @@
           v-item-group.mt-2.text-xs-center(v-model='stageIndex' v-if='stageIndexes.length')
             // div.subheading INDEX
             v-item(:value='sindex.id' v-for='sindex in stageIndexes' :key='sindex.id')
-              v-chip(
+              v-chip.ml-0.mr-1(
                 slot-scope="{ active, toggle }"
                 @click="toggle"
                 :selected="active"
@@ -265,4 +265,5 @@ export default class MatchInfo extends Vue {
     color: grey // #ffffff
     background-color: beige
     // background-color var(--v-warning-base)
+    min-height: 32px
 </style>

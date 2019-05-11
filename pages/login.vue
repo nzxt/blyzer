@@ -10,14 +10,14 @@ v-container
         //- v-img(contain, src='/images/white-boccia-ball.jpg', alt='Boccia Ball')
         v-form(v-model='valid', @submit.prevent='signIn')
           v-card-title.justify-space-between.display-1.font-weight-thin.warning--text {{ $t('signin') }}
-            v-icon.ml-2(color='grey' style='font-size:112px;' @click='$auth.fetchUser()') mdi-account-circle-outline
+            v-icon.ml-2(color='grey lighten-2' style='font-size:112px;' @click='$auth.fetchUser()') mdi-account-circle-outline
             v-chip.ml-2.px-1(dark color='grey' @click='signOut' v-if='$auth.loggedIn')
               v-icon.mdi-18px(left) mdi-logout-variant
               | {{ $t('signout')}}
-            v-btn-toggle(v-else)
+            v-btn-toggle(v-else style='min-width:55px;')
               //- v-btn(icon, value='local')
                 v-icon.mdi-24px mdi-account-circle
-              v-btn.px-1(icon, @click='googleSignIn')
+              v-btn.px-1(icon @click='googleSignIn')
                 v-icon.mdi-24px.red--text mdi-google
               //- v-btn(icon, @click='facebookSignIn')
               //-   v-icon.mdi-24px.blue--text mdi-facebook-box

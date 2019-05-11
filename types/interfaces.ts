@@ -44,6 +44,7 @@ export interface IMatch {
   trainingId?: string;
   tournamentId?: string;
   matchToPlayers?: IMatchToPlayer[];
+  stages?: IStage[];
 }
 
 export interface ITraining {
@@ -87,6 +88,7 @@ export interface IStageToPlayer {
 
 export interface IBall {
   id?: string;
+  index: number;
   rating?: number;
   isJack?: Boolean;
   isPenalty?: Boolean;

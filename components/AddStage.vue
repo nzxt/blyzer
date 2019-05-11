@@ -1,14 +1,11 @@
 <template lang="pug">
-v-card.card
-  Toolbar
-
-  v-card-text.px-0.py-2
-    ScoreBoard(:stage='stateStage')
+v-card.card(style='border:none;')
+  ScoreBoard(:stage='stateStage')
 
   v-card-text.pa-0
     Boxes(ref='boxes')
 
-  v-card-text.px-0.pb-0(v-if='stateStage.balls.length')
+  v-card-text.px-0.pt-1.pb-0(v-if='stateStage.balls.length')
     v-tabs(
       v-model='activeTab'
       color='grey lighten-4'
@@ -79,11 +76,12 @@ v-card.card
       :max='17'
       ticks='always'
       tick-size='2'
-      prepend-icon='mdi-ruler'
+      label='Distance'
       track-color='grey lighten-3'
     )
+      //- prepend-icon='mdi-ruler'
 
-    span.title.font-weight-light Opposite box
+    span.subheading.grey--text Box
     v-item-group(v-model='throwBox')
       v-item(
         v-for='box in 6'
@@ -112,11 +110,7 @@ v-card.card
 <script lang="ts">
 import { setTimeout } from 'timers'
 import { Component, Watch, Vue } from 'vue-property-decorator'
-import {
-  State,
-  Mutation
-  // Getter
-} from 'vuex-class'
+import { State, Mutation } from 'vuex-class'
 
 import { IStage, IBall } from 'types/interfaces' // eslint-disable-line
 import { Stage, Ball } from '~/types/classes'
@@ -126,14 +120,14 @@ import enums from '~/assets/enums'
 @Component({
   components: {
     Toolbar: () => import('./stageParts/toolbar.vue'),
-    ScoreBoard: () => import('~/components/ScoreBoard.vue'),
+    ScoreBoard: () => import('~/components/StageParts/ScoreBoard.vue'),
     Boxes: () => import('~/components/Boxes.vue')
   }
 })
 export default class AddStage extends Vue {
   enums: any = enums
 
-  throwDistance: number = 8
+  throwDistance: number | null = 0
   throwBox: number = null
 
   throwType: number = null
@@ -141,7 +135,7 @@ export default class AddStage extends Vue {
 
   deadBallType: number = null
 
-  activeTab: number = 0
+  activeTab: number = 1
   tabs: Array<any> = [
     { value: 1, text: 'Scored Ball', icon: 'mdi-radiobox-marked' },
     { value: 2, text: 'Dead Ball', icon: 'mdi-radiobox-blank' }
@@ -156,7 +150,8 @@ export default class AddStage extends Vue {
   @Mutation('addStageBall') mutationAddStageBall
 
   created (): void {
-    const stage: IStage = new Stage(0, this.stateMatch.id)
+    const stageIndex: number = this.stateMatch.stages.length + 1
+    const stage: IStage = new Stage(stageIndex, this.stateMatch.id)
     this.mutationSetStage(stage)
   }
 
@@ -173,7 +168,7 @@ export default class AddStage extends Vue {
 
   addJackBall () {
     const { id: playerId } = this.activeBoxPlayer
-    const ball: IBall = new Ball(playerId)
+    const ball: IBall = new Ball(0, playerId)
     ball.isJack = true
     ball.box = this.throwBox
     ball.distance = this.throwDistance
@@ -182,12 +177,12 @@ export default class AddStage extends Vue {
 
   resetValues () {
     setTimeout(() => {
-      this.throwDistance = 8
+      this.throwDistance = 0
       this.throwBox = null
       this.throwType = null
       this.throwRating = null
       this.deadBallType = null
-      this.activeTab = 0
+      this.activeTab = 1
     }, 680)
   }
 

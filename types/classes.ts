@@ -105,11 +105,14 @@ export class Stage implements IStage {
 
 export class Ball implements IBall {
   constructor (
+    index: number,
     playerId: string
   ) {
+    this.index = index
     this.playerId = playerId
   }
   id?: string;
+  index: number;
   rating?: number;
   isJack?: Boolean;
   isPenalty?: Boolean;
