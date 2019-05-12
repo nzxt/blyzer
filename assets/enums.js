@@ -103,7 +103,7 @@ module.exports = {
   },
 
   throwDistances: [
-    { id: 0, value: 'Undefined', text: 'Не визначено' },
+    { id: 0, value: 'Undefined', text: 'Undefined' },
     { id: 1, value: 'From15To20', text: '1.5-2.0 meters' },
     { id: 2, value: 'From20To25', text: '2.0-2.5 meters' },
     { id: 3, value: 'From25To30', text: '2.5-3.0 meters' },

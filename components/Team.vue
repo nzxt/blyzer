@@ -62,7 +62,6 @@ const Dicts = namespace(dicts.name)
   mixins: [GlobalMixins, ValidateRules]
 })
 export default class Team extends Vue {
-  $api
   search: string[] = []
   teamMatchBoxes: Array<IBox> = []
 
@@ -70,10 +69,8 @@ export default class Team extends Vue {
   @Prop({ default: 'individual' }) readonly competitionType!: string
   @Prop({ default: 0 }) readonly competitionEvent!: number
 
-  @Getter('getMatchBoxes') getterGetMatchBoxes
-  @Getter('getPlayers') getterGetPlayers
+  @Getter('getMatchToPlayers') getterGetMatchToPlayers
   @Dicts.State('countries') dictsStateCountries
-  // @Dicts.Action('fetchCountries') dictsActionFetchCountries
 
   @Action('setMatchBoxes') actionSetMatchBoxes
   @Action('killTeamMatchBoxes') actionKillTeamMatchBoxes
@@ -150,7 +147,7 @@ export default class Team extends Vue {
   }
 
   get selectedPlayersIds (): string[] {
-    return this.getterGetPlayers.reduce((selectedPlayersIds: string[], player: IPlayer) => {
+    return this.getterGetMatchToPlayers.reduce((selectedPlayersIds: string[], player: IPlayer) => {
       selectedPlayersIds.push(player.id)
       return selectedPlayersIds
     }, [])

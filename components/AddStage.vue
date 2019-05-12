@@ -81,7 +81,7 @@ v-card.card(style='border:none;')
     )
       //- prepend-icon='mdi-ruler'
 
-    span.subheading.grey--text Box
+    span.subheading.grey--text Opposite Box
     v-item-group(v-model='throwBox')
       v-item(
         v-for='box in 6'
@@ -119,7 +119,6 @@ import enums from '~/assets/enums'
 
 @Component({
   components: {
-    Toolbar: () => import('./stageParts/toolbar.vue'),
     ScoreBoard: () => import('~/components/StageParts/ScoreBoard.vue'),
     Boxes: () => import('~/components/Boxes.vue')
   }
@@ -144,8 +143,6 @@ export default class AddStage extends Vue {
   @State('match') stateMatch
   @Mutation('setStage') mutationSetStage
 
-  @State('matchBoxes') stateMatchBoxes
-
   @State('stage') stateStage
   @Mutation('addStageBall') mutationAddStageBall
 
@@ -155,18 +152,18 @@ export default class AddStage extends Vue {
     this.mutationSetStage(stage)
   }
 
-  onCancel () {
+  onCancel (): void {
     this.$bus.$emit('setMatch')
   }
 
-  onClickThrowRating () {
+  onClickThrowRating (): void {
     const rating = this.throwRating
     if (rating) {
       this.resetValues()
     }
   }
 
-  addJackBall () {
+  addJackBall (): void {
     const { id: playerId } = this.activeBoxPlayer
     const ball: IBall = new Ball(0, playerId)
     ball.isJack = true
@@ -175,7 +172,7 @@ export default class AddStage extends Vue {
     this.mutationAddStageBall(ball)
   }
 
-  resetValues () {
+  resetValues (): void {
     setTimeout(() => {
       this.throwDistance = 0
       this.throwBox = null
@@ -186,7 +183,7 @@ export default class AddStage extends Vue {
     }, 680)
   }
 
-  get throwDistances () {
+  get throwDistances (): string[] {
     const labels = this.enums.throwDistances.reduce((acc, item) => {
       acc.push(item.text)
       return acc

@@ -57,11 +57,11 @@ export interface ITraining {
 
 export interface IMatchToPlayer {
   id?: string;
-  box: number;
   bib?: number;
+  box: number;
   matchId?: string;
   playerId: string;
-  isSubstitutePlayer?: Boolean;
+  isSubstitutePlayer: Boolean;
 }
 
 export interface IStage {
@@ -81,8 +81,8 @@ export interface IStage {
 export interface IStageToPlayer {
   id?: string;
   bib?: number;
-  box?: number;
-  stageId: string;
+  box: number;
+  stageId?: string;
   playerId: string;
 }
 
@@ -103,10 +103,10 @@ export interface IBall {
 }
 
 export interface IPlayer {
-  id: string;
+  id?: string;
   fullName: string;
-  playerClassification: number;
-  countryId: string;
+  playerClassification?: number;
+  countryId?: string;
 }
 
 export interface ICountry {

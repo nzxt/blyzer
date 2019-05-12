@@ -83,7 +83,7 @@ v-card.card
 import { Component, Vue } from 'vue-property-decorator'
 import { State, Mutation, Getter } from 'vuex-class'
 
-import { IObj, IMatch, IMatchToPlayer, IBox } from '~/types/interfaces' // eslint-disable-line
+import { IObj, IMatch, IMatchToPlayer } from '~/types/interfaces' // eslint-disable-line
 import { Match, MatchToPlayer } from '~/types/classes'
 
 import Team from '~/components/Team.vue'
@@ -115,7 +115,7 @@ export default class AddMatch extends Vue {
 
   @State('match') stateMatch
   @Mutation('setMatch') mutationSetMatch
-  @Getter('getPlayers') getterGetPlayers
+  @Getter('getMatchToPlayers') getterGetMatchToPlayers
 
   async onSubmit (): Promise<any> {
     this.isLoading = true
@@ -131,7 +131,7 @@ export default class AddMatch extends Vue {
     // const tournamentType = this.$refs.matchInfo.tournamentType
     const stageType = this.$refs.matchInfo.stageType
     const stageIndex = this.$refs.matchInfo.stageIndex
-    const players = this.getterGetPlayers
+    const players = this.getterGetMatchToPlayers
 
     const item: IMatch = new Match(this.$moment().format(), this.$auth.user.appUserId)
 
@@ -185,10 +185,6 @@ export default class AddMatch extends Vue {
     case 'team': return enums.competitionEvents.team
     default: return enums.competitionEvents.individual
     }
-  }
-
-  get matchBoxes (): IBox[] {
-    return this.$refs.redTeam
   }
 
   get activeCompetitionClass (): string {

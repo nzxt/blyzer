@@ -1,20 +1,19 @@
 <template lang="pug">
   v-tabs(
     v-model='active'
-    color='grey lighten-2'
-    dark
+    color='grey lighten-3'
     slider-color='warning'
   )
-    span.px-2.pt-1.title.grey--text.text--darken-1.font-weight-thin ENDs
+    span.px-2.pt-2.title.grey--text.text--darken-1.font-weight-thin ENDs
     v-tab(
-      v-for='n in stateMatch.stages.length + 3'
+      v-for='n in stateMatch.stages.length'
       :key='n'
       ripple
     )
-      span {{ n }}
+      span.title {{ n }}
 
     v-tab-item(
-      v-for='n in 4'
+      v-for='n in stateMatch.stages.length'
       :key='n'
     )
       v-card(flat style='border:none;')
@@ -24,7 +23,7 @@
               style='margin-right:2px;'
               :size='22'
               :color='ball.team'
-              v-for='ball in scores'
+              v-for='ball in stateMatch.stages[active].balls'
               :key='ball.value'
             )
               span.white--text.body-2.font-weight-thin {{ !ball.value ? 'J' : ball.value }}
@@ -74,5 +73,5 @@ export default class ScoreBoard extends Vue {
 <style lang="stylus" scoped>
   .v-tabs
     >>> .v-tabs__container
-      height: 30px
+      height: 36px
 </style>

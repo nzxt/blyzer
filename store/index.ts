@@ -96,7 +96,6 @@ export const getters: GetterTree<IState, IRootState> = {
   getTournament: state => state.tournament,
   getMatch: state => state.match,
   getTraining: state => state.training,
-  getPlayers: state => [...state.redTeam, ...state.blueTeam],
-  getMatchBoxes: state => state.matchBoxes,
+  getMatchToPlayers: state => [...state.redTeam, ...state.blueTeam],
   getComponent: state => state.component
 }
