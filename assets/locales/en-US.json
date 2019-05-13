@@ -31,6 +31,7 @@
   },
   "forms": {
     "start": "Start",
+    "finish": "Finish",
     "submit": "Submit",
     "cancel": "Cancel",
     "next": "Next",

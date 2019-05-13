@@ -61,7 +61,7 @@ export interface IMatchToPlayer {
   box: number;
   matchId?: string;
   playerId: string;
-  isSubstitutePlayer: Boolean;
+  isSubstitutePlayer?: Boolean;
 }
 
 export interface IStage {
@@ -178,6 +178,7 @@ export interface IApiService {
   ApiPlayerPost: Function;
   ApiPlayerByIdGet: Function;
   ApiPlayerByIdDelete: Function;
+  ApiStatPost: Function;
   ApiStageGet: Function;
   ApiStagePut: Function;
   ApiStagePost: Function;

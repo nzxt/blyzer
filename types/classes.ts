@@ -60,10 +60,13 @@ export class Training implements ITraining {
   ) {
     this.dateTimeStamp = dateTimeStamp
     this.appUserId = appUserId
+    // this.balls = []
   }
-  id?: string
+  id?: string;
   dateTimeStamp: Date;
   appUserId: string;
+  balls?: IBall[];
+  matches?: IMatch[];
 }
 
 export class MatchToPlayer implements IMatchToPlayer {

@@ -27,7 +27,7 @@ v-card.card(style='border:none;')
           v-card-text.pb-0
             v-item-group(v-model='throwType')
               v-item(
-                v-for='scored in enums.scoredBallTypes'
+                v-for='scored in enums.shotTypes'
                 :key='scored.value'
                 :value='scored.value'
               )
@@ -141,15 +141,23 @@ export default class AddStage extends Vue {
   ]
 
   @State('match') stateMatch
-  @Mutation('setStage') mutationSetStage
-
   @State('stage') stateStage
+
+  @Mutation('setStage') mutationSetStage
+  @Mutation('addMatchStage') mutationAddMatchStage
   @Mutation('addStageBall') mutationAddStageBall
 
   created (): void {
     const stageIndex: number = this.stateMatch.stages.length + 1
     const stage: IStage = new Stage(stageIndex, this.stateMatch.id)
     this.mutationSetStage(stage)
+    this.addStageToCurrentMatch(stage)
+  }
+
+  addStageToCurrentMatch (stage: IStage): void {
+    const { stages } = this.stateMatch
+    const isExist = stages.find(x => x.index === stage.index)
+    if (!isExist) this.mutationAddMatchStage(stage)
   }
 
   onCancel (): void {

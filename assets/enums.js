@@ -61,7 +61,7 @@ module.exports = {
     ]
   },
 
-  scoredBallTypes: [
+  shotTypes: [
     { id: 1, value: 'firstBall', text: 'First ball' },
     { id: 2, value: 'placement', text: 'Placement' },
     { id: 3, value: 'pushOn', text: 'Push on' },

@@ -59,6 +59,7 @@ export const mutations: MutationTree<IState> = {
   setBlueTeam: (state, value: IPlayer[]) => { state.blueTeam = value },
   setMatchBoxes: (state, value: IBox[]) => { state.matchBoxes = value },
   setComponent: (state, value: string | null) => { state.component = value },
+  addMatchStage: (state, value: IStage) => { state.match.stages.push(value) },
   addStageBall: (state, value: IBall) => { state.stage.balls.push(value) }
 }
 

@@ -11,12 +11,11 @@ import { Mutation, Getter } from 'vuex-class'
 @Component({
   components: {
     AddMatch: () => import('~/components/AddMatch.vue'),
-    AddTraining: () => import('~/components/AddTraining.vue'),
+    AddTraining: () => import('~/components/NewTraining/Initial.vue'),
     AddStage: () => import('~/components/AddStage.vue')
   }
 })
 export default class NewPage extends Vue {
-  $bus
   component: string | null = null
 
   @Mutation('setComponent') mutationSetComponent
@@ -27,7 +26,6 @@ export default class NewPage extends Vue {
   }
 
   mounted () {
-    // debugger
     this.component = this.getterGetComponent || this.isMatch ? 'AddMatch' : 'AddTraining'
 
     this.$bus.$on('setMatch', this.onSetMatch)

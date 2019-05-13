@@ -8,7 +8,6 @@
         v-icon(color='deep-orange lighten-3' v-else) mdi-car-brake-alert
       v-card
         v-card-text.pa-1
-          //- :items='[].concat(fetchedTournaments, ["BISFed 2019 Zagreb", "BISFed 2019 Guangzhou Boccia", "BISFed 2019 Montreal Boccia"])'
           v-combobox.my-2(
             dense
             v-model='tournament'
@@ -22,46 +21,26 @@
             hide-selected
             return-object
             label='Tournament name'
-            :prepend-icon='tournamentType.icon || "mdi-trophy-award"'
+            :prepend-icon='tournamentType ? tournamentType.icon : "mdi-trophy-award"'
             autofocus
             clearable
           )
-            //- persistent-hint
-            //- :hint='tournamentName ? `Type: <span class="font-weight-bold">${tournamentTypes.find(x => x.value === tournamentType).name}</span>` : "Choose or enter tournament name..."'
-            //- :rules='requiredField'
-          //- v-combobox.my-2(
-            //- dense
-            //- v-model='tournamentType'
-            //- :items='stateTournamentTypes'
-            //- item-text='name'
-            //- item-value='id'
-            //- return-object
-            //- hide-details
-            //- hide-no-data
-            //- hide-selected
-            //- label='Tournament type'
-            //- prepend-icon='mdi-shape-outline'
-            //- clearable
-          //- )
-
-          // v-combobox.my-2(
-          //   dense
-          //   v-model='stageType'
-          //   :items='stageTypes'
-          //   hide-details
-          //   hide-no-data
-          //   hide-selected
-          //   label='Stage type'
-          //   prepend-icon='mdi-tournament'
-          //   clearable
-          // )
-          //   template(v-slot:selection='{ item }')
-          //     | {{ item.replace(/\b\w/g, l => l.toUpperCase()) }}
-          //   template(v-slot:item='{ item }')
-          //     | {{ item.replace(/\b\w/g, l => l.toUpperCase()) }}
+          v-combobox.my-2(
+            dense
+            v-model='tournamentType'
+            :items='stateTournamentTypes'
+            item-text='name'
+            item-value='id'
+            return-object
+            hide-details
+            hide-no-data
+            hide-selected
+            label='Tournament type'
+            prepend-icon='mdi-shape-outline'
+            clearable
+          )
 
           v-item-group.mt-3.text-xs-center(v-model='stageType')
-            // div.subheading STAGE
             v-item(:value='stype' v-for='stype in stageTypes' :key='stype')
               v-chip.px-2(
                 slot-scope="{ active, toggle }"
@@ -73,7 +52,6 @@
                 span.font-weight-medium {{ stype.toUpperCase() }}
 
           v-item-group.mt-2.text-xs-center(v-model='stageIndex' v-if='stageIndexes.length')
-            // div.subheading INDEX
             v-item(:value='sindex.id' v-for='sindex in stageIndexes' :key='sindex.id')
               v-chip.ml-0.mr-1(
                 slot-scope="{ active, toggle }"
@@ -83,43 +61,36 @@
                 :color='active ? "primary" : "grey lighten-1"'
               )
                 span.font-weight-medium {{ sindex.text.toUpperCase() }}
-          // v-combobox.my-2(
-          //   dense
-          //   v-model='stageIndex'
-          //   :items='stageIndexes'
-          //   v-if='stageIndexes.length'
-          //   item-text='text'
-          //   item-value='id'
-          //   hide-details
-          //   hide-no-data
-          //   hide-selected
-          //   label='Stage index'
-          //   prepend-icon='mdi-podium-gold'
-          //   clearable
-          // )
-    //- v-dialog(
-    //-   v-model='dialog'
-    //-   max-width='290'
-    //-   persistent
-    //- )
     v-snackbar(
-      v-model='snackbar'
+      v-model='snackbarError'
       multi-line
       bottom
-    ) Choose type to create new Tournament.
+    ) Tournament type isn't set.
       v-btn(
-        color="pink"
+        color="warning"
         flat
-        @click="snackbar = false"
+        @click="snackbarError = false"
       ) Close
-      //- template(v-slot:activator="{ on }")
-        v-btn(color="primary" dark v-on="on") Open  Dialog
-      //- v-card
-      //-   v-card-title.headline.white--text(class='yellow darken-2') Create Tournament?
-      //-   v-card-text You forgot to select Tournament type.
-      //-   v-card-actions
-      //-     v-spacer
-      //-     v-btn(color="green darken-1" flat @click="dialog = false") Agree
+    v-snackbar(
+      v-model='snackbarCreated'
+      multi-line
+      bottom
+    ) Tournament successfully created.
+      v-btn(
+        color="success"
+        flat
+        @click="snackbarCreated = false"
+      ) Close
+    v-snackbar(
+      v-model='snackbarFailed'
+      multi-line
+      bottom
+    ) Tournament creation failed.
+      v-btn(
+        color="error"
+        flat
+        @click="snackbarFailed = false"
+      ) Close
 </template>
 
 <script lang="ts">
@@ -143,7 +114,9 @@ const Dicts = namespace(dicts.name)
   mixins: [GlobalMixin, ValidateRules]
 })
 export default class MatchInfo extends Vue {
-  snackbar: Boolean = false
+  snackbarError: Boolean = false
+  snackbarCreated: Boolean = false
+  snackbarFailed: Boolean = false
   panel: Boolean[] = [true]
   stageTypes: Array<string> = enums.stageTypes
 
@@ -194,8 +167,8 @@ export default class MatchInfo extends Vue {
       this.mutationSetTournament(value)
     } else if (typeof value === 'string') {
       const tournamentTypeId = this.tournamentType ? this.tournamentType.id : ''
-      if (!this.guidRegex.test(tournamentTypeId as any)) {
-        this.snackbar = true
+      if (!this.guidRegex.test(tournamentTypeId)) {
+        this.snackbarError = true
       } else {
         this.createTournament(value, tournamentTypeId || '')
       }
@@ -214,11 +187,15 @@ export default class MatchInfo extends Vue {
         .then(({ data }) => {
           item.id = data
           this.mutationSetTournament(item)
+          this.snackbarCreated = true
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          this.snackbarFailed = true
+          console.log(err)
+        })
     } else if (!this.guidRegex.test(tournamentTypeId)) {
       this.mutationSetTournament(null)
-      this.snackbar = true
+      this.snackbarError = true
     }
   }
 

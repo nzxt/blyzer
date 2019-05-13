@@ -54,7 +54,7 @@ v-card.card
         :competitionEvent='competitionEvent'
       )
 
-    v-card-text.mt-2.pa-1
+    //- v-card-text.mt-2.pa-1
       MatchInfo(ref='matchInfo')
 
     v-card-actions
@@ -90,7 +90,7 @@ import Team from '~/components/Team.vue'
 import MatchInfo from '~/components/MatchInfo.vue'
 
 import ValidateRules from '~/mixins/validate'
-import { isPlainObject } from '~/utils/helpers'
+import { isPlainObject } from '~/utils/helpers' // eslint-disable-line
 
 import enums from '~/assets/enums'
 
@@ -111,8 +111,6 @@ export default class AddMatch extends Vue {
   competitionType: string = 'individual'
   competitionEvent: number = 0
 
-  match: IMatch | null = null
-
   @State('match') stateMatch
   @Mutation('setMatch') mutationSetMatch
   @Getter('getMatchToPlayers') getterGetMatchToPlayers
@@ -127,10 +125,10 @@ export default class AddMatch extends Vue {
   }
 
   prepareMatch (): IMatch {
-    const tournament = this.$refs.matchInfo.tournament
+    // const tournament = this.$refs.matchInfo.tournament
     // const tournamentType = this.$refs.matchInfo.tournamentType
-    const stageType = this.$refs.matchInfo.stageType
-    const stageIndex = this.$refs.matchInfo.stageIndex
+    // const stageType = this.$refs.matchInfo.stageType
+    // const stageIndex = this.$refs.matchInfo.stageIndex
     const players = this.getterGetMatchToPlayers
 
     const item: IMatch = new Match(this.$moment().format(), this.$auth.user.appUserId)
@@ -138,20 +136,20 @@ export default class AddMatch extends Vue {
     item.matchType = 1
     item.competitionEvent = this.competitionEvent || 0
 
-    if (tournament) item.tournamentId = tournament.id
+    // if (tournament) item.tournamentId = tournament.id
 
-    if (isPlainObject(stageIndex)) {
-      if (stageType === 'pool') {
-        item.poolStage = stageIndex.id
-        item.eliminationStage = 0
-      } else if (stageType === 'elimination') {
-        item.poolStage = 0
-        item.eliminationStage = stageIndex.id
-      } else {
-        item.poolStage = 0
-        item.eliminationStage = 0
-      }
-    }
+    // if (isPlainObject(stageIndex)) {
+    //   if (stageType === 'pool') {
+    //     item.poolStage = stageIndex.id
+    //     item.eliminationStage = 0
+    //   } else if (stageType === 'elimination') {
+    //     item.poolStage = 0
+    //     item.eliminationStage = stageIndex.id
+    //   } else {
+    //     item.poolStage = 0
+    //     item.eliminationStage = 0
+    //   }
+    // }
 
     if (players.length) {
       const matchToPlayers: IMatchToPlayer[] = players.map((x) => {
@@ -169,8 +167,12 @@ export default class AddMatch extends Vue {
       .then(({ data }) => {
         item.id = data
         this.mutationSetMatch(item)
+        this.$noty.success('<span class="subheading">Match successfully created!</span>')
       })
-      .catch(err => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        this.$noty.error('Match creation failed :(')
+      })
   }
 
   // @Watch('competitionType')

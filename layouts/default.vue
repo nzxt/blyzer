@@ -6,7 +6,7 @@ v-app(light, v-hotkey='keymap')
         v-list-tile-title.title Add New Match
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
-      v-list-tile.px-5(@click.native='$router.push("/new?type=training")')
+      v-list-tile.px-5(@click.native='$router.push("/newTraining")')
         v-list-tile-title.title Add New Training
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
@@ -15,7 +15,7 @@ v-app(light, v-hotkey='keymap')
     //- v-icon.mdi-36px.mdi-rotate-45.ml-1(class='hidden-sm-and-down', color='grey lighten-2', @click='$router.push("/")') mdi-xbox
     LocaleSwitcher.mx-2
     v-layout(wrap, justify-end)
-      v-flex(xs12, class='text-xs-right')
+      v-flex(xs12 class='text-xs-right' v-if='$auth.loggedIn')
         v-btn-toggle(v-model='btnGroup')
           v-btn(large, icon, flat, nuxt, to='/reports' :ripple='false', :value='0', class='toolbar--btn-large')
             v-icon.mdi-48px(color='error') mdi-chart-arc
@@ -29,10 +29,22 @@ v-app(light, v-hotkey='keymap')
       tasty-burger-button(@toggle.stop='toggleRightDrawer', :active='rightDrawer', type='elastic', size='s', color='orange', active-color='red')
 
   v-content
-    v-container.pa-1(fluid grid-list-md fill-height justify-start class='white')
-      nuxt
+    v-container.pa-1(fluid fill-height class='white')
+      v-flex.justify-center(layout)
+        nuxt
 
-  v-navigation-drawer(v-model='rightDrawer', right, :clipped='clippedRight', width='350', class="backpurple", dark, temporary, fixed, app)
+  v-navigation-drawer(
+    v-if='$auth.loggedIn'
+    v-model='rightDrawer'
+    right
+    :clipped='clippedRight'
+    width='350'
+    class="backpurple"
+    dark
+    temporary
+    fixed
+    app
+  )
     v-list
       v-list-tile.ml-3
         //- v-list-tile-action(class='justify-start')

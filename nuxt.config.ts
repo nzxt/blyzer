@@ -107,7 +107,7 @@ module.exports = {
     https: false,
     // proxy: true,
     credentials: true,
-    // prefix: BASE_URL
+    // prefix: API_URL
     baseURL: API_URL
     // redirectError: {
     //   401: '/login',

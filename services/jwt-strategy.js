@@ -142,14 +142,15 @@ export default class JwtScheme {
       //   expiresIn: 60
       // }
     }
-
+    debugger
     const result = await this.$auth.request(
       endpoint,
       this.options.endpoints.refresh
     )
-
+    debugger
     if (result) return
 
+    debugger
     this._storeTokens(result)
 
     const newToken = this.options.tokenType

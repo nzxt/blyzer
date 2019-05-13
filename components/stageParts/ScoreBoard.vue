@@ -23,7 +23,7 @@
               style='margin-right:2px;'
               :size='22'
               :color='ball.team'
-              v-for='ball in stateMatch.stages[active].balls'
+              v-for='ball in stateStage.balls'
               :key='ball.value'
             )
               span.white--text.body-2.font-weight-thin {{ !ball.value ? 'J' : ball.value }}
@@ -41,6 +41,7 @@ export default class ScoreBoard extends Vue {
   stage!: IStage
 
   @State('match') stateMatch
+  @State('stage') stateStage
 
   active: number = 1
 
@@ -60,11 +61,11 @@ export default class ScoreBoard extends Vue {
     { value: 12, team: 'blue', player: 'Sam' }
   ]
 
-  mounted () {
+  mounted (): void {
     // debugger
   }
 
-  created () {
+  created (): void {
     // debugger
   }
 }
