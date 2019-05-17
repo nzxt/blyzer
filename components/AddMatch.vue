@@ -90,7 +90,7 @@ import Team from '~/components/Team.vue'
 import MatchInfo from '~/components/MatchInfo.vue'
 
 import ValidateRules from '~/mixins/validate'
-import { isPlainObject } from '~/utils/helpers' // eslint-disable-line
+// import { isPlainObject } from '~/utils/helpers'
 
 import enums from '~/assets/enums'
 

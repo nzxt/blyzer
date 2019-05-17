@@ -34,6 +34,7 @@
     "finish": "Завершити",
     "submit": "Відправити",
     "cancel": "Скасувати",
+    "back": "Повернутись",
     "next": "Далі",
     "previous": "Назад",
     "errors": {
@@ -46,5 +47,17 @@
     "plural": "користувачі",
     "new": "Новий користувач",
     "edit": "Редагувати користувача"
+  },
+  "trainings": {
+    "singular": "training",
+    "plural": "trainings",
+    "new": "New Training",
+    "all": "All Trainings"
+  },
+  "matches": {
+    "singular": "match",
+    "plural": "matches",
+    "new": "New Match",
+    "all": "All Matches"
   }
 }

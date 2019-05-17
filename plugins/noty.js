@@ -6,5 +6,5 @@ Vue.use(VueNoty, {
   theme: 'sunset',
   timeout: 3000,
   progressBar: true,
-  layout: 'bottomRight'
+  layout: 'topCenter'
 })

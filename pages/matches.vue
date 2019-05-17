@@ -1,121 +1,121 @@
 <template lang="pug">
-v-layout
-  NoResults(eventType='Match' v-if='!fetchedMatches.length')
-  v-layout.mb-5(v-else-if='!currentMatch')
-    v-flex(xs12)
-      v-data-iterator(
-        :items='fetchedMatches'
-        :rows-per-page-items='rowsPerPageItems'
-        :pagination.sync='pagination'
-        :total-items='pagination.totalItems'
-        content-class='match'
-        hide-actions
-      )
-        template(v-slot:header)
-          v-toolbar(
-            color='secondary lighten-5'
-            flat
-          )
-            v-toolbar-title
-              v-badge.my-2.mr-2(overlap color='red')
-                template(v-slot:badge)
-                  span {{ pagination.totalItems }}
-                span.pr-3.headline.font-weight-bold Matches
-            v-spacer
-            // v-toolbar-items
-            v-layout.ma-0
-              v-flex.hidden-xs-only(style='text-align: -webkit-right;')
-                v-select.rows-per-page(
-                  hide-details
-                  v-model='pagination.rowsPerPage'
-                  :items='rowsPerPageItems'
-                  label='Per Page'
-                )
-              v-flex.text-xs-right
-                v-btn(dark round color='backpurple' @click='$router.push("/new?type=match")')
-                  v-icon(left) mdi-plus
-                  | Add New
-
-        template(v-slot:item='props')
-          v-flex(xs12 sm6 md4 lg3)
-            // v-card(@click='props.expanded = !props.expanded')
-            v-card(@click='onMatchClicked(props.item)' min-width='320')
-              v-card-title.pl-2
-                v-icon.mdi-36px(color='yellow') mdi-webhook
-                div.ml-2
-                  div.title.mr-3 {{ props.item.matchType | enumTextById('matchTypes') }}
-                  div.caption {{ props.item.dateTimeStamp | dateUTCToDate }} / {{ props.item.dateTimeStamp | dateUTCToTime }}
-                v-divider
-              v-card-text
-                v-layout.justify-space-between
-                  v-flex(xs12 layout column)
-                    v-layout
-                      v-flex(xs6)
-                        v-btn.ma-0.mr-1(small icon)
-                          flag(iso='ua')
-                        span.subheading.pt-1 Artem Kolinko
-                      v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.error--text(small label color='grey lighten-4') {{ props.item.scoreRed }}
-                      v-flex.py-0(xs2)
-                        v-progress-linear(:value='props.item.avgPointRed' color='accent' query)
-                      v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
-                    v-layout
-                      v-flex(xs6)
-                        v-btn.ma-0.mr-1(small icon)
-                          flag(iso='gb')
-                        span.subheading.pt-1 Jeid Tait
-                      v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.primary--text(small label color='grey lighten-4') {{ props.item.scoreBlue }}
-                      v-flex.py-0(xs2)
-                        v-progress-linear(:value='props.item.avgPointRed' color='accent' query)
-                      v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
-                  // v-flex.justify-center.align-center(xs2 layout column)
-                    v-btn(icon large @click='onMatchClicked(props.item)')
-                      v-icon.mdi-36px(color='grey') mdi-chevron-right
-              // v-divider
-              v-card-actions.font-weight-medium
-                v-chip.mr-2.indigo--text(small label color='indigo lighten-5' v-if='props.item.competitionEvent') {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
-                v-chip.cyan--text(small label color='cyan lighten-5' v-if='props.item.poolStage || props.item.eliminationStage')
-                  // | {{ stageIndex }}
-
-              // v-card-text(v-if="props.expanded")
-              //   v-layout
-              //     v-flex(xs6)
-              //       v-icon.mdi-48px mdi-chevron-double-left
-              //     v-flex(xs6)
-              //       v-icon.mdi-48px mdi-chevron-double-right
-
-    v-bottom-nav(
-      :value='true'
-      color='transparent'
-      fixed
-    )
-      //- height='38'
-      //- :active.sync='bottomNav'
-      v-layout.justify-center
-        //- div.text-xs-center
-        v-pagination(
-          light
-          circle
-          color='deep-orange'
-          v-model='pagination.page'
-          :length='pagination.totalPages'
+  v-container
+    NoResults(eventType='Match' v-if='!fetchedMatches.length')
+    v-layout.mb-5(v-else-if='!currentMatch')
+      v-flex(xs12)
+        v-data-iterator(
+          :items='fetchedMatches'
+          :rows-per-page-items='rowsPerPageItems'
+          :pagination.sync='pagination'
+          :total-items='pagination.totalItems'
+          content-class='match'
+          hide-actions
         )
+          template(v-slot:header)
+            v-toolbar(
+              color='secondary lighten-5'
+              flat
+            )
+              v-toolbar-title
+                v-badge.my-2.mr-2(overlap color='red')
+                  template(v-slot:badge)
+                    span {{ pagination.totalItems }}
+                  span.pr-3.headline.font-weight-bold Matches
+              v-spacer
+              // v-toolbar-items
+              v-layout.ma-0
+                v-flex.hidden-xs-only(style='text-align: -webkit-right;')
+                  v-select.rows-per-page(
+                    hide-details
+                    v-model='pagination.rowsPerPage'
+                    :items='rowsPerPageItems'
+                    label='Per Page'
+                  )
+                v-flex.text-xs-right
+                  v-btn(dark round color='backpurple' @click='$router.push("/new?type=match")')
+                    v-icon(left) mdi-plus
+                    | Add New
 
-  div(v-else-if='currentMatch')
-    Match(:match='currentMatch')
-    v-bottom-nav(
-      :value='true'
-      color='transparent'
-      fixed
-    )
-      //- height='38'
-      //- :active.sync='bottomNav'
-      v-layout.justify-center
-        v-btn(@click='currentMatch = null')
-          v-icon.mdi-36px(color='warning') mdi-reply
+          template(v-slot:item='props')
+            v-flex(xs12 sm6 md4 lg3)
+              // v-card(@click='props.expanded = !props.expanded')
+              v-card(@click='onMatchClicked(props.item)' min-width='320')
+                v-card-title.pl-2
+                  v-icon.mdi-36px(color='yellow') mdi-webhook
+                  div.ml-2
+                    div.title.mr-3 {{ props.item.matchType | enumTextById('matchTypes') }}
+                    div.caption {{ props.item.dateTimeStamp | dateUTCToDate }} / {{ props.item.dateTimeStamp | dateUTCToTime }}
+                  v-divider
+                v-card-text
+                  v-layout.justify-space-between
+                    v-flex(xs12 layout column)
+                      v-layout
+                        v-flex(xs6)
+                          v-btn.ma-0.mr-1(small icon)
+                            flag(iso='ua')
+                          span.subheading.pt-1 Artem Kolinko
+                        v-flex.py-0(xs2)
+                          v-chip.font-weight-bold.error--text(small label color='grey lighten-4') {{ props.item.scoreRed }}
+                        v-flex.py-0(xs2)
+                          v-progress-linear(:value='props.item.avgPointRed' color='accent' query)
+                        v-flex.py-0(xs2)
+                          v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
+                      v-layout
+                        v-flex(xs6)
+                          v-btn.ma-0.mr-1(small icon)
+                            flag(iso='gb')
+                          span.subheading.pt-1 Jeid Tait
+                        v-flex.py-0(xs2)
+                          v-chip.font-weight-bold.primary--text(small label color='grey lighten-4') {{ props.item.scoreBlue }}
+                        v-flex.py-0(xs2)
+                          v-progress-linear(:value='props.item.avgPointRed' color='accent' query)
+                        v-flex.py-0(xs2)
+                          v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
+                    // v-flex.justify-center.align-center(xs2 layout column)
+                      v-btn(icon large @click='onMatchClicked(props.item)')
+                        v-icon.mdi-36px(color='grey') mdi-chevron-right
+                // v-divider
+                v-card-actions.font-weight-medium
+                  v-chip.mr-2.indigo--text(small label color='indigo lighten-5' v-if='props.item.competitionEvent') {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
+                  v-chip.cyan--text(small label color='cyan lighten-5' v-if='props.item.poolStage || props.item.eliminationStage')
+                    // | {{ stageIndex }}
+
+                // v-card-text(v-if="props.expanded")
+                //   v-layout
+                //     v-flex(xs6)
+                //       v-icon.mdi-48px mdi-chevron-double-left
+                //     v-flex(xs6)
+                //       v-icon.mdi-48px mdi-chevron-double-right
+
+      v-bottom-nav(
+        :value='true'
+        color='transparent'
+        fixed
+      )
+        //- height='38'
+        //- :active.sync='bottomNav'
+        v-layout.justify-center
+          //- div.text-xs-center
+          v-pagination(
+            light
+            circle
+            color='deep-orange'
+            v-model='pagination.page'
+            :length='pagination.totalPages'
+          )
+
+    div(v-else-if='currentMatch')
+      Match(:match='currentMatch')
+      v-bottom-nav(
+        :value='true'
+        color='transparent'
+        fixed
+      )
+        //- height='38'
+        //- :active.sync='bottomNav'
+        v-layout.justify-center
+          v-btn(@click='currentMatch = null')
+            v-icon.mdi-36px(color='warning') mdi-reply
 </template>
 
 <script lang="ts">

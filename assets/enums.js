@@ -62,16 +62,16 @@ module.exports = {
   },
 
   shotTypes: [
-    { id: 1, value: 'firstBall', text: 'First ball' },
-    { id: 2, value: 'placement', text: 'Placement' },
-    { id: 3, value: 'pushOn', text: 'Push on' },
-    { id: 4, value: 'pushOff', text: 'Push off' },
-    { id: 5, value: 'smash', text: 'Smash' },
-    { id: 6, value: 'ricochet', text: 'Ricochet' },
-    { id: 7, value: 'bounceOver', text: 'Bounce over' },
-    { id: 8, value: 'rollOnTop', text: 'Roll on top' },
-    { id: 9, value: 'rollUpAndOver', text: 'Roll up and over' },
-    { id: 10, value: 'lobbingShot', text: 'Lob shot' }
+    { id: 1, value: 'firstBall', text: 'First ball', abbr: 'FB' },
+    { id: 2, value: 'placement', text: 'Placement', abbr: 'PL' },
+    { id: 3, value: 'pushOn', text: 'Push on', abbr: 'PO' },
+    { id: 4, value: 'pushOff', text: 'Push off', abbr: 'PF' },
+    { id: 5, value: 'smash', text: 'Smash', abbr: 'SM' },
+    { id: 6, value: 'ricochet', text: 'Ricochet', abbr: 'RC' },
+    { id: 7, value: 'bounceOver', text: 'Bounce over', abbr: 'BO' },
+    { id: 8, value: 'rollOnTop', text: 'Roll on top', abbr: 'RT' },
+    { id: 9, value: 'rollUpAndOver', text: 'Roll up and over', abbr: 'RU' },
+    { id: 10, value: 'lobbingShot', text: 'Lob shot', abbr: 'LS' }
   ],
 
   deadBallTypes: [
@@ -104,22 +104,22 @@ module.exports = {
 
   throwDistances: [
     { id: 0, value: 'Undefined', text: 'Undefined' },
-    { id: 1, value: 'From15To20', text: '1.5-2.0 meters' },
-    { id: 2, value: 'From20To25', text: '2.0-2.5 meters' },
-    { id: 3, value: 'From25To30', text: '2.5-3.0 meters' },
-    { id: 4, value: 'From30To35', text: '3.0-3.5 meters' },
-    { id: 5, value: 'From35To40', text: '3.5-4.0 meters' },
-    { id: 6, value: 'From40To45', text: '4.0-4.5 meters' },
-    { id: 7, value: 'From45To50', text: '4.5-5.0 meters' },
-    { id: 8, value: 'From50To55', text: '5.0-5.5 meters' },
-    { id: 9, value: 'From55To60', text: '5.5-6.0 meters' },
-    { id: 10, value: 'From60To65', text: '6.0-6.5 meters' },
-    { id: 11, value: 'From65To75', text: '6.5-7.0 meters' },
-    { id: 12, value: 'From70To75', text: '7.0-7.5 meters' },
-    { id: 13, value: 'From75To80', text: '7.5-8.0 meters' },
-    { id: 14, value: 'From80To85', text: '7.0-8.5 meters' },
-    { id: 15, value: 'From85To90', text: '8.5-9.0 meters' },
-    { id: 16, value: 'From90To95', text: '8.0-9.5 meters' },
-    { id: 17, value: 'From95To100', text: '9.5-10.0 meters' }
+    { id: 1, value: 'From15To20', text: '1.5-2.0m' },
+    { id: 2, value: 'From20To25', text: '2.0-2.5m' },
+    { id: 3, value: 'From25To30', text: '2.5-3.0m' },
+    { id: 4, value: 'From30To35', text: '3.0-3.5m' },
+    { id: 5, value: 'From35To40', text: '3.5-4.0m' },
+    { id: 6, value: 'From40To45', text: '4.0-4.5m' },
+    { id: 7, value: 'From45To50', text: '4.5-5.0m' },
+    { id: 8, value: 'From50To55', text: '5.0-5.5m' },
+    { id: 9, value: 'From55To60', text: '5.5-6.0m' },
+    { id: 10, value: 'From60To65', text: '6.0-6.5m' },
+    { id: 11, value: 'From65To75', text: '6.5-7.0m' },
+    { id: 12, value: 'From70To75', text: '7.0-7.5m' },
+    { id: 13, value: 'From75To80', text: '7.5-8.0m' },
+    { id: 14, value: 'From80To85', text: '7.0-8.5m' },
+    { id: 15, value: 'From85To90', text: '8.5-9.0m' },
+    { id: 16, value: 'From90To95', text: '8.0-9.5m' },
+    { id: 17, value: 'From95To100', text: '9.5-10.0m' }
   ]
 }

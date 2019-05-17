@@ -69,6 +69,7 @@ export interface Actions<S, R> extends ActionTree<S, R> {
 
 export const actions: Actions<IState, IRootState> = {
   nuxtClientInit (store): void {
+    store.dispatch('dicts/fetchPlayers')
     store.dispatch('dicts/fetchCountries')
     store.dispatch('dicts/fetchTournamentTypes')
   },

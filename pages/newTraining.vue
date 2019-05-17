@@ -13,15 +13,13 @@ const { types } = training
 @Component({
   components: {
     Initial: () => import('~/components/NewTraining/Initial.vue'),
+    Results: () => import('~/components/NewTraining/Results.vue'),
+    Exercise: () => import('~/components/NewTraining/Exercise.vue'),
     Balls: () => import('~/components/NewTraining/Balls.vue')
   }
 })
 export default class NewTraining extends Vue {
   @Training.State('component') stateComponent
   @Training.Mutation(types.SET_COMPONENT) mutationSetComponent
-
-  // onChangeComponent (value: string): void {
-  //   this.mutationSetComponent(value)
-  // }
 }
 </script>

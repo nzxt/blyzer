@@ -34,6 +34,7 @@
     "finish": "Finish",
     "submit": "Submit",
     "cancel": "Cancel",
+    "back": "Back",
     "next": "Next",
     "previous": "Previous",
     "errors": {
@@ -46,5 +47,17 @@
     "plural": "users",
     "new": "New User",
     "edit": "Edit User"
+  },
+  "trainings": {
+    "singular": "training",
+    "plural": "trainings",
+    "new": "New Training",
+    "all": "All Trainings"
+  },
+  "matches": {
+    "singular": "match",
+    "plural": "matches",
+    "new": "New Match",
+    "all": "All Matches"
   }
 }

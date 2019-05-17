@@ -4,11 +4,12 @@
       v-layout.fill-height.justify-space-between(column)
         v-card-title.justify-center
           div.headline.grey--text.text--lighten-1
-            | Let's train!
+            | Let's Train!
+
         v-card-text
           v-container(pa-0 grid-list-md)
             v-layout(row justify-space-around)
-              v-flex(xs6 sm4 md3 lg3)
+              v-flex(xs6 sm4)
                 v-menu(
                   ref='datePicker'
                   v-model='datePicker'
@@ -34,7 +35,7 @@
                       //- @blur='date = dateStamp'
                   v-date-picker(v-model='dateStamp' no-title @input='datePicker = false')
 
-              v-flex(xs5 sm3 md2 lg2)
+              v-flex(xs5 sm3)
                 v-menu(
                   ref='timePicker'
                   v-model="timePicker"
@@ -66,28 +67,44 @@
                     @click:minute="$refs.timePicker.save(timeStamp)"
                   )
 
-        v-card-text.pa-0.text-xs-center
-          span.subheading.grey--text Shot type
-          v-item-group.mt-2(v-model='shotType')
-            v-item(
-              v-for='scored in enums.shotTypes'
-              :key='scored.id'
-              :value='scored.id'
-            )
-              v-chip(
-                slot-scope='{ active, toggle }'
-                @click='toggle'
-                :color='active ? "primary" : ""'
-                :dark='active'
-              )
-                span.subheading {{ scored.text }}
+        v-card-text
+          v-combobox(
+            label='Choose Athlete'
+            prepend-icon='mdi-account-circle-outline'
+            v-model='player'
+            :items='players'
+            :search-input.sync='search'
+            :rules='requiredField'
+            :disabled='!isNewTraining'
+            browser-autocomplete
+            hide-selected
+            hide-no-data
+            no-filter
+            clearable
+            dense
+          )
+            template(v-slot:selection='{ item, index }')
+              v-chip(small)
+                v-avatar
+                  flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
+                div {{ item.fullName }}
+            template(v-slot:item='{ index, item }')
+              v-list-tile-avatar
+                // v-avatar
+                flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
+              v-list-tile-content
+                div {{ item.fullName }}
+              v-list-tile-action
+                v-chip(small dark color='secondary lighten-3')
+                  span.body-2 BC{{item.playerClassification+1}}
+
         v-spacer
         v-card-actions
           v-btn.secondary.secondary--text(round block outline @click='onCancel')
             v-icon.mdi-18px(left) mdi-reply
-            | {{ $t('forms.cancel') }}
-          v-btn.warning(round block type='submit' :loading='isLoading' :disabled='!isValid')
-            | {{ $t('forms.start') }}
+            | {{ $t('forms.back') }}
+          v-btn.warning(round block type='submit' :loading='isLoading' :disabled='!valid')
+            | {{ $t('forms.next') }}
             v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
 
@@ -95,20 +112,31 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import { ITraining } from 'types/interfaces' //eslint-disable-line
+import { IPlayer, ITraining, ICountry } from 'types/interfaces' //eslint-disable-line
 import { Training } from '~/types/classes'
+
+import GlobalMixins from '~/mixins/global'
+import ValidateRules from '~/mixins/validate'
 
 import enums from '~/assets/enums'
 
+import * as dictsStore from '~/store/dicts'
 import * as trainingStore from '~/store/training'
+
+const DictsNS = namespace(dictsStore.name)
 const TrainingNS = namespace(trainingStore.name)
 const { types } = trainingStore
 
-@Component({})
+@Component({
+  mixins: [GlobalMixins, ValidateRules]
+})
 export default class TrainingInitial extends Vue {
   $moment
 
   enums: any = enums
+
+  player: IPlayer = null
+  search: string = null
 
   valid: Boolean = false
   isLoading: Boolean = false
@@ -119,11 +147,14 @@ export default class TrainingInitial extends Vue {
   dateStamp: Date = null
   timeStamp: Date = null
 
+  @DictsNS.State('players') statePlayers
+  @DictsNS.State('countries') stateCountries
+
   @TrainingNS.State('training') stateTraining
-  @TrainingNS.State('shotType') stateShotType
+  @TrainingNS.State('player') statePlayer
 
   @TrainingNS.Mutation(types.SET_TRAINING) mutationSetTraining
-  @TrainingNS.Mutation(types.SET_SHOT_TYPE) mutationSetShotType
+  @TrainingNS.Mutation(types.SET_PLAYER) mutationSetPlayer
   @TrainingNS.Mutation(types.CLEAR_STATE) mutationClearState
 
   mounted (): void {
@@ -134,17 +165,21 @@ export default class TrainingInitial extends Vue {
       const { dateTimeStamp } = this.stateTraining
       this.dateStamp = this.$moment(dateTimeStamp).format('YYYY-MM-DD')
       this.timeStamp = this.$moment(dateTimeStamp).format('HH:mm')
+      this.player = this.statePlayer
     }
   }
 
   onSubmit (): void {
-    if (this.isNewTraining) { this.createNewTraining() }
-    this.$emit('changeComponent', 'Balls')
+    if (this.isNewTraining) {
+      this.createNewTraining()
+      this.mutationSetPlayer(this.player)
+    }
+    this.$emit('changeComponent', 'Results')
   }
 
   onCancel (): void {
     this.mutationClearState()
-    this.$router.push('/')
+    this.$router.push('/trainings')
   }
 
   async createNewTraining (): Promise<any> {
@@ -159,7 +194,7 @@ export default class TrainingInitial extends Vue {
       .then(({ data }) => {
         item.id = data
         this.mutationSetTraining(item)
-        this.$noty.success('<span class="subheading">Training successfully created!</span>')
+        this.$noty.success('<span class="subheading">Training created!</span>')
       })
       .catch((err) => {
         console.log(err)
@@ -170,8 +205,16 @@ export default class TrainingInitial extends Vue {
       })
   }
 
-  get isValid (): Boolean {
-    return !!this.valid && !!this.shotType
+  countryById (id): ICountry | object {
+    if (!this.guidRegex.test(id)) return {}
+    const country = this.stateCountries.find(x => x.id === id)
+    return country || {}
+  }
+
+  get players () {
+    if (!this.search) return []
+    const searchRegex = new RegExp(this.search, 'i')
+    return this.statePlayers.filter(x => searchRegex.test(x.fullName))
   }
 
   get isNewTraining (): Boolean {
@@ -181,13 +224,11 @@ export default class TrainingInitial extends Vue {
   get dateTimeStamp (): Date {
     return this.$moment(`${this.dateStamp} ${this.timeStamp}`).format()
   }
-
-  get shotType (): number | null {
-    return this.stateShotType
-  }
-
-  set shotType (value: number) {
-    this.mutationSetShotType(value)
-  }
 }
 </script>
+
+<style lang="stylus" scoped>
+.flag-icon
+  font-size 22px
+  border-radius 50%
+</style>

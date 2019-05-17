@@ -4,14 +4,11 @@ export default ({ app, store }, redirect) => {
   $axios.onError((error) => {
     const code = parseInt(error.response && error.response.status)
     if (code === 401) {
-      debugger
       $auth.strategy.refreshTokens()
-      debugger
     }
   })
 
   $auth.onError((error, name, endpoint) => {
-    debugger
     console.error(endpoint, name, error)
   })
 

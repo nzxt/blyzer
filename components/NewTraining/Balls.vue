@@ -1,8 +1,9 @@
 <template lang="pug">
   v-card(height='100%')
-    v-form.fill-height(v-model='valid' @submit.prevent='onFinish')
+    v-form.fill-height(v-model='valid' @submit.prevent='onSubmit')
       v-layout.fill-height.justify-space-between(column)
-        v-card-text
+        TopPanel
+        //- v-card-text
           v-select(
             v-model='shotType'
             :items="enums.shotTypes"
@@ -18,10 +19,10 @@
         v-card-title.justify-center(v-if='!stateBalls.length')
           div.headline.grey--text.text--lighten-1
             | Let's throw balls!
-        v-card-text(v-else style='max-height:242px;overflow:hidden;')
-          v-avatar.mt-1(
-            style='margin-right:2px;'
-            :size='21'
+        v-card-text(v-else style='max-height:50vh;overflow-y:auto;')
+          v-avatar(
+            style='margin:5px 2px;'
+            :size='24'
             color='primary'
             v-for='ball in stateBalls'
             :key='ball.id'
@@ -33,7 +34,7 @@
           span.title.grey--text.font-weight-thin Rate Shot {{ `#${shotIndex}` }}
           v-rating(
             v-model='shotRating'
-            @click.native='onSubmit'
+            @click.native='onRateShot'
             color='orange'
             large
           )
@@ -41,7 +42,7 @@
         v-card-actions
           v-btn.secondary.secondary--text(round block outline @click='onCancel')
             v-icon.mdi-18px(left) mdi-reply
-            | {{ $t('forms.previous') }}
+            | {{ $t('forms.back') }}
           v-btn.warning(round block type='submit' :loading='isLoading' :disabled='!stateBalls.length')
             | {{ $t('forms.finish') }}
             v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
@@ -60,7 +61,11 @@ import * as trainingStore from '~/store/training'
 const TrainingNS = namespace(trainingStore.name)
 const { types } = trainingStore
 
-@Component({})
+@Component({
+  components: {
+    TopPanel: () => import('./TopPanel.vue')
+  }
+})
 export default class TrainingBalls extends Vue {
   $moment
 
@@ -70,17 +75,17 @@ export default class TrainingBalls extends Vue {
   isLoading: Boolean = false
 
   shotRating: number = null
-  shotIndex: number = 1
 
   @TrainingNS.State('training') stateTraining
+  @TrainingNS.State('player') statePlayer
   @TrainingNS.State('balls') stateBalls
   @TrainingNS.State('shotType') stateShotType
+  @TrainingNS.State('shotDistance') stateShotDistance
 
   @TrainingNS.Mutation(types.ADD_BALL) mutationAddBall
   @TrainingNS.Mutation(types.SET_SHOT_TYPE) mutationSetShotType
-  @TrainingNS.Mutation(types.CLEAR_STATE) mutationClearState
 
-  async onSubmit (): Promise<any> {
+  async onRateShot (): Promise<any> {
     if (this.isLoading) return
     this.isLoading = true
     await this.createBall(this.prepareBall())
@@ -88,16 +93,15 @@ export default class TrainingBalls extends Vue {
     setTimeout(() => {
       this.isLoading = false
       this.shotRating = null
-      this.shotIndex++
     }, 680)
   }
 
   onCancel (): void {
-    this.$emit('changeComponent', 'Initial')
+    this.$emit('changeComponent', 'Results')
   }
 
-  onFinish (): void {
-    this.mutationClearState()
+  onSubmit (): void {
+    this.$emit('changeComponent', 'Results')
   }
 
   async createBall (item: IBall): Promise<any> {
@@ -118,26 +122,27 @@ export default class TrainingBalls extends Vue {
     const ball: IBall = new Ball(this.shotIndex, playerId)
 
     ball.rating = this.shotRating
-    ball.shotType = this.shotType
+    ball.shotType = this.stateShotType
+    ball.distance = this.stateShotDistance
     ball.trainingId = this.stateTraining.id
 
     return ball
   }
 
-  // get isValid (): Boolean {
-  //   return !!this.valid && !!this.shotRating
-  // }
+  get shotIndex (): number {
+    return this.stateBalls.length + 1
+  }
 
   get shotTypeName (): string {
     return this.enums.shotTypes.find(x => x.id === this.stateShotType)
   }
 
-  get shotType (): number | null {
-    return this.stateShotType
-  }
+  // get shotType (): number | null {
+  //   return this.stateShotType
+  // }
 
-  set shotType (value: number) {
-    this.mutationSetShotType(value)
-  }
+  // set shotType (value: number) {
+  //   this.mutationSetShotType(value)
+  // }
 }
 </script>

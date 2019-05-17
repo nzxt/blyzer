@@ -34,6 +34,7 @@
     "finish": "Завершить",
     "submit": "Отправить",
     "cancel": "Отменить",
+    "back": "Вернуться",
     "next": "Далее",
     "previous": "Назад",
     "errors": {
@@ -46,5 +47,17 @@
     "plural": "пользователи",
     "new": "Новый пользователь",
     "edit": "Редактировать пользователя"
+  },
+  "trainings": {
+    "singular": "training",
+    "plural": "trainings",
+    "new": "New Training",
+    "all": "All Trainings"
+  },
+  "matches": {
+    "singular": "match",
+    "plural": "matches",
+    "new": "New Match",
+    "all": "All Matches"
   }
 }
