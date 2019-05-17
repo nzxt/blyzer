@@ -3,12 +3,12 @@
     v-form.fill-height(@submit.prevent='onSubmit')
       v-layout.fill-height.justify-space-between(column)
         TopPanel
-        v-card-title.justify-space-between
+        v-card-title.py-2.justify-space-between
           div.headline.grey--text.text--lighten-1
             | Shots
           v-btn.warning(small round type='submit' :loading='isLoading')
+            v-icon.mdi-18px(left) mdi-volleyball
             | {{ 'Add New' }}
-            v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 
         v-card-text.pa-0(v-if='stateBalls.length')
           v-tabs(
@@ -57,6 +57,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
+import GlobalMixin from '~/mixins/global'
 import enums from '~/assets/enums'
 
 import * as trainingStore from '~/store/training'
@@ -69,7 +70,8 @@ const { types } = trainingStore
     StatList: () => import('./StatList.vue'),
     StatPie: () => import('./StatPie.vue'),
     StatBar: () => import('./StatBar.vue')
-  }
+  },
+  mixins: [GlobalMixin]
 })
 export default class TrainingResults extends Vue {
   enums: any = enums
@@ -93,20 +95,38 @@ export default class TrainingResults extends Vue {
 
   onCancel (): void {
     this.$router.push('/trainings')
+    this.mutationClearState()
   }
 
   fetchStatistics (): Promise<any> {
     if (!this.stateTraining) return
     const { id } = this.stateTraining
-    return this.$api.ApiStatByIdGet({ id })
+    if (!this.guidRegex.test(id)) return
+
+    return this.$api.ApiTrainingByIdGet({ id })
       .then(({ data }) => {
         data.map((x) => {
-          const shotType = this.enums.shotTypes.find(type => type.id === x.shotType)
-          x.shotTypeAbbr = shotType.abbr
-          // x.shotTypeName = shotType.text
+          x.shotTypeName = this.getShotTypeName(x.shotType)
+          x.shotTypeAbbr = this.getShotTypeAbbr(x.shotType)
+          x.shotDistanceName = this.getShotDistanceName(x.distance)
         })
         this.statistics = data
       })
+  }
+
+  getShotTypeName (value: number): string {
+    if (!Number.isInteger(value)) return
+    return this.enums.shotTypes.find(x => x.id === value).text
+  }
+
+  getShotTypeAbbr (value: number): string {
+    if (!Number.isInteger(value)) return
+    return this.enums.shotTypes.find(x => x.id === value).abbr
+  }
+
+  getShotDistanceName (value: number): string {
+    if (!Number.isInteger(value)) return
+    return this.enums.throwDistances.find(x => x.id === value).text
   }
 }
 </script>

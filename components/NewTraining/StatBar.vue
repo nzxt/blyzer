@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card(flat)
-    v-card-text.px-1.py-2
+    v-card-text.px-1.py-4
       apexchart(
         type='bar'
         width='100%'
@@ -13,8 +13,6 @@
 import VueApexCharts from 'vue-apexcharts'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import enums from '~/assets/enums'
-
 @Component({
   components: {
     apexchart: VueApexCharts
@@ -24,9 +22,7 @@ export default class StatBar extends Vue {
   @Prop({ default: [] })
   statistics!: Array<any>
 
-  enums: any = enums
-
-  barChartOptions: any = {
+  chartOptions: any = {
     plotOptions: {
       bar: {
         horizontal: true
@@ -34,31 +30,20 @@ export default class StatBar extends Vue {
     },
     dataLabels: {
       enabled: false
-    },
-    xaxis: {
-      categories: []
-    }
-  }
+    } }
 
-  shotDistanceName (value: number): string {
-    if (!Number.isInteger(value)) return
-    return this.throwDistances[value]
-  }
-
-  get throwDistances (): string[] {
-    const labels = this.enums.throwDistances.reduce((acc, item) => {
-      acc.push(item.text)
+  get barChartOptions (): any {
+    if (!this.statistics) return {}
+    const labels = this.statistics.reduce((acc, item) => {
+      acc.push(`${item.shotTypeAbbr}(${item.shotDistanceName})`)
       return acc
     }, [])
-    return labels
+    return { xaxis: { categories: labels }, ...this.chartOptions }
   }
 
   get barSeries (): Array<any> {
     if (!this.statistics) return []
-    this.barChartOptions.xaxis.categories = []
     const data = this.statistics.reduce((acc, item) => {
-      // this.barChartOptions.xaxis.categories.push(`${item.shotTypeAbbr} ${this.shotDistanceName(item.distance)}`)
-      this.barChartOptions.xaxis.categories.push(`${item.shotTypeAbbr}-${item.distance}`)
       acc.push(item.avgRating * 20)
       return acc
     }, [])
