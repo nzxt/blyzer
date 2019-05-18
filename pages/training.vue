@@ -12,13 +12,13 @@ const { types } = training
 
 @Component({
   components: {
-    Initial: () => import('~/components/NewTraining/Initial.vue'),
-    Results: () => import('~/components/NewTraining/Results.vue'),
-    Exercise: () => import('~/components/NewTraining/Exercise.vue'),
-    Balls: () => import('~/components/NewTraining/Balls.vue')
+    Initial: () => import('~/components/training/Initial.vue'),
+    Results: () => import('~/components/training/Results.vue'),
+    Exercise: () => import('~/components/training/Exercise.vue'),
+    Balls: () => import('~/components/training/Balls.vue')
   }
 })
-export default class NewTraining extends Vue {
+export default class TrainingPage extends Vue {
   @Training.State('component') stateComponent
   @Training.Mutation(types.SET_COMPONENT) mutationSetComponent
 }

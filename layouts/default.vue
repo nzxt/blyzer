@@ -6,7 +6,7 @@ v-app(light, v-hotkey='keymap')
         v-list-tile-title.title Add New Match
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
-      v-list-tile.px-5(@click.native='$router.push("/newTraining")')
+      v-list-tile.px-5(@click.native='$router.push("/training")')
         v-list-tile-title.title Add New Training
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right

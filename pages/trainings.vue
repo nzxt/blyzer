@@ -29,20 +29,20 @@
                 style='width:55px;'
               )
             v-spacer
-            v-btn(dark small round color='backpurple' @click='$router.push("/newTraining")')
+            v-btn(dark small round color='backpurple' @click='$router.push("/training")')
               v-icon(left) mdi-plus-circle-outline
               | Add New
 
         template(v-slot:item='props')
           v-flex(xs12 sm6 md4 lg3)
             v-card.my-1(@click='onTrainingClicked(props.item)' min-width='312')
-              v-card-title.pl-2
-                v-icon.mdi-36px(color='yellow') mdi-webhook
+              v-card-title.pa-1
+                v-icon.mdi-36px(color='orange') {{ props.item.trainingType ? 'mdi-account-supervisor-circle' : 'mdi-google-earth' }}
                 div.ml-2
                   div.title.mr-3 {{ props.item.matchType | enumTextById('matchTypes') }}
                   div.caption {{ props.item.dateTimeStamp | dateUTCToDate }} / {{ props.item.dateTimeStamp | dateUTCToTime }}
                 v-divider
-              v-card-text.py-1
+              //- v-card-text.py-1
                 v-layout.justify-space-between
                   v-flex(xs12 layout column)
                     v-layout
@@ -58,8 +58,15 @@
                         v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
 
               v-card-actions.font-weight-medium
-                v-chip.mr-2.indigo--text(small label color='indigo lighten-5' v-if='props.item.competitionEvent') {{ props.item.competitionEvent | enumTextByIdFlatten('competitionEvents') }}
-                v-chip.cyan--text(small label color='cyan lighten-5' v-if='props.item.poolStage || props.item.eliminationStage')
+                v-chip.mr-2.indigo--text(small label color='indigo lighten-5' v-if='!props.item.trainingType') Individual Training
+                v-chip.cyan--text(small label color='cyan lighten-5' v-else) Training Match
+                v-spacer
+                v-btn(icon @click="showDetails = (showDetails === props.item.id) ? null : props.item.id")
+                  v-icon(color='grey lighten-1') {{ showDetails === props.item.id ? 'mdi-progress-download' : 'mdi-progress-upload' }}
+
+              v-slide-y-transition
+                v-card-text(v-show="showDetails === props.item.id")
+                  | I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
 
         template(v-slot:footer)
           v-toolbar(
@@ -99,6 +106,7 @@ import { pick } from '~/utils/helpers'
   }
 })
 export default class TrainingsPage extends Vue {
+  showDetails: object = {}
   rowsPerPageItems: Array<number> = [7, 15, 25]
   pagination: IPagination = {
     page: 1,

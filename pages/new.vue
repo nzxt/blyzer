@@ -11,7 +11,7 @@ import { Mutation, Getter } from 'vuex-class'
 @Component({
   components: {
     AddMatch: () => import('~/components/AddMatch.vue'),
-    AddTraining: () => import('~/components/NewTraining/Initial.vue'),
+    AddTraining: () => import('~/components/training/Initial.vue'),
     AddStage: () => import('~/components/AddStage.vue')
   }
 })

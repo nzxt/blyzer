@@ -24,10 +24,10 @@ export default class StatPie extends Vue {
 
   chartOptions: any = {
     responsive: [{
-      breakpoint: 360,
+      breakpoint: 400,
       options: {
         chart: {
-          height: 212
+          height: 312
         },
         legend: {
           position: 'top'
