@@ -40,7 +40,9 @@
                 v-icon.mdi-36px(color='orange') {{ props.item.trainingType ? 'mdi-account-supervisor-circle' : 'mdi-google-earth' }}
                 div.ml-2
                   div.title.mr-3 {{ props.item.matchType | enumTextById('matchTypes') }}
-                  div.caption {{ props.item.dateTimeStamp | dateUTCToDate }} / {{ props.item.dateTimeStamp | dateUTCToTime }}
+                  div
+                    span.title {{ props.item.dateTimeStamp | dateUTCToDate }}
+                    span.mx-1.subheading {{ props.item.dateTimeStamp | dateUTCToTime }}
                 v-divider
               //- v-card-text.py-1
                 v-layout.justify-space-between
@@ -66,7 +68,7 @@
 
               v-slide-y-transition
                 v-card-text(v-show="showDetails === props.item.id")
-                  | I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+                  Statistics(:trainingId='showDetails')
 
         template(v-slot:footer)
           v-toolbar(
@@ -102,7 +104,8 @@ import { pick } from '~/utils/helpers'
 
 @Component({
   components: {
-    NoResults: () => import('~/components/NoResults.vue')
+    NoResults: () => import('~/components/NoResults.vue'),
+    Statistics: () => import('~/components/training/Statistics.vue')
   }
 })
 export default class TrainingsPage extends Vue {

@@ -186,5 +186,5 @@ export default class DefaultLayout extends Vue {
       color #0022DD
   .v-btn--active.toolbar--btn-large
     .v-btn__content i
-      color #fff !important
+      color #eee !important
 </style>

@@ -32,6 +32,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import { AsyncComputed } from '~/utils/decorators'
 
 import GlobalMixin from '~/mixins/global'
 import enums from '~/assets/enums'
@@ -51,15 +52,11 @@ export default class TrainingResults extends Vue {
   enums: any = enums
 
   tab: string = 'graph'
-  statistics: any = null
 
-  mounted (): void {
-    this.fetchStatistics()
-  }
-
-  fetchStatistics (): Promise<any> {
+  @AsyncComputed({ default: [] })
+  statistics (): Array<any> {
     const id = this.trainingId
-    if (!this.guidRegex.test(id)) return
+    if (!this.guidRegex.test(id)) return []
 
     return this.$api.ApiTrainingByIdGet({ id })
       .then(({ data }) => {
@@ -68,7 +65,7 @@ export default class TrainingResults extends Vue {
           x.shotTypeAbbr = this.getShotTypeAbbr(x.shotType)
           x.shotDistanceName = this.getShotDistanceName(x.distance)
         })
-        this.statistics = data
+        return data
       })
   }
 

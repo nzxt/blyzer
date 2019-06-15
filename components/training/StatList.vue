@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card(flat)
-    v-card-text.px-1.py-1
+    v-card-text.px-1.py-4.pb-0
       v-layout.align-center(v-for='item in statistics' :key='JSON.stringify(item)')
         v-flex(xs2)
           span.body-2 {{ item.shotTypeAbbr }}

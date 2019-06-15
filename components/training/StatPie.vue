@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card(flat)
-    v-card-text.px-1.py-4
+    v-card-text.px-1.pt-4.pb-0
       apexchart(
         type='pie'
         width='100%'
@@ -30,7 +30,7 @@ export default class StatPie extends Vue {
           height: 312
         },
         legend: {
-          position: 'top'
+          position: 'bottom'
         }
       }
     }]

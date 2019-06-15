@@ -1,9 +1,9 @@
 <template lang="pug">
 v-container
-  v-layout.my-3(justify-center)
-    v-flex(xs12 sm10 md8 lg6)
-      v-alert.error(v-model='loginHasError', icon='mdi-alert-decagram')
-        | {{ 'Error while logging in..' }}
+  //- v-layout.my-3(justify-center)
+  //-   v-flex(xs12 sm10 md8 lg6)
+  //-     v-alert.error(v-model='loginHasError', icon='mdi-alert-decagram')
+  //-       | {{ 'Error while logging in..' }}
   v-layout(wrap, justify-center)
     v-flex(xs11, sm8, md6, lg5)
       v-card(class='elevation-7' min-width='320')

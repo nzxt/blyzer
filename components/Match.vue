@@ -80,10 +80,11 @@ export default class MatchPage extends Vue {
     return stageIndexes ? stageIndexes.text : 'N/A'
   }
 
-  @AsyncComputed({ default: {} })
+  @AsyncComputed({ default: () => {} })
   tournament (): ITournament {
     const id: string | undefined = this.match.tournamentId
     if (!id || !this.guidRegex.test(id)) return {} as ITournament
+
     return this.$api.ApiTournamentByIdGet({ id })
       .then(({ data }) => {
         // const _items = items.map(x => pick(x, 'id', 'fullName', 'playerClassification', 'countryId'))

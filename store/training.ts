@@ -49,5 +49,4 @@ export const mutations: MutationTree<State> = {
     state.shotType = null
     state.shotDistance = null
   }
-
 }
