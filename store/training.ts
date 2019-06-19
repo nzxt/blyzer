@@ -26,7 +26,7 @@ export const namespaced: boolean = true
 export const name = 'training'
 
 export const state = (): State => ({
-  component: 'Initial',
+  component: 'Results',
   player: null,
   training: null,
   balls: [],
@@ -42,7 +42,7 @@ export const mutations: MutationTree<State> = {
   [types.SET_SHOT_TYPE]: (state, value: number) => { state.shotType = value },
   [types.SET_SHOT_DISTANCE]: (state, value: number) => { state.shotDistance = value },
   [types.CLEAR_STATE]: (state) => {
-    state.component = 'Initial'
+    state.component = 'Results'
     state.player = null
     state.training = null
     state.balls = []

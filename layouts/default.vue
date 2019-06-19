@@ -1,12 +1,13 @@
 <template lang="pug">
 v-app(light, v-hotkey='keymap')
+  //- v-toolbar.main(color='white', :extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight' app :scroll-threshold='32' scroll-off-screen)
   v-toolbar.main(color='white', :extended="btnGroup === 1", height='70', extension-height="112" :clipped-right='clippedRight' app :scroll-threshold='32' scroll-off-screen)
     v-list(slot='extension', v-if="btnGroup === 1", class='backpurple', dark, @click.native='btnGroup = undefined')
       v-list-tile.px-5(@click.native='$router.push("/new?type=match")')
         v-list-tile-title.title Add New Match
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right
-      v-list-tile.px-5(@click.native='$router.push("/training")')
+      v-list-tile.px-5(@click.native='$router.push("/trainings")')
         v-list-tile-title.title Add New Training
         v-list-tile-action(class='justify-center')
           v-icon mdi-chevron-right

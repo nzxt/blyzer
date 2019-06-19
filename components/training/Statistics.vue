@@ -15,9 +15,9 @@
         v-icon(left) mdi-chart-donut-variant
         | Pie
 
-      v-tab(href="#bar")
-        v-icon(left) mdi-chart-gantt
-        | Bar
+      //- v-tab(href="#bar")
+      //-   v-icon(left) mdi-chart-gantt
+      //-   | Bar
 
       v-tabs-items(v-model='tab')
         v-tab-item.text-xs-center(value='list')
@@ -26,8 +26,8 @@
         v-tab-item.justify-center(value='pie')
           StatPie(:statistics='statistics')
 
-        v-tab-item.justify-center(value='bar')
-          StatBar(:statistics='statistics')
+        //- v-tab-item.justify-center(value='bar')
+        //-   StatBar(:statistics='statistics')
 </template>
 
 <script lang="ts">
@@ -40,8 +40,8 @@ import enums from '~/assets/enums'
 @Component({
   components: {
     StatList: () => import('./StatList.vue'),
-    StatPie: () => import('./StatPie.vue'),
-    StatBar: () => import('./StatBar.vue')
+    StatPie: () => import('./StatPie.vue')
+    // StatBar: () => import('./StatBar.vue')
   },
   mixins: [GlobalMixin]
 })

@@ -1,14 +1,13 @@
 <template lang="pug">
   v-card(style='min-width:312px;')
-    v-form.fill-height(@submit.prevent='onSubmit')
+    v-form.fill-height(@submit.prevent='addNew')
       v-layout.fill-height.justify-space-between(column)
         TopPanel
         v-card-title.py-2.justify-space-between
           div.headline.grey--text.text--lighten-1
             | Shots
-          v-btn.warning(small round type='submit')
-            v-icon.mdi-18px(left) mdi-google-earth
-            | {{ 'Add New' }}
+          div
+            ChooseExercise(@exerciseSelected='$emit("changeComponent", "Balls")')
 
         v-card-text.pa-0(v-if='stateBalls.length')
           Statistics(:trainingId='stateTraining.id')
@@ -30,6 +29,7 @@ const { types } = trainingStore
 
 @Component({
   components: {
+    ChooseExercise: () => import('~/components/dialogs/ChooseExercise.vue'),
     TopPanel: () => import('./TopPanel.vue'),
     Statistics: () => import('./Statistics.vue')
   }
@@ -40,8 +40,9 @@ export default class TrainingResults extends Vue {
 
   @TrainingNS.Mutation(types.CLEAR_STATE) mutationClearState
 
-  onSubmit (): void {
-    this.$emit('changeComponent', 'Exercise')
+  addNew (): void {
+    // this.$emit('changeComponent', 'Exercise')
+    this.$bus.$emit('ShowChooseExerciseDialog')
   }
 
   onCancel (): void {

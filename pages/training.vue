@@ -12,9 +12,9 @@ const { types } = training
 
 @Component({
   components: {
-    Initial: () => import('~/components/training/Initial.vue'),
+    // Initial: () => import('~/components/training/Initial.vue'),
     Results: () => import('~/components/training/Results.vue'),
-    Exercise: () => import('~/components/training/Exercise.vue'),
+    // Exercise: () => import('~/components/training/Exercise.vue'),
     Balls: () => import('~/components/training/Balls.vue')
   }
 })

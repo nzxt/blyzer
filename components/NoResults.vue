@@ -13,11 +13,13 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component({})
 export default class NoResults extends Vue {
-  @Prop({ default: 'Results' })
+  @Prop({ default: 'Training' })
   eventType!: string
 
   createNew () {
-    this.$router.push(`/new?type=${this.eventType}`)
+    if (!this.eventType) return
+    // this.$router.push(`/new?type=${this.eventType}`)
+    this.$bus.$emit(`ShowInitialize${this.eventType}Dialog`)
   }
 }
 </script>
