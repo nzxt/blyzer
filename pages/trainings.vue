@@ -1,82 +1,61 @@
 <template lang="pug">
-  v-layout
+  v-layout(row wrap)
     v-flex(xs12)
       NoResults(eventType='Training' v-show='!pagination.totalPages')
+
       v-data-iterator(
         :items='fetchedTrainings'
         :rows-per-page-items='rowsPerPageItems'
         :pagination.sync='pagination'
         :total-items='pagination.totalItems'
-        content-class='training'
         hide-actions
         v-show='pagination.totalPages'
       )
+        //- content-class='training'
         template(v-slot:header)
           v-toolbar(
             color='secondary lighten-5'
             flat
           )
-            v-toolbar-title
-              span.headline.grey--text.text--darken-3 Trainings
-              v-chip.px-0(small dark color='cyan' style='padding:0 4px;margin-top:-12px;') {{ pagination.totalItems }}
-            v-spacer
-            v-toolbar-items.hidden-xs-only
-              v-select(
-                hide-details
-                v-model='pagination.rowsPerPage'
-                :items='rowsPerPageItems'
-                label='per page'
-                style='width:55px;'
-              )
-            v-spacer
-            InitializeTraining
-            //- v-btn(dark small round color='backpurple' @click='$router.push("/training")')
-            //-   v-icon(left) mdi-plus-circle-outline
-            //-   | Add New
+              v-toolbar-title
+                span.headline.grey--text.text--darken-3 Trainings
+                  v-chip.px-0(small dark color='cyan' style='padding:0 4px;margin-top:-10px;') {{ pagination.totalItems }}
+
+              v-spacer
+
+              v-toolbar-items.hidden-xs-only
+                v-select.mt-1(
+                  hide-details
+                  v-model='pagination.rowsPerPage'
+                  :items='rowsPerPageItems'
+                  label='per page'
+                  style='width:55px;'
+                )
+
+              v-spacer
+
+              InitializeTrainingDialog
 
         template(v-slot:item='props')
-          v-flex(xs12 sm6 md4 lg3)
-            v-card.my-1(@click='onTrainingClicked(props.item)' min-width='312')
-              v-card-title
-                v-icon.mdi-24px(color='orange') {{ props.item.trainingType ? 'mdi-account-supervisor-circle' : 'mdi-google-earth' }}
-                div.ml-2
-                  div.title.mr-3 {{ props.item.matchType | enumTextById('matchTypes') }}
-                  div
-                    span.subheading {{ props.item.dateTimeStamp | dateUTCToDate }}
-                    span.mx-2.body-2 {{ props.item.dateTimeStamp | dateUTCToTime }}
-                v-divider
-              //- v-card-text.py-1
-                v-layout.justify-space-between
-                  v-flex(xs12 layout column)
-                    v-layout
-                      v-flex(xs6)
-                        v-btn.ma-0.mr-1(small icon)
-                          flag(iso='ua')
-                        span.subheading.pt-1 Athlete Name
-                      v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.error--text(small label color='grey lighten-4') {{ props.item.scoreRed }}
-                      v-flex.py-0(xs2)
-                        v-progress-linear(:value='props.item.avgPointRed' color='accent' query)
-                      v-flex.py-0(xs2)
-                        v-chip.font-weight-bold.grey--text(small label color='transparent') {{ props.item.avgPointRed }}%
+          //- v-flex(d-inline-flex xs12 sm6 md4 lg3 style='min-width:320px;max-width:360px')
+          //- v-flex(xs12 sm6 md4 lg3)
+          v-card.ma-1(max-width='480' @click='onTrainingClicked(props.item)' style='min-width:304px;')
+            v-card-title
+              v-icon.mdi-24px(color='orange') {{ props.item.trainingType ? 'mdi-account-supervisor-circle' : 'mdi-google-earth' }}
+              div.ml-2
+                div.title.mr-3 {{ props.item.matchType | enumTextById('matchTypes') }}
+                div
+                  span.subheading {{ props.item.dateTimeStamp | dateUTCToDate }}
+                  span.mx-2.body-2 {{ props.item.dateTimeStamp | dateUTCToTime }}
+              v-divider
+              v-icon.ml-1.mdi-24px(color='ssecondary') mdi-chevron-right
 
-              //- v-card-actions.font-weight-medium
-              //-   v-chip.mr-2.indigo--text(small label color='indigo lighten-5' v-if='!props.item.trainingType') Individual Training
-              //-   v-chip.cyan--text(small label color='cyan lighten-5' v-else) Training Match
-              //-   v-spacer
-              //-   v-btn(icon @click="showDetails = (showDetails === props.item.id) ? null : props.item.id")
-              //-     v-icon(color='grey lighten-1') {{ showDetails === props.item.id ? 'mdi-progress-download' : 'mdi-progress-upload' }}
-
-              //- v-slide-y-transition
-              //-   v-card-text(v-show="showDetails === props.item.id")
-              //-     Statistics(:trainingId='showDetails')
-
-        template(v-slot:footer)
-          v-toolbar(
-            color='grey lighten-4'
-            dense
-            flat
-          )
+        //- template(v-slot:footer)
+        //-   v-toolbar(
+        //-     color='grey lighten-4'
+        //-     dense
+        //-     flat
+        //-   )
 
       v-bottom-nav(
         :value='true'
@@ -98,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, /* Watch, */ Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import { AsyncComputed } from '~/utils/decorators'
@@ -115,17 +94,17 @@ const { types } = trainingStore
   components: {
     NoResults: () => import('~/components/NoResults.vue'),
     Statistics: () => import('~/components/training/Statistics.vue'),
-    InitializeTraining: () => import('~/components/dialogs/InitializeTraining.vue')
+    InitializeTrainingDialog: () => import('~/components/dialogs/InitializeTraining.vue')
   }
 })
 export default class TrainingsPage extends Vue {
   @TrainingNS.Mutation(types.SET_TRAINING) mutationSetTraining
 
   showDetails: object = {}
-  rowsPerPageItems: Array<number> = [10, 25, 50]
+  rowsPerPageItems: Array<number> = [15, 25, 50]
   pagination: IPagination = {
     page: 1,
-    rowsPerPage: 10,
+    rowsPerPage: 15,
     sortBy: 'dateTimeStamp',
     descending: true,
     totalItems: 0,
@@ -133,12 +112,12 @@ export default class TrainingsPage extends Vue {
   }
 
   onTrainingClicked (item: ITraining) {
-    console.log(item)
+    console.info(item)
     this.mutationSetTraining(item)
     this.$router.push('/training')
   }
 
-  @AsyncComputed({ default: [] })
+  @AsyncComputed({ default: () => [] })
   fetchedTrainings (): ITraining[] {
     const {
       page: pageNumber,
@@ -166,23 +145,7 @@ export default class TrainingsPage extends Vue {
 </script>
 
 <style lang="stylus">
-.flag-icon
-  font-size 22px
-  border-radius 50%
-// .v-toolbar
-// .v-toolbar__items
-  // width: 100px
-.v-toolbar__content
-  .v-chip .v-chip__content
-    padding: 0 4px
-  .v-chip--small
-    height: 18px !important
-.training
-  justify-content: center
-// .v-toolbar__title
-  // width: 100%
-.v-data-iterator
-  > div.training
-    display: flex
-    flex-wrap: wrap
+  .v-data-iterator
+    div
+      text-align -webkit-center
 </style>

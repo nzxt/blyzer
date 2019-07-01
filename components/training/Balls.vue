@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card(height='100%')
+  v-card(flat style='max-width:480px;')
     v-form.fill-height(v-model='valid' @submit.prevent='onSubmit')
       v-layout.fill-height.justify-space-between(column)
         TopPanel
@@ -30,7 +30,7 @@
             span.white--text.body-2.font-weight-thin {{ ball.rating }}
 
         v-spacer
-        v-card-text.text-xs-center
+        v-card-text.pb-0.text-xs-center
           span.title.grey--text.font-weight-thin Rate Shot {{ `#${shotIndex}` }}
           v-rating(
             v-model='shotRating'
@@ -40,12 +40,13 @@
           )
 
         v-card-actions
-          v-btn.secondary.secondary--text(round block outline @click='onCancel')
-            v-icon.mdi-18px(left) mdi-reply
-            | {{ $t('forms.back') }}
-          v-btn.warning(round block type='submit' :loading='isLoading' :disabled='!stateBalls.length')
-            | {{ $t('forms.finish') }}
-            v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
+          v-btn.secondary(icon large @click='onCancel')
+            v-icon.mdi-24px mdi-reply
+            //- | {{ $t('forms.back') }}
+          v-spacer
+          v-btn.warning(icon large type='submit' :loading='isLoading' :disabled='!stateBalls.length')
+            //- | {{ $t('forms.finish') }}
+            v-icon.mdi-24px mdi-flag-checkered
 </template>
 
 <script lang="ts">
@@ -67,8 +68,6 @@ const { types } = trainingStore
   }
 })
 export default class TrainingBalls extends Vue {
-  $moment
-
   enums: any = enums
 
   valid: Boolean = false
@@ -112,18 +111,18 @@ export default class TrainingBalls extends Vue {
         // this.$noty.success('<span class="subheading">Ball successfully created!</span>')
       })
       .catch((err) => {
-        console.log(err)
+        console.warn(err)
         this.$noty.error('Ball creation failed :(')
       })
   }
 
   prepareBall (): IBall {
-    const playerId = '58d7216a-db42-4bea-86f7-aa1c16f5187e' // Artem Kolinko
+    const playerId = this.statePlayer.id
     const ball: IBall = new Ball(this.shotIndex, playerId)
 
     ball.rating = this.shotRating
     ball.shotType = this.stateShotType
-    ball.distance = this.stateShotDistance
+    ball.distance = Math.round(this.stateShotDistance)
     ball.trainingId = this.stateTraining.id
 
     return ball
@@ -132,17 +131,5 @@ export default class TrainingBalls extends Vue {
   get shotIndex (): number {
     return this.stateBalls.length + 1
   }
-
-  get shotTypeName (): string {
-    return this.enums.shotTypes.find(x => x.id === this.stateShotType)
-  }
-
-  // get shotType (): number | null {
-  //   return this.stateShotType
-  // }
-
-  // set shotType (value: number) {
-  //   this.mutationSetShotType(value)
-  // }
 }
 </script>

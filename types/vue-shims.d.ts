@@ -10,6 +10,7 @@ declare module 'vue/types/vue' {
     $auth: any;
     $bus: Vue;
     $noty: any;
+    $moment: any;
     guidRegex: RegExp;
     switchLocalePath: Function;
  }

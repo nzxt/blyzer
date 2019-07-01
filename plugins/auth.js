@@ -3,13 +3,13 @@ export default ({ app, store }, redirect) => {
 
   $axios.onError((error) => {
     const code = parseInt(error.response && error.response.status)
-    if (code === 401) {
+    if (code === 401 && $auth.strategy.name === 'local') {
       $auth.strategy.refreshTokens()
     }
   })
 
   $auth.onError((error, name, endpoint) => {
-    console.error(endpoint, name, error)
+    console.warn(endpoint, name, error)
   })
 
   /* Only _actual_ login/outs (including resets) will be watched here. */
@@ -28,5 +28,5 @@ export default ({ app, store }, redirect) => {
 
   if (!$auth.loggedIn) return
   store.dispatch('nuxtClientInit')
-  console.log(`[AUTH] Hi, ${$auth.user.userName}!`)
+  console.info(`[AUTH] Hi, ${$auth.user.userName}!`)
 }

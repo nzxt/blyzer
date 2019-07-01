@@ -1,5 +1,8 @@
 <template lang="pug">
-  component(:is="stateComponent" @changeComponent='mutationSetComponent')
+  component#component(
+    :is="stateComponent"
+    @changeComponent='mutationSetComponent'
+  )
 </template>
 
 <script lang="ts">
@@ -12,9 +15,7 @@ const { types } = training
 
 @Component({
   components: {
-    // Initial: () => import('~/components/training/Initial.vue'),
     Results: () => import('~/components/training/Results.vue'),
-    // Exercise: () => import('~/components/training/Exercise.vue'),
     Balls: () => import('~/components/training/Balls.vue')
   }
 })
@@ -23,3 +24,10 @@ export default class TrainingPage extends Vue {
   @Training.Mutation(types.SET_COMPONENT) mutationSetComponent
 }
 </script>
+
+<style lang="stylus">
+  #component
+    width 100%
+    min-width 312px
+    max-width 460px
+</style>

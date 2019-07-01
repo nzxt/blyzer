@@ -8,7 +8,7 @@
         dark
         small
         round
-        color='backpurple'
+        color='warning'
         v-on='on'
       )
         v-icon(left) mdi-plus-circle-outline
@@ -42,15 +42,15 @@
                         v-model='dateStamp'
                         label='Date'
                         prepend-icon='mdi-calendar'
+                        hint='Training date'
+                        :rules='requiredField'
                         persistent-hint
                         readonly
                         v-on='on'
                       )
-                        //- hint='Format: YYYY-MM-DD'
-                        //- @blur='date = dateStamp'
                     v-date-picker(v-model='dateStamp' no-title @input='datePicker = false')
 
-                v-flex(xs5 sm3)
+                v-flex(xs6 sm4)
                   v-menu(
                     ref='timePicker'
                     v-model="timePicker"
@@ -69,11 +69,12 @@
                         v-model="timeStamp"
                         label="Time"
                         prepend-icon="mdi-av-timer"
+                        hint='Training time'
+                        :rules='requiredField'
                         persistent-hint
                         readonly
                         v-on="on"
                       )
-                        //- hint='Format: HH:MM'
                     v-time-picker(
                       v-if="timePicker"
                       v-model="timeStamp"
@@ -83,42 +84,17 @@
                     )
 
           v-card-text
-            v-combobox(
-              label='Choose Athlete'
-              prepend-icon='mdi-account-circle-outline'
-              v-model='player'
-              :items='players'
-              :search-input.sync='search'
-              :rules='requiredField'
-              :disabled='!isNewTraining'
-              browser-autocomplete
-              hide-selected
-              hide-no-data
-              no-filter
-              clearable
-              dense
-            )
-              template(v-slot:selection='{ item, index }')
-                v-chip(small)
-                  v-avatar
-                    flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
-                  div {{ item.fullName }}
-              template(v-slot:item='{ index, item }')
-                v-list-tile-avatar
-                  // v-avatar
-                  flag(:iso='countryById(item.countryId).alpha2', :title='countryById(item.countryId).name')
-                v-list-tile-content
-                  div {{ item.fullName }}
-                v-list-tile-action
-                  v-chip(small dark color='secondary lighten-3')
-                    span.body-2 BC{{item.playerClassification+1}}
+            v-layout
+              v-flex.xs12.sm10.offset-sm1
+                ComboboxChoosePlayer(:player.sync='player' @clear='player = null' label='Player')
 
           v-spacer
-          v-card-actions
-            v-btn.secondary.secondary--text(round block outline @click='onCancel')
+
+          v-card-actions.mt-3
+            v-btn.secondary(small block round @click='onCancel')
               v-icon.mdi-18px(left) mdi-reply
               | {{ $t('forms.back') }}
-            v-btn.warning(round block type='submit' :loading='isLoading' :disabled='!valid')
+            v-btn.warning(small block round type='submit' :loading='loading' :disabled='!valid')
               | {{ $t('forms.next') }}
               v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
 </template>
@@ -143,11 +119,12 @@ const TrainingNS = namespace(trainingStore.name)
 const { types } = trainingStore
 
 @Component({
+  components: {
+    ComboboxChoosePlayer: () => import('~/components/elements/ComboboxChoosePlayer.vue')
+  },
   mixins: [GlobalMixins, ValidateRules]
 })
 export default class InitializeTraining extends Vue {
-  $moment
-
   dialog: Boolean = false
 
   enums: any = enums
@@ -156,7 +133,7 @@ export default class InitializeTraining extends Vue {
   search: string = null
 
   valid: Boolean = false
-  isLoading: Boolean = false
+  loading: Boolean = false
 
   datePicker: Boolean = false
   timePicker: Boolean = false
@@ -182,18 +159,6 @@ export default class InitializeTraining extends Vue {
     this.$bus.$off('ShowInitializeTrainingDialog')
   }
 
-  // mounted (): void {
-  //   if (this.isNewTraining) {
-  //     this.dateStamp = this.$moment().format('YYYY-MM-DD')
-  //     this.timeStamp = this.$moment().format('HH:mm')
-  //   } else {
-  //     const { dateTimeStamp } = this.stateTraining
-  //     this.dateStamp = this.$moment(dateTimeStamp).format('YYYY-MM-DD')
-  //     this.timeStamp = this.$moment(dateTimeStamp).format('HH:mm')
-  //     this.player = this.statePlayer
-  //   }
-  // }
-
   show () {
     this.dialog = true
   }
@@ -211,25 +176,34 @@ export default class InitializeTraining extends Vue {
     }
   }
 
-  onSubmit (): void {
+  async onSubmit () {
+    this.loading = true
+
     if (this.isNewTraining) {
-      this.createNewTraining()
+      await this.createNewTraining()
       this.mutationSetPlayer(this.player)
     }
-    // this.$emit('changeComponent', 'Results')
-    this.$router.push('/training')
+
+    // const item: ITraining = new Training(
+    //   this.dateTimeStamp,
+    //   this.$auth.user.appUserId
+    // )
+
+    // this.mutationSetTraining(item)
+    // this.mutationSetPlayer(this.player)
+
+    // this.$noty.success('<span class="subheading">Training initialized!</span>')
+    this.loading = false
     this.dialog = false
+    this.$router.push('/training')
   }
 
   onCancel (): void {
     this.mutationClearState()
     this.dialog = false
-    // this.$router.push('/trainings')
   }
 
   async createNewTraining (): Promise<any> {
-    this.isLoading = true
-
     const item: ITraining = new Training(
       this.dateTimeStamp,
       this.$auth.user.appUserId
@@ -242,11 +216,8 @@ export default class InitializeTraining extends Vue {
         this.$noty.success('<span class="subheading">Training created!</span>')
       })
       .catch((err) => {
-        console.log(err)
+        console.warn(err)
         this.$noty.error('Training creation failed :(')
-      })
-      .finally(() => {
-        this.isLoading = false
       })
   }
 
@@ -263,7 +234,7 @@ export default class InitializeTraining extends Vue {
   }
 
   get isNewTraining (): Boolean {
-    return !this.stateTraining || !this.stateTraining.id
+    return !(this.stateTraining && this.stateTraining.id)
   }
 
   get dateTimeStamp (): Date {
@@ -272,8 +243,10 @@ export default class InitializeTraining extends Vue {
 }
 </script>
 
+<!--
 <style lang="stylus" scoped>
-.flag-icon
-  font-size 22px
-  border-radius 50%
+  .flag-icon
+    font-size 22px
+    border-radius 50%
 </style>
+-->

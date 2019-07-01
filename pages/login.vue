@@ -6,7 +6,7 @@ v-container
   //-       | {{ 'Error while logging in..' }}
   v-layout(wrap, justify-center)
     v-flex(xs11, sm8, md6, lg5)
-      v-card(class='elevation-7' min-width='320')
+      v-card(class='elevation-7')
         //- v-img(contain, src='/images/white-boccia-ball.jpg', alt='Boccia Ball')
         v-form(v-model='valid', @submit.prevent='signIn')
           v-card-title.justify-space-between.display-1.font-weight-thin.warning--text {{ $t('signin') }}
@@ -19,8 +19,10 @@ v-container
                 v-icon.mdi-24px mdi-account-circle
               v-btn.px-1(icon @click='googleSignIn')
                 v-icon.mdi-24px.red--text mdi-google
-              //- v-btn(icon, @click='facebookSignIn')
-              //-   v-icon.mdi-24px.blue--text mdi-facebook-box
+              v-btn(icon, @click='facebookSignIn')
+                v-icon.mdi-24px.blue--text mdi-facebook-box
+              v-btn(icon, @click='auth0SignIn')
+                v-icon.mdi-24px.blue--text mdi-shield-link-variant-outline
               //- v-btn(icon, @click='twitterSignIn')
               //-   v-icon.mdi-24px.light-blue--text mdi-twitter
           v-card-text

@@ -1,6 +1,6 @@
 <template lang="pug">
 v-layout(wrap, justify-center)
-  v-flex.py-3(xs11, sm8, md4)
+  v-flex.py-3(xs11, sm8, md5)
     //- v-img(contain, height="40vh", src='/images/white-boccia-ball.jpg', alt='Boccia Ball')
     UserProfile
   //- v-flex(xs12)

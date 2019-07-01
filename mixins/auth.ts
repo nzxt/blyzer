@@ -102,4 +102,11 @@ export default class AuthMixin extends Vue {
       this.$noty.error('Error', e.message)
     })
   }
+
+  async auth0SignIn () {
+    this.$noty.show('<span class="subheading">Log in w/ Auth0...</span>')
+    await this.$auth.loginWith('auth0').catch((e) => {
+      this.$noty.error('Error', e.message)
+    })
+  }
 }

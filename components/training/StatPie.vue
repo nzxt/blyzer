@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card(flat)
-    v-card-text.px-1.pt-4.pb-0
+    v-card-text.px-1.pb-0
       apexchart(
         type='pie'
         width='100%'

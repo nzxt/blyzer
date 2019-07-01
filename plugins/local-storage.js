@@ -7,11 +7,8 @@ export default ({ store }) => {
       /* Option are here */
       key: 'blyzer',
       paths: [
-        'dictionaries.active',
-        'options.leftDrawer',
-        'options.rightDrawer',
-        'options.leftDrawerMini',
-        'options.rightDrawerMini'
+        'dicts',
+        'training'
       ]
     })(store)
   })

@@ -2,7 +2,8 @@
 import { ActionContext, ActionTree, MutationTree } from 'vuex'
 // import { IRootState, ICountry, ITournamentType, IApiService } from '~/types/interfaces'
 import { ICountry, IPlayer, ITournamentType } from '~/types/interfaces'
-import { pick } from '~/utils/helpers';
+import { pick } from '~/utils/helpers'
+/* eslint-enable */
 
 export const types = {
   SET_PLAYERS: 'SET_PLAYERS',
@@ -33,6 +34,7 @@ export const mutations: MutationTree<State> = {
 }
 
 export interface Actions<S, R> extends ActionTree<S, R> {
+  // fetchPlayerById (context: ActionContext<S, R>, id: string): IPlayer
   fetchPlayers (context: ActionContext<S, R>): void
   fetchCountries (context: ActionContext<S, R>): void
   fetchTournamentTypes (context: ActionContext<S, R>): void
@@ -40,6 +42,14 @@ export interface Actions<S, R> extends ActionTree<S, R> {
 
 // export const actions: Actions<State, IRootState> = {
 export const actions: any = {
+  // fetchPlayerById ({ commit }, id) {
+  //   return this.$api.ApiPlayerByIdGet({ id })
+  //     .then(({ data }) => {
+  //       const _item = pick(data, 'id', 'fullName', 'playerClassification', 'countryId', 'isBisFed')
+  //       return _item
+  //     })
+  // },
+
   async fetchPlayers ({ commit }) {
     await this.$api.ApiPlayerGet({ pageSize: 1000 })
       .then(({ data: { items } }) => {

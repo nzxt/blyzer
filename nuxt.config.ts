@@ -78,11 +78,12 @@ module.exports = {
     // '~/plugins/lodash',
     // '~/plugins/mixins',
     '~/plugins/noty',
+    '~/plugins/konva',
     // '~/plugins/spinners',
     // '~/plugins/tasty-burger-button',
     // '~/plugins/timers',
     // { src: '~/plugins/vuex-persist', ssr: false },
-    // { src: '~/plugins/local-storage', ssr: false },
+    { src: '~/plugins/local-storage', ssr: false },
     // { src: '~/plugins/nuxt-client-init', ssr: fasle }
   ],
 
@@ -142,7 +143,7 @@ module.exports = {
         client_id: 'wMKQRddoM79cMrcbk6yAohRXkhJpe-Rn'
       },
       facebook: {
-        client_id: '1671464192946675',
+        client_id: '320474235483878',
         userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email,birthday',
         scope: ['public_profile', 'email', 'user_birthday']
       },

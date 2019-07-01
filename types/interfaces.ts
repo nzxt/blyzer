@@ -8,9 +8,9 @@ export interface IObj {
 export interface IPagination {
   page: number;
   rowsPerPage: number;
-  sortBy: string,
-  descending: Boolean,
-  totalItems: number;
+  sortBy?: string,
+  descending?: Boolean,
+  totalItems?: number;
   totalPages?: number;
   search?: string;
 }

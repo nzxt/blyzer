@@ -1,69 +1,39 @@
 <template lang="pug">
   v-dialog(
     v-model='dialog'
-    width='500'
+    fullscreen
   )
     template(v-slot:activator="{ on }")
       v-btn.warning(
         small
         round
-        type='submit'
         v-on='on'
       )
         v-icon(left) mdi-google-earth
         | Add New
 
-    v-card(height='100%')
-      v-form.fill-height(v-model='valid' @submit.prevent='onSubmit')
-        v-layout.fill-height.justify-space-between(column)
-          v-card-title.justify-center
-            div.headline.grey--text.text--lighten-1
-              | Shots Options
+    v-card(fill-height)
+      v-subheader.title.font-weight-thin.justify-center Select: Box / Target / ShotType
+      v-card-text.pt-0
+        Court(ref='court')
 
-          v-card-text.text-xs-center
-            span.title.font-weight-light(
-              v-text='`Distance ${shotDistanceName}`'
-            )
-            v-slider.mt-0(
-              v-model='shotDistance'
-              tick='shotDistance'
-              step='1'
-              :min='0'
-              :max='17'
-              ticks='always'
-              tick-size='2'
-              track-color='grey lighten-3'
-            )
-              //- label='Distance'
+      v-card-actions
+        v-btn.secondary(icon large @click='onCancel')
+          v-icon.mdi-24px mdi-reply
+          //- | {{ $t('forms.back') }}
 
-          v-card-text.pa-0.mb-4.text-xs-center
-            span.subheading.grey--text Shot Type
-            v-item-group(v-model='shotType')
-              v-item(
-                v-for='scored in enums.shotTypes'
-                :key='scored.id'
-                :value='scored.id'
-              )
-                v-chip(
-                  small
-                  slot-scope='{ active, toggle }'
-                  @click='toggle'
-                  :color='active ? "primary" : ""'
-                  :dark='active'
-                )
-                  span.subheading {{ scored.text }}
+        v-spacer
+        ChooseShotTypeDialog(ref='shotType')
+        v-spacer
 
-          v-card-actions
-            v-btn.secondary.secondary--text(round block outline @click='onCancel')
-              v-icon.mdi-18px(left) mdi-reply
-              | {{ $t('forms.back') }}
-            v-btn.warning(round block type='submit' :loading='isLoading' :disabled='!valid')
-              | {{ $t('forms.start') }}
-              v-icon.mdi-18px(right) mdi-arrow-right-drop-circle-outline
+        v-btn.warning(icon large @click='onSubmit' :loading='loading' :disabled='!isValid')
+          //- | {{ $t('forms.start') }}
+          v-icon.mdi-24px mdi-arrow-right-drop-circle-outline
+
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Watch, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import GlobalMixins from '~/mixins/global'
@@ -74,38 +44,47 @@ import enums from '~/assets/enums'
 import * as trainingStore from '~/store/training'
 
 const TrainingNS = namespace(trainingStore.name)
-const { types } = trainingStore
+// const { types } = trainingStore
 
 @Component({
+  components: {
+    Court: () => import('~/components/Court.vue'),
+    ChooseShotTypeDialog: () => import('~/components/dialogs/ChooseShotType.vue')
+  },
   mixins: [GlobalMixins, ValidateRules]
 })
 export default class TrainingExercise extends Vue {
-  $moment
-
   enums: any = enums
 
   dialog: Boolean = false
 
-  valid: Boolean = false
-  isLoading: Boolean = false
+  loading: Boolean = false
 
-  @TrainingNS.State('training') stateTraining
+  // @TrainingNS.State('training') stateTraining
+  @TrainingNS.State('shotBox') stateShotBox
   @TrainingNS.State('shotType') stateShotType
   @TrainingNS.State('shotDistance') stateShotDistance
 
-  @TrainingNS.Mutation(types.SET_SHOT_TYPE) mutationSetShotType
-  @TrainingNS.Mutation(types.SET_SHOT_DISTANCE) mutationSetShotDistance
+  // @TrainingNS.Mutation(types.SET_SHOT_BOX) mutationSetShotBox
+  // @TrainingNS.Mutation(types.SET_SHOT_TYPE) mutationSetShotType
+  // @TrainingNS.Mutation(types.SET_SHOT_DISTANCE) mutationSetShotDistance
 
-  created () {
-    this.$bus.$on('ShowChooseExerciseDialog', this.show)
-  }
+  // created () {
+  //   this.$bus.$on('ShowChooseExerciseDialog', this.show)
+  // }
 
-  deforeDestroy () {
-    this.$bus.$off('ShowChooseExerciseDialog')
-  }
+  // deforeDestroy () {
+  //   this.$bus.$off('ShowChooseExerciseDialog')
+  // }
 
-  show () {
-    this.dialog = true
+  // show () {
+  //   this.dialog = true
+  // }
+
+  @Watch('dialog')
+  onChangeShow (value: Boolean) {
+    if (!value) return
+    this.$nextTick((this.$refs.court as any).fitStageIntoParentContainer)
   }
 
   onSubmit (): void {
@@ -119,36 +98,28 @@ export default class TrainingExercise extends Vue {
   }
 
   get isValid (): Boolean {
-    return !!Number.isInteger(this.shotType) && !!Number.isInteger(this.stateShotDistance)
+    return Number.isInteger(this.stateShotBox) && Number.isInteger(this.stateShotType) && (typeof this.stateShotDistance === 'number')
   }
 
-  get throwDistances (): string[] {
-    const labels = this.enums.throwDistances.reduce((acc, item) => {
-      acc.push(item.text)
-      return acc
-    }, [])
-    return labels
-  }
+  // get throwDistances (): string[] {
+  //   const labels = this.enums.throwDistances.reduce((acc, item) => {
+  //     acc.push(item.text)
+  //     return acc
+  //   }, [])
+  //   return labels
+  // }
 
-  get shotDistanceName () {
-    if (!Number.isInteger(this.shotDistance)) return
-    return this.throwDistances[this.shotDistance]
-  }
+  // get shotDistanceName () {
+  //   if (!Number.isInteger(this.shotDistance)) return
+  //   return this.throwDistances[this.shotDistance]
+  // }
 
-  get shotDistance (): number | null {
-    return this.stateShotDistance
-  }
+  // get shotDistance (): number | null {
+  //   return this.stateShotDistance
+  // }
 
-  set shotDistance (value: number) {
-    this.mutationSetShotDistance(value)
-  }
-
-  get shotType (): number | null {
-    return this.stateShotType
-  }
-
-  set shotType (value: number) {
-    this.mutationSetShotType(value)
-  }
+  // set shotDistance (value: number) {
+  //   this.mutationSetShotDistance(value)
+  // }
 }
 </script>
